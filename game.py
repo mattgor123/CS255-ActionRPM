@@ -29,6 +29,11 @@ current_time = time.get_ticks()
 leftover = 0.0
 updates = 0
 
+# Sprite stuff
+player1 = player.player( [0, 0] )
+screen.blit(player1.image, player1.rect)
+display.update()
+
 while True:
     new_time = time.get_ticks()
     frame_time = (new_time - current_time) / 1000.0
@@ -38,8 +43,9 @@ while True:
 
     screen.fill( (0, 0, 0) )
 
-    player1 = player()
-    player1.draw(screen)
+    player1 = player.player( [0, 0] )
+    screen.blit(player1.image, player1.rect)
+    display.update()
     # draw stuff
 
     display.flip()
