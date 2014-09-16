@@ -9,8 +9,8 @@ import pygame.event as event
 import pygame.time as time
 
 # Import our Player and Enemy Classes
-import Player
-import Enemy
+import player
+import enemy
 
 # Constants
 WIDTH = 800
@@ -38,6 +38,8 @@ while True:
 
     screen.fill( (0, 0, 0) )
 
+    player1 = player()
+    player1.draw(screen)
     # draw stuff
 
     display.flip()
