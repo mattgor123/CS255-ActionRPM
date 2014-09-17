@@ -18,7 +18,7 @@ WIDTH = 800
 HEIGHT = 600
 PLAYERSPEED = 1
 ENEMYCOUNT = 13
-ENEMYSPEEDS = 4
+ENEMYSPEEDS = 3
 
 # Initialize Screen
 game.init()
@@ -73,4 +73,4 @@ while True:
             exit()
 
     player1.update()
-    enemies.update()
+    enemies.update(player1.dirchanged, player1.direction)

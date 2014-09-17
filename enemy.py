@@ -50,8 +50,29 @@ class enemy(game.sprite.Sprite):
         self.width = screensize[0]
         self.height = screensize[1]
 
-    #the update method moves the enemy to where he is supposed to be
-    def update(self):
+    #this is the update method with a parameter - it ensures the enemy is facing opposite dir of the player then updates
+    def update(self,dirchanged, direction):
+        if dirchanged == True:
+            if direction == "right" and self.direction != "left":
+                self.setdirection("left")
+            elif direction == "downright" and self.direction != "upleft":
+                self.setdirection("upleft")
+            elif direction == "down" and self.direction != "up":
+                self.setdirection("up")
+            elif direction == "downleft" and self.direction != "upright":
+                self.setdirection("upright")
+            elif direction == "left" and self.direction != "right":
+                self.setdirection("right")
+            elif direction == "upleft" and self.direction != "downright":
+                self.setdirection("downright")
+            elif direction == "up" and self.direction != "down":
+                self.setdirection("down")
+            elif direction == "upright" and self.direction != "downleft":
+                self.setdirection("downleft")
+        self.move()
+
+    #this moves the enemy to where he is supposed to be based on the direction
+    def move(self):
         if self.direction == "upleft":
             self.rect =  self.rect.move(-self.speed,-self.speed)
             #Two possible collisions are top & left (or corner)
@@ -136,4 +157,3 @@ class enemy(game.sprite.Sprite):
             self.image = enemy.up
         elif (direction == "upright"):
             self.image = enemy.upright
-

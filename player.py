@@ -39,13 +39,16 @@ class player(game.sprite.Sprite):
         self.rect.topleft = location
         self.screenwidth = screensize[0]
         self.screenheight = screensize[1]
+        self.dirchanged = False
 
     #update method moves the sprite & possibly changes its image based on the keypress
     def update(self):
+        self.dirchanged = False
         keysPressed = game.key.get_pressed()
         if keysPressed[game.K_LEFT] and keysPressed[game.K_UP]:
             #change of direction, stop playing crash sound & set the direction
             if self.direction != "upleft":
+                self.dirchanged = True
                 self.setdirection("upleft")
                 self.crash.stop()
 
@@ -62,8 +65,9 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_LEFT] and keysPressed[game.K_DOWN]:
             if self.direction != "downleft":
-                    self.setdirection("downleft")
-                    self.crash.stop()
+                self.dirchanged = True
+                self.setdirection("downleft")
+                self.crash.stop()
             if (self.rect.left-self.speed) > 0 and (self.rect.bottom + self.speed) < self.screenheight:
                 self.rect =  self.rect.move(-self.speed,+self.speed)
             else:
@@ -73,6 +77,7 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_LEFT]:
             if self.direction != "left":
+                self.dirchanged = True
                 self.setdirection("left")
                 self.crash.stop()
             if (self.rect.left-self.speed) > 0:
@@ -84,8 +89,9 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_RIGHT] and keysPressed[game.K_UP]:
             if self.direction != "upright":
-                    self.setdirection("upright")
-                    self.crash.stop()
+                self.direction = True
+                self.setdirection("upright")
+                self.crash.stop()
             if (self.rect.right+self.speed) < self.screenwidth and (self.rect.top) > 0:
                 self.rect =  self.rect.move(self.speed,-self.speed)
             else:
@@ -95,6 +101,7 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_RIGHT] and keysPressed[game.K_DOWN]:
             if self.direction != "downright":
+                self.dirchanged = True
                 self.setdirection("downright")
                 self.crash.stop()
             if (self.rect.right+self.speed) < self.screenwidth and (self.rect.bottom + self.speed) < self.screenheight:
@@ -106,8 +113,9 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_RIGHT]:
             if self.direction != "right":
-                    self.setdirection("right")
-                    self.crash.stop()
+                self.dirchanged = True
+                self.setdirection("right")
+                self.crash.stop()
             if (self.rect.right + self.speed) < self.screenwidth:
                 self.rect =  self.rect.move(self.speed,0)
             else:
@@ -117,8 +125,9 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_UP]:
             if self.direction != "up":
-                    self.setdirection("up")
-                    self.crash.stop()
+                self.dirchanged = True
+                self.setdirection("up")
+                self.crash.stop()
             if (self.rect.top - self.speed) > 0:
                 self.rect =  self.rect.move(0,-self.speed)
             else:
@@ -128,8 +137,9 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_DOWN]:
             if self.direction != "down":
-                    self.setdirection("down")
-                    self.crash.stop()
+                self.dirchanged = True
+                self.setdirection("down")
+                self.crash.stop()
             if (self.rect.bottom + self.speed) < self.screenheight:
                 self.rect =  self.rect.move(0,self.speed)
             else:
