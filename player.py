@@ -6,6 +6,7 @@ class player(game.sprite.Sprite):
     crash = None
     screenwidth = 0
     screenheight = 0
+    startinghealth = 100
 
     #Constructor for our player takes an initial location, the dimensions of the screen, and the speed
     def __init__(self, location, screensize, speed):
@@ -31,8 +32,8 @@ class player(game.sprite.Sprite):
         #initialize
         self.image = player.image
         self.crash = player.crash
-        self.crashcount = 0
         self.damage = 0
+        self.health = player.startinghealth
         self.speed = speed
         self.direction = "right"
         self.rect = self.image.get_rect()
@@ -59,8 +60,7 @@ class player(game.sprite.Sprite):
 
             #collision!
             else:
-                print("Crash UPLEFT. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_LEFT] and keysPressed[game.K_DOWN]:
@@ -71,8 +71,7 @@ class player(game.sprite.Sprite):
             if (self.rect.left-self.speed) > 0 and (self.rect.bottom + self.speed) < self.screenheight:
                 self.rect =  self.rect.move(-self.speed,+self.speed)
             else:
-                print("Crash DOWNLEFT. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_LEFT]:
@@ -83,8 +82,7 @@ class player(game.sprite.Sprite):
             if (self.rect.left-self.speed) > 0:
                 self.rect =  self.rect.move(-self.speed,0)
             else:
-                print("Crash LEFT. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_RIGHT] and keysPressed[game.K_UP]:
@@ -95,8 +93,7 @@ class player(game.sprite.Sprite):
             if (self.rect.right+self.speed) < self.screenwidth and (self.rect.top) > 0:
                 self.rect =  self.rect.move(self.speed,-self.speed)
             else:
-                print("Crash UPRIGHT. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_RIGHT] and keysPressed[game.K_DOWN]:
@@ -107,8 +104,7 @@ class player(game.sprite.Sprite):
             if (self.rect.right+self.speed) < self.screenwidth and (self.rect.bottom + self.speed) < self.screenheight:
                 self.rect =  self.rect.move(self.speed,self.speed)
             else:
-                print("Crash DOWNRIGHT. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_RIGHT]:
@@ -119,8 +115,7 @@ class player(game.sprite.Sprite):
             if (self.rect.right + self.speed) < self.screenwidth:
                 self.rect =  self.rect.move(self.speed,0)
             else:
-                print("Crash RIGHT. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_UP]:
@@ -131,8 +126,7 @@ class player(game.sprite.Sprite):
             if (self.rect.top - self.speed) > 0:
                 self.rect =  self.rect.move(0,-self.speed)
             else:
-                print("Crash UP. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
         elif keysPressed[game.K_DOWN]:
@@ -143,8 +137,7 @@ class player(game.sprite.Sprite):
             if (self.rect.bottom + self.speed) < self.screenheight:
                 self.rect =  self.rect.move(0,self.speed)
             else:
-                print("Crash DOWN. left: " + str(self.rect.left) + ", right: " + str(self.rect.right) + ", top: " + str(self.rect.top) + ", bottom: " + str(self.rect.bottom))
-                self.crashcount+=1
+                self.damage+=1
                 self.crash.play()
 
     def setdirection(self, direction):
@@ -175,6 +168,8 @@ class player(game.sprite.Sprite):
             self.image = player.upright
             self.rect = self.image.get_rect(center=self.rect.center)
 
-    def calcdamage(self):
-        self.damage = 100 - (self.crashcount / 100)
+    def calchealth(self):
+        self.health = self.startinghealth - (self.damage / 10)
+        return self.health
+
 
