@@ -7,6 +7,7 @@ import pygame as game
 import pygame.display as display
 import pygame.event as event
 import pygame.time as time
+import random
 
 # Import our Player and Enemy Classes
 import player
@@ -17,6 +18,7 @@ WIDTH = 800
 HEIGHT = 600
 RADIUS = 100
 SPEED = 4 * 60 
+ENEMYCOUNT = 13
 
 # Initialize Screen
 game.init()
@@ -29,10 +31,17 @@ current_time = time.get_ticks()
 leftover = 0.0
 updates = 0
 
-# Sprite stuff
+# Player sprite stuff
 player1 = player.player( [0, 0] )
 screen.blit(player1.image, player1.rect)
 display.update()
+
+# Enemy sprite stuff
+enemies = game.sprite.Group()
+
+for i in range(ENEMYCOUNT):
+    newenemy = enemy.enemy( [random.randint(0,WIDTH-50), random.randint(0,HEIGHT-25)])
+    enemies.add(newenemy)
 
 while True:
     new_time = time.get_ticks()
@@ -43,12 +52,12 @@ while True:
 
     screen.fill( (0, 0, 0) )
 
-    #player1 = player.player( [0, 0] )
     screen.blit(player1.image, player1.rect)
+    enemies.draw(screen)
     # draw stuff
 
     display.update()
-    
+
     updates = 0
     leftover += frame_time
     while leftover > 0.01:
@@ -66,3 +75,4 @@ while True:
             exit()
 
     player1.move()
+    enemies.update()
