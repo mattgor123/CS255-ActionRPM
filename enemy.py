@@ -72,6 +72,10 @@ class enemy(game.sprite.Sprite):
         self.move(interval)
 
     #this moves the enemy to where he is supposed to be based on the direction
+    '''
+    Note : We wrote this function interpreting 'look' to mean the direction in which the enemy is facing.
+    Please have pity on our souls.
+    '''
     def move(self, interval):
         if self.direction == "upleft":
             self.rect =  self.rect.move(-self.speed*interval,-self.speed*interval)
