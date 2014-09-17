@@ -43,13 +43,12 @@ while True:
 
     screen.fill( (0, 0, 0) )
 
-    player1 = player.player( [0, 0] )
+    #player1 = player.player( [0, 0] )
     screen.blit(player1.image, player1.rect)
-    display.update()
     # draw stuff
 
-    display.flip()
-
+    display.update()
+    
     updates = 0
     leftover += frame_time
     while leftover > 0.01:
@@ -57,8 +56,13 @@ while True:
         leftover -= 0.01
         updates += 1
 
+#Begin key presses
+    game.event.pump()
+
     for eve in event.get():
         if eve.type == game.QUIT:
             exit()
         elif eve.type == game.KEYDOWN and eve.key == game.K_ESCAPE:
             exit()
+
+    player1.move()
