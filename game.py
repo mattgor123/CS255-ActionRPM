@@ -7,6 +7,7 @@ import pygame as game
 import pygame.display as display
 import pygame.event as event
 import pygame.time as time
+import healthlabel
 import random
 
 # Import our Player and Enemy Classes
@@ -19,19 +20,27 @@ HEIGHT = 600
 PLAYERSPEED = 1
 ENEMYCOUNT = 13
 ENEMYSPEEDS = 3
+DIFFICULTY = 9 #1-10
 
 # Initialize Screen
 game.init()
 screen = display.set_mode( (WIDTH, HEIGHT) )
-# Damage label font (will make it sexier later)
-myfont = game.font.Font(None,30)
+background = game.Surface(screen.get_size())
+
 
 #Define function to initialize game state so you can restart
 def init():
-    global player1, enemies
+    global players, enemies, labels
+
+    #Label sprite stuff
+    labels = game.sprite.Group()
+    label = healthlabel.healthlabel(100)
+    labels.add(label)
 
     # Player sprite stuff
-    player1 = player.player( [0, 0] , [WIDTH, HEIGHT],  PLAYERSPEED )
+    players = game.sprite.Group()
+    player1 = player.player( [WIDTH/2, HEIGHT/2] , [WIDTH, HEIGHT],  PLAYERSPEED, DIFFICULTY )
+    players.add(player1)
 
     # Enemy sprite stuff
     enemies = game.sprite.Group()
@@ -42,6 +51,8 @@ def init():
 
 #Define function to allow a user to restart if their health reaches 0%
 def game_over():
+    for label in labels:
+        myfont = label.font
     gameOverSurface = myfont.render('Game Over - Would you like to restart? (Y/N)',1,(255,255,255))
     gameOverRect = gameOverSurface.get_rect()
     gameOverRect.center = screen.get_rect().center
@@ -53,6 +64,7 @@ def game_over():
                 exit()
             elif event.type == game.KEYDOWN:
                 if event.key == game.K_y:
+                    screen.fill((0,0,0))
                     init()
                     return
                 if event.key == game.K_n or event.key == game.K_ESCAPE:
@@ -61,30 +73,34 @@ def game_over():
 #Define function to actually perform the game logic (update positions, health, etc.)
 def main_loop():
     while True:
+        #Clear the sprite groups (more efficient than filling fully)
+        players.clear(screen,background)
+        enemies.clear(screen,background)
+        labels.clear(screen,background)
 
-        #Determine current health status
-        health = player1.calchealth()
+        #Update the player & enemy
+        players.update()
+        for player in players.sprites():
+            dirchanged = player.dirchanged
+            direction = player.direction
+        enemies.update(dirchanged, direction)
+
+        #Determine current health status & update label
+        for player in players.sprites():
+            health = player.calchealth()
         dead = (health <= 0)
-
-        #Get appropriate label color based on health
-        if (health < 25):
-            COLOR = (255,0,0)
-        elif (health < 75):
-            COLOR = (255,255,0)
-        else:
-            COLOR = (0,255,0)
-
-        label = myfont.render("Health: " + str(health) + "%",1,COLOR)
-
-        #redraw stuff
-        screen.fill( (0, 0, 0) )
-        screen.blit(player1.image, player1.rect)
-        enemies.draw(screen)
-        screen.blit(label,(0,0))
-        display.update()
-
+        labels.update(health)
         if dead:
+            #We just want to see health 0% and prompt the game over message
+            labels.draw(screen)
+            display.update()
             game_over()
+
+        #we want the label always on top, with player on top of enemies
+        enemies.draw(screen)
+        players.draw(screen)
+        labels.draw(screen)
+        display.update()
 
         #Begin key presses
         game.event.pump()
@@ -93,9 +109,6 @@ def main_loop():
                 exit()
             elif eve.type == game.KEYDOWN and eve.key == game.K_ESCAPE:
                 exit()
-
-        player1.update()
-        enemies.update(player1.dirchanged, player1.direction)
 
 init()
 main_loop()

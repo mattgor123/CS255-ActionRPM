@@ -7,9 +7,10 @@ class player(game.sprite.Sprite):
     screenwidth = 0
     screenheight = 0
     startinghealth = 100
+    difficulty = 0
 
     #Constructor for our player takes an initial location, the dimensions of the screen, and the speed
-    def __init__(self, location, screensize, speed):
+    def __init__(self, location, screensize, speed, difficulty):
         game.sprite.Sprite.__init__(self)
         player.screenwidth = screensize[0]
         player.screenheight = screensize[1]
@@ -37,10 +38,11 @@ class player(game.sprite.Sprite):
         self.speed = speed
         self.direction = "right"
         self.rect = self.image.get_rect()
-        self.rect.topleft = location
+        self.rect.center = location
         self.screenwidth = screensize[0]
         self.screenheight = screensize[1]
         self.dirchanged = False
+        self.difficulty = difficulty
 
     #update method moves the sprite & possibly changes its image based on the keypress
     def update(self):
@@ -87,7 +89,7 @@ class player(game.sprite.Sprite):
 
         elif keysPressed[game.K_RIGHT] and keysPressed[game.K_UP]:
             if self.direction != "upright":
-                self.direction = True
+                self.dirchanged = True
                 self.setdirection("upright")
                 self.crash.stop()
             if (self.rect.right+self.speed) < self.screenwidth and (self.rect.top) > 0:
@@ -169,7 +171,7 @@ class player(game.sprite.Sprite):
             self.rect = self.image.get_rect(center=self.rect.center)
 
     def calchealth(self):
-        self.health = self.startinghealth - (self.damage / 10)
+        self.health = self.startinghealth - (self.damage / (10*(11-self.difficulty)))
         return self.health
 
 
