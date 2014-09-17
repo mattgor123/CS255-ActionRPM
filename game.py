@@ -17,8 +17,9 @@ import enemy
 WIDTH = 800
 HEIGHT = 600
 RADIUS = 100
-SPEED = 4 * 60 
+PLAYERSPEED = 1
 ENEMYCOUNT = 13
+ENEMYSPEEDS = 3
 
 # Initialize Screen
 game.init()
@@ -32,7 +33,7 @@ leftover = 0.0
 updates = 0
 
 # Player sprite stuff
-player1 = player.player( [0, 0] )
+player1 = player.player( [0, 0] , PLAYERSPEED )
 screen.blit(player1.image, player1.rect)
 display.update()
 
@@ -40,7 +41,8 @@ display.update()
 enemies = game.sprite.Group()
 
 for i in range(ENEMYCOUNT):
-    newenemy = enemy.enemy( [random.randint(0,WIDTH-50), random.randint(0,HEIGHT-25)])
+    newenemy = enemy.enemy( [random.randint(0,WIDTH-50), random.randint(0,HEIGHT-25)],
+                            speed=random.randint(1,ENEMYSPEEDS), direction = random.randint(1,8))
     enemies.add(newenemy)
 
 while True:
