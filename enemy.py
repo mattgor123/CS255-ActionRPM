@@ -26,28 +26,20 @@ class enemy(game.sprite.Sprite):
         #set the image based on the direction
         if (direction == 1):
             self.setdirection("right")
-            self.image = enemy.right
         elif (direction == 2):
             self.setdirection("downright")
-            self.image = enemy.downright
         elif (direction == 3):
             self.setdirection("down")
-            self.image = enemy.down
         elif (direction == 4):
             self.setdirection("downleft")
-            self.image = enemy.downleft
         elif (direction == 5):
             self.setdirection("left")
-            self.image = enemy.left
         elif (direction == 6):
             self.setdirection("upleft")
-            self.image = enemy.upleft
         elif (direction == 7):
             self.setdirection("up")
-            self.image = enemy.up
         elif (direction == 8):
             self.setdirection("upright")
-            self.image = enemy.upright
 
         #set the speed & get the rectangle
         self.speed = speed
