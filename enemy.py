@@ -51,7 +51,7 @@ class enemy(game.sprite.Sprite):
         self.height = screensize[1]
 
     #this is the update method with a parameter - it ensures the enemy is facing opposite dir of the player then updates
-    def update(self,dirchanged, direction):
+    def update(self,dirchanged, direction, interval):
         if dirchanged == True:
             if direction == "right" and self.direction != "left":
                 self.setdirection("left")
@@ -69,12 +69,12 @@ class enemy(game.sprite.Sprite):
                 self.setdirection("down")
             elif direction == "upright" and self.direction != "downleft":
                 self.setdirection("downleft")
-        self.move()
+        self.move(interval)
 
     #this moves the enemy to where he is supposed to be based on the direction
-    def move(self):
+    def move(self, interval):
         if self.direction == "upleft":
-            self.rect =  self.rect.move(-self.speed,-self.speed)
+            self.rect =  self.rect.move(-self.speed*interval,-self.speed*interval)
             #Two possible collisions are top & left (or corner)
             if self.rect.top < 0 and self.rect.left < 0:
                 self.setdirection("downright")
@@ -84,7 +84,7 @@ class enemy(game.sprite.Sprite):
                 self.setdirection("upright")
 
         elif self.direction == "downleft":
-            self.rect =  self.rect.move(-self.speed,+self.speed)
+            self.rect =  self.rect.move(-self.speed*interval,+self.speed*interval)
             #Two possible collisions are bottom & left (or corner)
             if self.rect.bottom > self.screenheight and self.rect.left < 0:
                 self.setdirection("upright")
@@ -94,7 +94,7 @@ class enemy(game.sprite.Sprite):
                 self.setdirection("downright")
 
         elif self.direction == "upright":
-            self.rect =  self.rect.move(self.speed,-self.speed)
+            self.rect =  self.rect.move(self.speed*interval,-self.speed*interval)
             #Two possible collisions are top & right (or corner)
             if self.rect.top < 0 and self.rect.right > self.screenwidth:
                 self.setdirection("downleft")
@@ -104,7 +104,7 @@ class enemy(game.sprite.Sprite):
                 self.setdirection("upleft")
 
         elif self.direction == "downright":
-            self.rect =  self.rect.move(self.speed,self.speed)
+            self.rect =  self.rect.move(self.speed*interval,self.speed*interval)
             #Two possible collisions are bottom & right (or corner)
             if self.rect.bottom > self.screenheight and self.rect.right > self.screenwidth:
                 self.setdirection("upleft")
@@ -114,25 +114,25 @@ class enemy(game.sprite.Sprite):
                 self.setdirection("downleft")
 
         elif self.direction == "right":
-            self.rect =  self.rect.move(self.speed,0)
+            self.rect =  self.rect.move(self.speed*interval,0)
             #Only possible collision is to the right
             if self.rect.right > self.screenwidth:
                 self.setdirection("left")
 
         elif self.direction == "up":
-            self.rect =  self.rect.move(0,-self.speed)
+            self.rect =  self.rect.move(0,-self.speed*interval)
             #Only possible collision is top
             if self.rect.top < 0:
                 self.setdirection("down")
 
         elif self.direction == "down":
-            self.rect =  self.rect.move(0,self.speed)
+            self.rect =  self.rect.move(0,self.speed*interval)
             #Only possible collision is bottom
             if self.rect.bottom > self.screenheight:
                 self.setdirection("up")
 
         elif self.direction == "left":
-            self.rect =  self.rect.move(-self.speed,0)
+            self.rect =  self.rect.move(-self.speed*interval,0)
             #Only possible collision is left
             if self.rect.left < 0:
                 self.setdirection("right")

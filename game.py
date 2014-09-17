@@ -7,7 +7,7 @@ import pygame as game
 import pygame.display as display
 import pygame.event as event
 import pygame.time as time
-import healthlabel
+import label
 import random
 
 # Import our Player and Enemy Classes
@@ -17,10 +17,11 @@ import enemy
 # Constants (ALL MUST BE INTEGERS)
 WIDTH = 800
 HEIGHT = 600
-PLAYERSPEED = 1
+PLAYERSPEED = 500
 ENEMYCOUNT = 13
-ENEMYSPEEDS = 3
-DIFFICULTY = 9 #1-10
+ENEMYSPEEDS = 6
+DIFFICULTY = 10 #1-10
+INTERVAL = .01
 
 # Initialize Screen
 game.init()
@@ -34,8 +35,14 @@ def init():
 
     #Label sprite stuff
     labels = game.sprite.Group()
-    label = healthlabel.healthlabel(100)
-    labels.add(label)
+    hlabel = label.label("health","Health: 100%", (0,0))
+    fpslabel = label.label("fps","Seconds/Frame: " ,(0,24))
+    spflabel = label.label("spf","Frames/Second: " , (0,48))
+    upflabel = label.label("upf","Updates/Frame: ", (0,72))
+    labels.add(hlabel)
+    labels.add(fpslabel)
+    labels.add(spflabel)
+    labels.add(upflabel)
 
     # Player sprite stuff
     players = game.sprite.Group()
@@ -46,7 +53,8 @@ def init():
     enemies = game.sprite.Group()
     for i in range(ENEMYCOUNT):
         newenemy = enemy.enemy( [random.randint(0,WIDTH-player1.rect.width), random.randint(0,HEIGHT-player1.rect.height)],
-                                [WIDTH, HEIGHT],speed=random.randint(1,ENEMYSPEEDS), direction = random.randint(1,8))
+                                [WIDTH, HEIGHT],speed=random.randint(1,ENEMYSPEEDS)*PLAYERSPEED/2,
+                                direction = random.randint(1,8))
         enemies.add(newenemy)
 
 #Define function to allow a user to restart if their health reaches 0%
@@ -72,24 +80,53 @@ def game_over():
 
 #Define function to actually perform the game logic (update positions, health, etc.)
 def main_loop():
+    #Clock code adapted from Peter's leftover-interval.py
+    clock = time.Clock()
+    current_time = time.get_ticks()
+    leftover = 0.0
+    updates = 0
+
     while True:
         #Clear the sprite groups (more efficient than filling fully)
         players.clear(screen,background)
         enemies.clear(screen,background)
         labels.clear(screen,background)
 
+        #Set up clock stuff
+        new_time = time.get_ticks()
+        frame_time = (new_time - current_time) / 1000.0
+        current_time = new_time
+        clock.tick()
+
         #Update the player & enemy
-        players.update()
-        for player in players.sprites():
-            dirchanged = player.dirchanged
-            direction = player.direction
-        enemies.update(dirchanged, direction)
+        updates = 0
+        leftover += frame_time
+
+        while leftover > INTERVAL:
+            players.update(INTERVAL)
+            for player in players.sprites():
+                dirchanged = player.dirchanged
+                direction = player.direction
+            enemies.update(dirchanged, direction, INTERVAL)
+            leftover -= INTERVAL
+            updates += 1
 
         #Determine current health status & update label
         for player in players.sprites():
             health = player.calchealth()
         dead = (health <= 0)
-        labels.update(health)
+
+        #Update the labels
+        for label in labels.sprites():
+            if label.name == "health":
+                label.update(health)
+            elif label.name == "fps":
+                label.update(clock.get_fps())
+            elif label.name == "spf":
+                label.update(frame_time)
+            elif label.name == "upf":
+                label.update(updates)
+
         if dead:
             #We just want to see health 0% and prompt the game over message
             labels.draw(screen)

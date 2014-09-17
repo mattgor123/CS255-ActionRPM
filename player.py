@@ -45,7 +45,7 @@ class player(game.sprite.Sprite):
         self.difficulty = difficulty
 
     #update method moves the sprite & possibly changes its image based on the keypress
-    def update(self):
+    def update(self,interval):
         self.dirchanged = False
         keysPressed = game.key.get_pressed()
         if keysPressed[game.K_LEFT] and keysPressed[game.K_UP]:
@@ -56,9 +56,9 @@ class player(game.sprite.Sprite):
                 self.crash.stop()
 
             #check for collision with top or left
-            if (self.rect.left-self.speed) > 0 and (self.rect.top-self.speed) > 0:
+            if (self.rect.left-self.speed*interval) > 0 and (self.rect.top-self.speed*interval) > 0:
                 #no collision, move
-                self.rect =  self.rect.move(-self.speed,-self.speed)
+                self.rect =  self.rect.move(-self.speed*interval,-self.speed*interval)
 
             #collision!
             else:
@@ -70,8 +70,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("downleft")
                 self.crash.stop()
-            if (self.rect.left-self.speed) > 0 and (self.rect.bottom + self.speed) < self.screenheight:
-                self.rect =  self.rect.move(-self.speed,+self.speed)
+            if (self.rect.left-self.speed*interval) > 0 and (self.rect.bottom + self.speed*interval) < self.screenheight:
+                self.rect =  self.rect.move(-self.speed*interval,+self.speed*interval)
             else:
                 self.damage+=1
                 self.crash.play()
@@ -81,8 +81,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("left")
                 self.crash.stop()
-            if (self.rect.left-self.speed) > 0:
-                self.rect =  self.rect.move(-self.speed,0)
+            if (self.rect.left-self.speed*interval) > 0:
+                self.rect =  self.rect.move(-self.speed*interval,0)
             else:
                 self.damage+=1
                 self.crash.play()
@@ -92,8 +92,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("upright")
                 self.crash.stop()
-            if (self.rect.right+self.speed) < self.screenwidth and (self.rect.top) > 0:
-                self.rect =  self.rect.move(self.speed,-self.speed)
+            if (self.rect.right+self.speed*interval) < self.screenwidth and (self.rect.top) > 0:
+                self.rect =  self.rect.move(self.speed*interval,-self.speed*interval)
             else:
                 self.damage+=1
                 self.crash.play()
@@ -103,8 +103,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("downright")
                 self.crash.stop()
-            if (self.rect.right+self.speed) < self.screenwidth and (self.rect.bottom + self.speed) < self.screenheight:
-                self.rect =  self.rect.move(self.speed,self.speed)
+            if (self.rect.right+self.speed*interval) < self.screenwidth and (self.rect.bottom + self.speed*interval) < self.screenheight:
+                self.rect =  self.rect.move(self.speed*interval,self.speed*interval)
             else:
                 self.damage+=1
                 self.crash.play()
@@ -114,8 +114,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("right")
                 self.crash.stop()
-            if (self.rect.right + self.speed) < self.screenwidth:
-                self.rect =  self.rect.move(self.speed,0)
+            if (self.rect.right + self.speed*interval) < self.screenwidth:
+                self.rect =  self.rect.move(self.speed*interval,0)
             else:
                 self.damage+=1
                 self.crash.play()
@@ -125,8 +125,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("up")
                 self.crash.stop()
-            if (self.rect.top - self.speed) > 0:
-                self.rect =  self.rect.move(0,-self.speed)
+            if (self.rect.top - self.speed*interval) > 0:
+                self.rect =  self.rect.move(0,-self.speed*interval)
             else:
                 self.damage+=1
                 self.crash.play()
@@ -136,8 +136,8 @@ class player(game.sprite.Sprite):
                 self.dirchanged = True
                 self.setdirection("down")
                 self.crash.stop()
-            if (self.rect.bottom + self.speed) < self.screenheight:
-                self.rect =  self.rect.move(0,self.speed)
+            if (self.rect.bottom + self.speed*interval) < self.screenheight:
+                self.rect =  self.rect.move(0,self.speed*interval)
             else:
                 self.damage+=1
                 self.crash.play()
