@@ -16,10 +16,9 @@ import enemy
 # Constants
 WIDTH = 800
 HEIGHT = 600
-RADIUS = 100
 PLAYERSPEED = 1
 ENEMYCOUNT = 13
-ENEMYSPEEDS = 3
+ENEMYSPEEDS = 2
 
 # Initialize Screen
 game.init()
@@ -33,7 +32,7 @@ leftover = 0.0
 updates = 0
 
 # Player sprite stuff
-player1 = player.player( [0, 0] , PLAYERSPEED )
+player1 = player.player( [0, 0] , [WIDTH, HEIGHT],  PLAYERSPEED )
 screen.blit(player1.image, player1.rect)
 display.update()
 
@@ -41,7 +40,7 @@ display.update()
 enemies = game.sprite.Group()
 
 for i in range(ENEMYCOUNT):
-    newenemy = enemy.enemy( [random.randint(0,WIDTH-50), random.randint(0,HEIGHT-25)],
+    newenemy = enemy.enemy( [random.randint(0,WIDTH-50), random.randint(0,HEIGHT-25)], [WIDTH, HEIGHT],
                             speed=random.randint(1,ENEMYSPEEDS), direction = random.randint(1,8))
     enemies.add(newenemy)
 
@@ -76,5 +75,5 @@ while True:
         elif eve.type == game.KEYDOWN and eve.key == game.K_ESCAPE:
             exit()
 
-    player1.move()
+    player1.update()
     enemies.update()
