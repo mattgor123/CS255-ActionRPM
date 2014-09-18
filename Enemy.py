@@ -5,6 +5,7 @@ class Enemy(game.sprite.Sprite):
     image = None
     screen_width = 0
     screen_height = 0
+    should_change_motion_direction = False
 
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
@@ -81,7 +82,7 @@ class Enemy(game.sprite.Sprite):
                 self.set_direction("down")
             elif direction == "upright" and self.direction != "downleft":
                 self.set_direction("downleft")
-        self.move(interval, False)  # this is going to change to be True soon
+        self.move(interval, Enemy.should_change_motion_direction)
 
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
@@ -90,7 +91,6 @@ class Enemy(game.sprite.Sprite):
     Please have pity on our souls for the duplicated/relatively ugly
     code...not currently being used.
     '''
-
     def move(self, interval, should_move_in_dir_facing):
         if should_move_in_dir_facing:
             if self.direction == "upleft":
@@ -241,17 +241,33 @@ class Enemy(game.sprite.Sprite):
         #set the image based on the direction
         if direction == "right":
             self.image = Enemy.right
+            if Enemy.should_change_motion_direction:
+                self.direction = "right"
         elif direction == "downright":
             self.image = Enemy.downright
+            if Enemy.should_change_motion_direction:
+                self.direction = "downright"
         elif direction == "down":
             self.image = Enemy.down
+            if Enemy.should_change_motion_direction:
+                self.direction = "down"
         elif direction == "downleft":
             self.image = Enemy.downleft
+            if Enemy.should_change_motion_direction:
+                self.direction = "downleft"
         elif direction == "left":
             self.image = Enemy.left
+            if Enemy.should_change_motion_direction:
+                self.direction = "left"
         elif direction == "upleft":
             self.image = Enemy.upleft
+            if Enemy.should_change_motion_direction:
+                self.direction = "upleft"
         elif direction == "up":
             self.image = Enemy.up
+            if Enemy.should_change_motion_direction:
+                self.direction = "up"
         elif direction == "upright":
             self.image = Enemy.upright
+            if Enemy.should_change_motion_direction:
+                self.direction = "upright"
