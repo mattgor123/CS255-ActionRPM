@@ -36,8 +36,8 @@ def init():
     # Label sprite stuff
     labels = pygame.sprite.Group()
     h_label = Label.Label("health", "Health: 100%", (0, 0))
-    fps_label = Label.Label("fps", "Seconds/Frame: ", (0, 24))
-    spf_label = Label.Label("spf", "Frames/Second: ", (0, 48))
+    fps_label = Label.Label("fps", "Frames/Second: ", (0, 24))
+    spf_label = Label.Label("spf", "Seconds/Frame: ", (0, 48))
     upf_label = Label.Label("upf", "Updates/Frame: ", (0, 72))
     labels.add(h_label)
     labels.add(fps_label)
