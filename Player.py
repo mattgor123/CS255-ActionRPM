@@ -3,7 +3,9 @@ import pygame as game
 
 class Player(game.sprite.Sprite):
     # These are the images, images are default
-    image = None
+    full_health = None
+    half_health = None
+    quarter_health = None
     crash = None
     STARTING_HEALTH = 100
     current = None
@@ -18,13 +20,17 @@ class Player(game.sprite.Sprite):
 
         # set the images to the appropriate ones based on the direction of the
         # character
-        if Player.image is None:
-            self.set_image_rotations("images/playerfullhealth.png")
+        if Player.full_health is None:
+            Player.full_health = game.image.load("images/playerfullhealth.png")
         if Player.crash is None:
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
-
+        if Player.half_health is None:
+            Player.half_health = game.image.load("images/playerhalfhealth.png")
+        if Player.quarter_health is None:
+            Player.quarter_health = game.image.load(
+                "images/playerquarterhealth.png")
         # initialize
-        self.image = Player.image
+        self.image = Player.full_health
         self.crash = Player.crash
         self.damage = 0
         self.health = Player.STARTING_HEALTH
@@ -184,18 +190,23 @@ class Player(game.sprite.Sprite):
             self.damage / (10 * (11 - self.difficulty)))
         if self.health < 25 and not self.current == "quarter":
             self.current = "quarter"
-            self.set_image_rotations("images/playerquarterhealth.png")
+            self.set_image_rotations("quarter")
         elif 25 < self.health < 75 and not self.current == \
                 "half":
             self.current = "half"
-            self.set_image_rotations("images/playerhalfhealth.png")
+            self.set_image_rotations("half")
         elif self.health > 75 and not self.current == "full":
             self.current = "full"
-            self.set_image_rotations("images/playerfullhealth.png")
+            self.set_image_rotations("full")
         return self.health
 
-    def set_image_rotations(self, imageloc):
-        Player.image = game.image.load(imageloc)
+    def set_image_rotations(self, healthlevel):
+        if (healthlevel == "half"):
+            Player.image = Player.half_health
+        elif (healthlevel == "quarter"):
+            Player.image = Player.quarter_health
+        else:
+            Player.image = Player.full_health
         Player.rect = Player.image.get_rect()
         Player.right = Player.image
         Player.left = game.transform.rotate(Player.right, 180)
