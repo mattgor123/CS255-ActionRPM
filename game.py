@@ -15,17 +15,19 @@ import Player
 import Enemy
 
 # Constants (ALL MUST BE INTEGERS except INTERVAL)
-WIDTH = 800
-HEIGHT = 600
-PLAYER_SPEED = 500
-ENEMY_COUNT = 13
-ENEMY_SPEEDS = 6
-DIFFICULTY = 10  # 1-10
-INTERVAL = .01
+class Globals():
+    WIDTH = 800
+    HEIGHT = 600
+    PLAYER_SPEED = 500
+    ENEMY_COUNT = 13
+    ENEMY_SPEEDS = 6
+    DIFFICULTY = 10  # 1-10
+    INTERVAL = .01
+    STATE = None
 
 # Initialize Screen
 pygame.init()
-screen = display.set_mode((WIDTH, HEIGHT))
+screen = display.set_mode((Globals.WIDTH, Globals.HEIGHT))
 background = pygame.Surface(screen.get_size())
 
 
@@ -46,18 +48,18 @@ def init():
 
     # Player sprite stuff
     players = pygame.sprite.Group()
-    player1 = Player.Player([WIDTH / 2, HEIGHT / 2], [WIDTH, HEIGHT],
-                            PLAYER_SPEED, DIFFICULTY)
+    player1 = Player.Player([Globals.WIDTH / 2, Globals.HEIGHT / 2], [Globals.WIDTH, Globals.HEIGHT],
+                            Globals.PLAYER_SPEED, Globals.DIFFICULTY)
     players.add(player1)
 
     # Enemy sprite stuff
     enemies = pygame.sprite.Group()
-    for i in range(ENEMY_COUNT):
-        enemy_speed = random.randint(1, ENEMY_SPEEDS) * PLAYER_SPEED * 2 / \
-                      ENEMY_SPEEDS
-        new_enemy = Enemy.Enemy([random.randint(0, WIDTH - player1.rect.width),
-                                random.randint(0, HEIGHT -
-                                player1.rect.height)], [WIDTH, HEIGHT],
+    for i in range(Globals.ENEMY_COUNT):
+        enemy_speed = random.randint(1, Globals.ENEMY_SPEEDS) * Globals.PLAYER_SPEED * 2 / \
+                      Globals.ENEMY_SPEEDS
+        new_enemy = Enemy.Enemy([random.randint(0, Globals.WIDTH - player1.rect.width),
+                                random.randint(0, Globals.HEIGHT -
+                                player1.rect.height)], [Globals.WIDTH, Globals.HEIGHT],
                                 enemy_speed, direction=random.randint(1, 8))
         enemies.add(new_enemy)
 
@@ -111,13 +113,13 @@ def main_loop():
         updates = 0
         leftover += frame_time
 
-        while leftover > INTERVAL:
-            players.update(INTERVAL)
+        while leftover > Globals.INTERVAL:
+            players.update(Globals.INTERVAL)
             for player in players.sprites():
                 dir_changed = player.dir_changed
                 direction = player.direction
-            enemies.update(dir_changed, direction, INTERVAL)
-            leftover -= INTERVAL
+            enemies.update(dir_changed, direction, Globals.INTERVAL)
+            leftover -= Globals.INTERVAL
             updates += 1
 
         #Determine current health status & update Label
@@ -158,5 +160,9 @@ def main_loop():
                 exit()
 
 # Run the game!
-init()
-main_loop()
+def main():
+    init()
+    main_loop()
+
+if __name__ == "__main__":
+    main();
