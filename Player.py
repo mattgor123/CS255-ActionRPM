@@ -1,5 +1,5 @@
 import pygame as game
-
+from Constants import Constants
 
 class Player(game.sprite.Sprite):
     # These are the images, images are default
@@ -7,7 +7,6 @@ class Player(game.sprite.Sprite):
     half_health = None
     quarter_health = None
     crash = None
-    STARTING_HEALTH = 100
     current = None
 
     # Constructor for our Player takes an initial location, the dimensions of
@@ -33,7 +32,7 @@ class Player(game.sprite.Sprite):
         self.image = Player.full_health
         self.crash = Player.crash
         self.damage = 0
-        self.health = Player.STARTING_HEALTH
+        self.health = Constants.PLAYER_STARTING_HEALTH
         self.speed = speed
         self.rect = self.image.get_rect()
         self.rect.center = location
@@ -186,7 +185,7 @@ class Player(game.sprite.Sprite):
             self.rect = self.image.get_rect(center=self.rect.center)
 
     def calculate_health(self):
-        self.health = self.STARTING_HEALTH - (
+        self.health = Constants.PLAYER_STARTING_HEALTH - (
             self.damage / (10 * (11 - self.difficulty)))
         if self.health < 25 and not self.current == "quarter":
             self.current = "quarter"
