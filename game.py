@@ -157,7 +157,7 @@ def main_loop():
 
         if dead:
             #We just want to see health 0% and prompt the game over message
-            labels.draw(screen)
+            labels.draw(Globals.SCREEN)
             display.update()
             game_over()
 
