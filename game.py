@@ -16,7 +16,6 @@ import Enemy
 import State
 
 
-
 # Constants (ALL MUST BE INTEGERS except INTERVAL)
 class Globals():
     WIDTH = None
@@ -28,6 +27,7 @@ class Globals():
     INTERVAL = .01
     SCREEN = None
     STATE = None
+
 
 class Game(State.State):
     def __init__(self):
@@ -45,25 +45,29 @@ class Game(State.State):
 
         # Player sprite stuff
         players = pygame.sprite.Group()
-        player1 = Player.Player([Globals.WIDTH / 2, Globals.HEIGHT / 2], [Globals.WIDTH, Globals.HEIGHT],
+        player1 = Player.Player([Globals.WIDTH / 2, Globals.HEIGHT / 2],
+                                [Globals.WIDTH, Globals.HEIGHT],
                                 Globals.PLAYER_SPEED, Globals.DIFFICULTY)
         players.add(player1)
 
         # Enemy sprite stuff
         enemies = pygame.sprite.Group()
         for i in range(Globals.ENEMY_COUNT):
-            enemy_speed = random.randint(1, Globals.ENEMY_SPEEDS) * Globals.PLAYER_SPEED * 2 / \
-                          Globals.ENEMY_SPEEDS
-            new_enemy = Enemy.Enemy([random.randint(0, Globals.WIDTH - player1.rect.width),
-                                    random.randint(0, Globals.HEIGHT -
-                                    player1.rect.height)], [Globals.WIDTH, Globals.HEIGHT],
-                                    enemy_speed, direction=random.randint(1, 8))
+            enemy_speed = random.randint(1, Globals.ENEMY_SPEEDS) * \
+                          Globals.PLAYER_SPEED * 2 / Globals.ENEMY_SPEEDS
+            new_enemy = Enemy.Enemy(
+                [random.randint(0, Globals.WIDTH - player1.rect.width),
+                 random.randint(0, Globals.HEIGHT - player1.rect.height)],
+                [Globals.WIDTH, Globals.HEIGHT], enemy_speed,
+                direction=random.randint(1, 8))
             enemies.add(new_enemy)
-        pass
+
     def draw(self, screen):
         pass
+
     def keyEvent(self, event):
         pass
+
     def update(self, time):
         pass
 
@@ -76,8 +80,6 @@ def init():
     Globals.HEIGHT = 600
     Globals.SCREEN = display.set_mode((Globals.WIDTH, Globals.HEIGHT))
     Game.background = pygame.Surface(Globals.SCREEN.get_size())
-
-
     Globals.STATE = Game()
 
 
@@ -105,10 +107,10 @@ def game_over():
                     exit()
 
 
-#Define function to actually perform the game logic (update positions,
+# Define function to actually perform the game logic (update positions,
 # health, etc.)
 def main_loop():
-    #Clock code adapted from Peter's leftover-interval.py
+    # Clock code adapted from Peter's leftover-interval.py
     global direction, dir_changed
     clock = time.Clock()
     current_time = time.get_ticks()
@@ -176,9 +178,11 @@ def main_loop():
             elif eve.type == pygame.KEYDOWN and eve.key == pygame.K_ESCAPE:
                 exit()
 
+
 # Run the game!
 def main():
     init()
     main_loop()
 
-main();
+
+main()
