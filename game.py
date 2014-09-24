@@ -13,53 +13,72 @@ import random
 import Label
 import Player
 import Enemy
+import State
+
+
 
 # Constants (ALL MUST BE INTEGERS except INTERVAL)
-WIDTH = 800
-HEIGHT = 600
-PLAYER_SPEED = 500
-ENEMY_COUNT = 13
-ENEMY_SPEEDS = 6
-DIFFICULTY = 10  # 1-10
-INTERVAL = .01
+class Globals():
+    WIDTH = None
+    HEIGHT = None
+    PLAYER_SPEED = 500
+    ENEMY_COUNT = 13
+    ENEMY_SPEEDS = 6
+    DIFFICULTY = 10  # 1-10
+    INTERVAL = .01
+    SCREEN = None
+    STATE = None
 
-# Initialize Screen
-pygame.init()
-screen = display.set_mode((WIDTH, HEIGHT))
-background = pygame.Surface(screen.get_size())
+class Game(State.State):
+    def __init__(self):
+        global players, enemies, labels, background
+        # Label sprite stuff
+        labels = pygame.sprite.Group()
+        h_label = Label.Label("health", "Health: 100%", (0, 0))
+        fps_label = Label.Label("fps", "Frames/Second: ", (0, 24))
+        spf_label = Label.Label("spf", "Seconds/Frame: ", (0, 48))
+        upf_label = Label.Label("upf", "Updates/Frame: ", (0, 72))
+        labels.add(h_label)
+        labels.add(fps_label)
+        labels.add(spf_label)
+        labels.add(upf_label)
+
+        # Player sprite stuff
+        players = pygame.sprite.Group()
+        player1 = Player.Player([Globals.WIDTH / 2, Globals.HEIGHT / 2], [Globals.WIDTH, Globals.HEIGHT],
+                                Globals.PLAYER_SPEED, Globals.DIFFICULTY)
+        players.add(player1)
+
+        # Enemy sprite stuff
+        enemies = pygame.sprite.Group()
+        for i in range(Globals.ENEMY_COUNT):
+            enemy_speed = random.randint(1, Globals.ENEMY_SPEEDS) * Globals.PLAYER_SPEED * 2 / \
+                          Globals.ENEMY_SPEEDS
+            new_enemy = Enemy.Enemy([random.randint(0, Globals.WIDTH - player1.rect.width),
+                                    random.randint(0, Globals.HEIGHT -
+                                    player1.rect.height)], [Globals.WIDTH, Globals.HEIGHT],
+                                    enemy_speed, direction=random.randint(1, 8))
+            enemies.add(new_enemy)
+        pass
+    def draw(self, screen):
+        pass
+    def keyEvent(self, event):
+        pass
+    def update(self, time):
+        pass
 
 
 # Define function to initialize game state so you can restart
 def init():
-    global players, enemies, labels
+    # Initialize Screen
+    pygame.init()
+    Globals.WIDTH = 800
+    Globals.HEIGHT = 600
+    Globals.SCREEN = display.set_mode((Globals.WIDTH, Globals.HEIGHT))
+    Game.background = pygame.Surface(Globals.SCREEN.get_size())
 
-    # Label sprite stuff
-    labels = pygame.sprite.Group()
-    h_label = Label.Label("health", "Health: 100%", (0, 0))
-    fps_label = Label.Label("fps", "Frames/Second: ", (0, 24))
-    spf_label = Label.Label("spf", "Seconds/Frame: ", (0, 48))
-    upf_label = Label.Label("upf", "Updates/Frame: ", (0, 72))
-    labels.add(h_label)
-    labels.add(fps_label)
-    labels.add(spf_label)
-    labels.add(upf_label)
 
-    # Player sprite stuff
-    players = pygame.sprite.Group()
-    player1 = Player.Player([WIDTH / 2, HEIGHT / 2], [WIDTH, HEIGHT],
-                            PLAYER_SPEED, DIFFICULTY)
-    players.add(player1)
-
-    # Enemy sprite stuff
-    enemies = pygame.sprite.Group()
-    for i in range(ENEMY_COUNT):
-        enemy_speed = random.randint(1, ENEMY_SPEEDS) * PLAYER_SPEED * 2 / \
-                      ENEMY_SPEEDS
-        new_enemy = Enemy.Enemy([random.randint(0, WIDTH - player1.rect.width),
-                                random.randint(0, HEIGHT -
-                                player1.rect.height)], [WIDTH, HEIGHT],
-                                enemy_speed, direction=random.randint(1, 8))
-        enemies.add(new_enemy)
+    Globals.STATE = Game()
 
 
 # Define function to allow a user to restart if their health reaches 0%
@@ -70,8 +89,8 @@ def game_over():
     game_over_surface = myFont.render(
         'Game Over - Would you like to restart? (Y/N)', 1, (255, 255, 255))
     game_over_rect = game_over_surface.get_rect()
-    game_over_rect.center = screen.get_rect().center
-    screen.blit(game_over_surface, game_over_rect)
+    game_over_rect.center = Globals.SCREEN.get_rect().center
+    Globals.SCREEN.blit(game_over_surface, game_over_rect)
     display.update()
     while True:
         for eve in pygame.event.get():
@@ -79,7 +98,7 @@ def game_over():
                 exit()
             elif eve.type == pygame.KEYDOWN:
                 if eve.key == pygame.K_y:
-                    screen.fill((0, 0, 0))
+                    Globals.SCREEN.fill((0, 0, 0))
                     init()
                     return
                 if eve.key == pygame.K_n or eve.key == pygame.K_ESCAPE:
@@ -97,9 +116,9 @@ def main_loop():
 
     while True:
         #Clear the sprite groups (more efficient than filling fully)
-        players.clear(screen, background)
-        enemies.clear(screen, background)
-        labels.clear(screen, background)
+        players.clear(Globals.SCREEN, Game.background)
+        enemies.clear(Globals.SCREEN, Game.background)
+        labels.clear(Globals.SCREEN, Game.background)
 
         #Set up clock stuff
         new_time = time.get_ticks()
@@ -111,13 +130,13 @@ def main_loop():
         updates = 0
         leftover += frame_time
 
-        while leftover > INTERVAL:
-            players.update(INTERVAL)
+        while leftover > Globals.INTERVAL:
+            players.update(Globals.INTERVAL)
             for player in players.sprites():
                 dir_changed = player.dir_changed
                 direction = player.direction
-            enemies.update(dir_changed, direction, INTERVAL)
-            leftover -= INTERVAL
+            enemies.update(dir_changed, direction, Globals.INTERVAL)
+            leftover -= Globals.INTERVAL
             updates += 1
 
         #Determine current health status & update Label
@@ -138,15 +157,15 @@ def main_loop():
 
         if dead:
             #We just want to see health 0% and prompt the game over message
-            labels.draw(screen)
+            labels.draw(Globals.SCREEN)
             display.update()
             game_over()
 
         else:
             #we want the Label always on top, with Player on top of enemies
-            enemies.draw(screen)
-            players.draw(screen)
-            labels.draw(screen)
+            enemies.draw(Globals.SCREEN)
+            players.draw(Globals.SCREEN)
+            labels.draw(Globals.SCREEN)
             display.update()
 
         #Begin key presses
@@ -158,5 +177,8 @@ def main_loop():
                 exit()
 
 # Run the game!
-init()
-main_loop()
+def main():
+    init()
+    main_loop()
+
+main();
