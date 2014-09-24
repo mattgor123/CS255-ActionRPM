@@ -1,3 +1,5 @@
+
+
 # Constants (ALL MUST BE INTEGERS except INTERVAL)
 class Constants(object):
     WIDTH = None

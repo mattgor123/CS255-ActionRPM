@@ -1,6 +1,7 @@
 import pygame as game
 from Constants import Constants
 
+
 class Player(game.sprite.Sprite):
     # These are the images, images are default
     full_health = None

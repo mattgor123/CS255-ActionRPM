@@ -1,10 +1,17 @@
-import pygame, State, Label, Player, Enemy, random
+import pygame
 import pygame.display as display
+import random
+import State
+import Label
+import Player
+import Enemy
 from Constants import Constants
+
 
 #This is the actual game state
 class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
+
     def __init__(self):
         global players, enemies, labels, background
 
@@ -85,6 +92,7 @@ class Play(State.State):
         for label in labels.sprites():
             if label.name == "health":
                 label.update(self.health)
+
 
 # Define function to allow a user to restart if their health reaches 0%
 def game_over():

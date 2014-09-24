@@ -13,6 +13,7 @@ import State
 from Constants import Constants
 import Play
 
+
 # Define function to actually perform the game logic (update positions,
 # health, etc.)
 def main_loop():
@@ -48,6 +49,7 @@ def main_loop():
                 exit()
             elif eve.type == pygame.KEYDOWN and eve.key == pygame.K_ESCAPE:
                 exit()
+
 
 # Define function to initialize game state so you can restart
 def init():
