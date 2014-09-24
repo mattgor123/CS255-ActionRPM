@@ -9,9 +9,8 @@ import pygame.event as event
 import pygame.time as time
 
 # Import our State and Constants classes
-import State
 from Constants import Constants
-import Play
+import Title
 
 
 # Define function to actually perform the game logic (update positions,
@@ -49,6 +48,8 @@ def main_loop():
                 exit()
             elif eve.type == pygame.KEYDOWN and eve.key == pygame.K_ESCAPE:
                 exit()
+            else:
+                Constants.STATE.keyEvent(eve)
 
 
 # Define function to initialize game state so you can restart
@@ -58,7 +59,7 @@ def init():
     Constants.WIDTH = 800
     Constants.HEIGHT = 600
     Constants.SCREEN = display.set_mode((Constants.WIDTH, Constants.HEIGHT))
-    Constants.STATE = Play.Play()
+    Constants.STATE = Title.Title()
     Constants.STATE.__init__()
 
 init()

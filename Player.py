@@ -201,9 +201,9 @@ class Player(game.sprite.Sprite):
         return self.health
 
     def set_image_rotations(self, healthlevel):
-        if (healthlevel == "half"):
+        if healthlevel == "half":
             Player.image = Player.half_health
-        elif (healthlevel == "quarter"):
+        elif healthlevel == "quarter":
             Player.image = Player.quarter_health
         else:
             Player.image = Player.full_health

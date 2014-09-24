@@ -14,28 +14,18 @@ class Play(State.State):
 
     #Code to initialize a new game instance
     def __init__(self):
+        super(Play, self).__init__()
         global players, enemies, labels, background
         background = pygame.Surface(Constants.SCREEN.get_size())
-        self.draws = 0
-        # Label sprite stuff
+        Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
         h_label = Label.Label("health", "Health: 100%", (0, 0))
- #       fps_label = Label.Label("fps", "Frames/Second: ", (0, 24))
- #       spf_label = Label.Label("spf", "Seconds/Frame: ", (0, 48))
- #       upf_label = Label.Label("upf", "Updates/Frame: ", (0, 72))
         labels.add(h_label)
- #       labels.add(fps_label)
- #       labels.add(spf_label)
- #       labels.add(upf_label)
-
-        # Player sprite stuff
         players = pygame.sprite.Group()
         player1 = Player.Player([Constants.WIDTH / 2, Constants.HEIGHT / 2],
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 Constants.PLAYER_SPEED, Constants.DIFFICULTY)
         players.add(player1)
-
-        # Enemy sprite stuff
         enemies = pygame.sprite.Group()
         for i in range(Constants.ENEMY_COUNT):
             enemy_speed = random.randint(1, Constants.ENEMY_SPEEDS) * \
@@ -55,7 +45,7 @@ class Play(State.State):
         enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
 
-        if (self.health <= 0):
+        if self.health <= 0:
             #labels.clear(Constants.SCREEN,background)
             labels.draw(Constants.SCREEN)
             display.update()
