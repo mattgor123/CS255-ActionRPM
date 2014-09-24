@@ -8,6 +8,5 @@ class State(object):
     def keyEvent(self, event):
         pass
 
-    # params used to update labels or other aspects if necessary
-    def update(self, time, params):
+    def update(self, time):
         pass

@@ -8,15 +8,15 @@ import Enemy
 from Constants import Constants
 
 
-#This is the actual game state
+#This is the state for playing the game
 class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
 
+    #Code to initialize a new game instance
     def __init__(self):
         global players, enemies, labels, background
-
         background = pygame.Surface(Constants.SCREEN.get_size())
-
+        self.draws = 0
         # Label sprite stuff
         labels = pygame.sprite.Group()
         h_label = Label.Label("health", "Health: 100%", (0, 0))
@@ -47,22 +47,32 @@ class Play(State.State):
                 direction=random.randint(1, 8))
             enemies.add(new_enemy)
 
+    #Function to draw the sprite groups
     def draw(self):
+
+        #Clear the sprite groups from the screen
+        players.clear(Constants.SCREEN, background)
+        enemies.clear(Constants.SCREEN, background)
+        labels.clear(Constants.SCREEN, background)
+
         if (self.health <= 0):
+            #labels.clear(Constants.SCREEN,background)
             labels.draw(Constants.SCREEN)
             display.update()
             game_over()
 
         else:
+            labels.clear(Constants.SCREEN, background)
             enemies.draw(Constants.SCREEN)
-            players.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
+            players.draw(Constants.SCREEN)
             display.update()
 
     def keyEvent(self, event):
         pass
 
-    '''
+    ''' Was code to update all the labels, but we only need to update the
+    health label now
     def update_labels(self, params):
         for label in labels.sprites():
             if label.name == "health":
@@ -75,10 +85,9 @@ class Play(State.State):
                 label.update(params[2])
                 '''
 
+    #Code to update all of the sprite groups and clear them from the screen
     def update(self, time):
-        players.clear(Constants.SCREEN, background)
-        enemies.clear(Constants.SCREEN, background)
-        labels.clear(Constants.SCREEN, background)
+        #Update the player
         players.update(Constants.INTERVAL)
         for player in players.sprites():
                 dir_changed = player.dir_changed
@@ -88,7 +97,6 @@ class Play(State.State):
         #Determine current health status & update Label
         for player in players.sprites():
             self.health = player.calculate_health()
-
         for label in labels.sprites():
             if label.name == "health":
                 label.update(self.health)

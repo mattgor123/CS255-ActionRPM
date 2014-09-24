@@ -3,7 +3,7 @@ from Constants import Constants
 
 
 class Player(game.sprite.Sprite):
-    # These are the images, images are default
+    # These are the images
     full_health = None
     half_health = None
     quarter_health = None

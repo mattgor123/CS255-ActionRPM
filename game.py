@@ -23,6 +23,7 @@ def main_loop():
     leftover = 0.0
 
     while True:
+        Constants.STATE.draw()
         #Set up clock stuff
         new_time = time.get_ticks()
         frame_time = (new_time - current_time) / 1000.0
@@ -41,7 +42,6 @@ def main_loop():
             #    params = [clock.get_fps(),frame_time,updates]
             #    Constants.STATE.update_labels(params)
 
-        Constants.STATE.draw()
         #Begin key presses
         pygame.event.pump()
         for eve in event.get():
