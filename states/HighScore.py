@@ -13,7 +13,7 @@ class HighScore(State.State):
         super(HighScore, self).__init__()
         self.title_font = pygame.font.Font(None, Constants.WIDTH / 7)
         self.score_font = pygame.font.Font(None, Constants.WIDTH / 16)
-        #Code to read the high scores (adapted from http://bit.ly/YegHuS
+        # Code to read the high scores (adapted from http://bit.ly/YegHuS
         f = open(Constants.HIGH_SCORE_FILE, "rb")
         try:
             self.scores = pickle.load(f)
@@ -21,7 +21,6 @@ class HighScore(State.State):
             self.scores = []
         f.close()
         self.drawn = False
-
 
     def update(self, time):
         pass
@@ -36,7 +35,7 @@ class HighScore(State.State):
             high_title_rect.centerx = background.get_rect().centerx
             high_title_rect.centery = 75
             Constants.SCREEN.blit(high_title, high_title_rect)
-            #Center our 'Press any key text'
+            # Center our 'Press any key text'
             font = pygame.font.Font(None, 30)
             presskey = font.render("Press any key to get back to the Menu", 1,
                                    (255, 255, 255))
@@ -58,8 +57,8 @@ class HighScore(State.State):
                 rect_left = high_title_rect.left + Constants.WIDTH / 40
                 for i in range(len(self.scores)):
                     curr_score = self.score_font.render(
-                        str(i + 1) + ". " + self.scores[i][0] + ": " + "%3.2f" %
-                        self.scores[i][1], 1, (255, 0, 0))
+                        str(i + 1) + ". " + self.scores[i][0] + ": " +
+                        "%3.2f" % self.scores[i][1], 1, (255, 0, 0))
                     curr_score_rect = curr_score.get_rect()
                     curr_score_rect.left = rect_left
                     curr_score_rect.top = rect_top
