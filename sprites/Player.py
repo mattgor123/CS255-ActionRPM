@@ -1,5 +1,5 @@
 import pygame as game
-from Constants import Constants
+from states.Constants import Constants
 
 
 class Player(game.sprite.Sprite):
@@ -21,14 +21,16 @@ class Player(game.sprite.Sprite):
         # set the images to the appropriate ones based on the direction of the
         # character
         if Player.full_health is None:
-            Player.full_health = game.image.load("images/playerfullhealth.png")
+            Player.full_health = game.image.load(
+                "images/sprites/playerfullhealth.png")
         if Player.crash is None:
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
         if Player.half_health is None:
-            Player.half_health = game.image.load("images/playerhalfhealth.png")
+            Player.half_health = game.image.load(
+                "images/sprites/playerhalfhealth.png")
         if Player.quarter_health is None:
             Player.quarter_health = game.image.load(
-                "images/playerquarterhealth.png")
+                "images/sprites/playerquarterhealth.png")
         # initialize
         self.image = Player.full_health
         self.crash = Player.crash

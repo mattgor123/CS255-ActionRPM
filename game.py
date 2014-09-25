@@ -9,8 +9,8 @@ import pygame.event as event
 import pygame.time as time
 
 # Import our State and Constants classes
-from Constants import Constants
-import Title
+from states.Constants import Constants
+import states.Title as Title
 
 
 # Define function to actually perform the game logic (update positions,

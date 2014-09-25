@@ -17,7 +17,7 @@ class Enemy(game.sprite.Sprite):
         if Enemy.image is None:
             # make all of the appropriate transformations of the image based
             # on direction of travel
-            Enemy.image = game.image.load("images/enemyfullhealth.png")
+            Enemy.image = game.image.load("images/sprites/enemyfullhealth.png")
             Enemy.right = Enemy.image
             Enemy.left = game.transform.rotate(Enemy.right, 180)
             Enemy.up = game.transform.rotate(Enemy.right, 90)

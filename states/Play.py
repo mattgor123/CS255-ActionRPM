@@ -1,17 +1,17 @@
 import pygame
 import pygame.display as display
 import random
-import State
-import Label
-import Player
-import Enemy
+import states.State as State
+import sprites.Label as Label
+import sprites.Player as Player
+import sprites.Enemy as Enemy
 from Constants import Constants
 
 
 #This is the state for playing the game
 class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
-
+    time = 0
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
@@ -20,7 +20,9 @@ class Play(State.State):
         Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
         h_label = Label.Label("health", "Health: 100%", (0, 0))
+        s_label = Label.Label("score", "Score: ", (0, 24))
         labels.add(h_label)
+        labels.add(s_label)
         players = pygame.sprite.Group()
         player1 = Player.Player([Constants.WIDTH / 2, Constants.HEIGHT / 2],
                                 [Constants.WIDTH, Constants.HEIGHT],
@@ -36,11 +38,10 @@ class Play(State.State):
                 [Constants.WIDTH, Constants.HEIGHT], enemy_speed,
                 direction=random.randint(1, 8))
             enemies.add(new_enemy)
-        self.time = 0
+        self.time = 0.00
 
     #Function to draw the sprite groups
     def draw(self):
-
         #Clear the sprite groups from the screen
         players.clear(Constants.SCREEN, background)
         enemies.clear(Constants.SCREEN, background)
@@ -50,10 +51,9 @@ class Play(State.State):
             #labels.clear(Constants.SCREEN,background)
             labels.draw(Constants.SCREEN)
             display.update()
-            game_over(self.time)
+            game_over(self)
 
         else:
-            labels.clear(Constants.SCREEN, background)
             enemies.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
@@ -63,9 +63,9 @@ class Play(State.State):
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
-                game_over(self.time)
+                game_over(self)
             elif event.key == pygame.K_r:
-                game_over(self.time)
+                game_over(self)
 
     ''' Was code to update all the labels, but we only need to update the
     health label now
@@ -99,11 +99,12 @@ class Play(State.State):
         for label in labels.sprites():
             if label.name == "health":
                 label.update(self.health)
+            elif label.name == "score":
+                label.update(self.time)
 
 
 # Define function to allow a user to restart if their health reaches 0%
-def game_over(score):
-    print(str(score))
+def game_over(self):
     global myFont
     for label1 in labels:
         myFont = label1.font
@@ -120,7 +121,7 @@ def game_over(score):
             elif eve.type == pygame.KEYDOWN:
                 if eve.key == pygame.K_y:
                     Constants.SCREEN.fill((0, 0, 0))
-                    Play.__init__(Play())
+                    self.__init__()
                     return
                 if eve.key == pygame.K_n or eve.key == pygame.K_ESCAPE:
                     exit()
