@@ -58,8 +58,13 @@ class Play(State.State):
             players.draw(Constants.SCREEN)
             display.update()
 
+    #Only specific key event we will handle for now is 'q' or 'r' to restart
     def keyEvent(self, event):
-        pass
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                game_over()
+            elif event.key == pygame.K_r:
+                game_over()
 
     ''' Was code to update all the labels, but we only need to update the
     health label now
