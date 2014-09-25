@@ -36,6 +36,7 @@ class Play(State.State):
                 [Constants.WIDTH, Constants.HEIGHT], enemy_speed,
                 direction=random.randint(1, 8))
             enemies.add(new_enemy)
+        self.time = 0
 
     #Function to draw the sprite groups
     def draw(self):
@@ -49,7 +50,7 @@ class Play(State.State):
             #labels.clear(Constants.SCREEN,background)
             labels.draw(Constants.SCREEN)
             display.update()
-            game_over()
+            game_over(self.time)
 
         else:
             labels.clear(Constants.SCREEN, background)
@@ -62,9 +63,9 @@ class Play(State.State):
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
-                game_over()
+                game_over(self.time)
             elif event.key == pygame.K_r:
-                game_over()
+                game_over(self.time)
 
     ''' Was code to update all the labels, but we only need to update the
     health label now
@@ -82,6 +83,9 @@ class Play(State.State):
 
     #Code to update all of the sprite groups and clear them from the screen
     def update(self, time):
+        #1 point per 1/Constants.INTERVAL cycles
+        self.time += time
+
         #Update the player
         players.update(Constants.INTERVAL)
         for player in players.sprites():
@@ -98,7 +102,8 @@ class Play(State.State):
 
 
 # Define function to allow a user to restart if their health reaches 0%
-def game_over():
+def game_over(score):
+    print(str(score))
     global myFont
     for label1 in labels:
         myFont = label1.font
