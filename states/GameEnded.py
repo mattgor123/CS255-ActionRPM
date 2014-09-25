@@ -4,6 +4,7 @@ import pygame
 import pygame.display as display
 from Constants import Constants
 
+
 # This is the state for the HighScore screen
 class GameEnded(State.State):
     # Code to initialize a new title screen instance

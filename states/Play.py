@@ -15,6 +15,7 @@ from Constants import Constants
 class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
     time = 0
+
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
@@ -70,20 +71,6 @@ class Play(State.State):
             elif event.key == pygame.K_r:
                 game_over(self)
 
-    ''' Was code to update all the labels, but we only need to update the
-    health label now
-    def update_labels(self, params):
-        for label in labels.sprites():
-            if label.name == "health":
-                label.update(self.health)
-            elif label.name == "fps":
-                label.update(params[0])
-            elif label.name == "spf":
-                label.update(params[1])
-            elif label.name == "upf":
-                label.update(params[2])
-                '''
-
     #Code to update all of the sprite groups and clear them from the screen
     def update(self, time):
         #1 point per 1/Constants.INTERVAL cycles
@@ -105,6 +92,7 @@ class Play(State.State):
             elif label.name == "score":
                 label.update(self.time)
 
+
 # Function to determine if the current score was a high score
 def is_new_high_score(self):
     is_high = False
@@ -121,6 +109,7 @@ def is_new_high_score(self):
         if self.time > min_high_score:
             return True
     return False
+
 
 # Define function to allow a user to restart if their health reaches 0%
 def game_over(self):
