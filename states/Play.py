@@ -6,6 +6,8 @@ import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
+import NewHigh
+import GameEnded
 from Constants import Constants
 
 
@@ -103,50 +105,26 @@ class Play(State.State):
             elif label.name == "score":
                 label.update(self.time)
 
-
-# Define function to allow a user to restart if their health reaches 0%
-def game_over(self):
-    new_score(self)
-    global myFont
-    for label1 in labels:
-        myFont = label1.font
-    game_over_surface = myFont.render(
-        'Game Over - Would you like to restart? (Y/N)', 1, (255, 255, 255))
-    game_over_rect = game_over_surface.get_rect()
-    game_over_rect.center = Constants.SCREEN.get_rect().center
-    Constants.SCREEN.blit(game_over_surface, game_over_rect)
-    display.update()
-    while True:
-        for eve in pygame.event.get():
-            if eve.type == pygame.QUIT:
-                exit()
-            elif eve.type == pygame.KEYDOWN:
-                if eve.key == pygame.K_y:
-                    Constants.SCREEN.fill((0, 0, 0))
-                    self.__init__()
-                    return
-                if eve.key == pygame.K_n or eve.key == pygame.K_ESCAPE:
-                    exit()
-
-#Function to see if the new score is a high score - will eventually move to
-# its own state with game_over
-def new_score(self):
+# Function to determine if the current score was a high score
+def is_new_high_score(self):
+    is_high = False
     f = open(Constants.HIGH_SCORE_FILE, "rb")
     try:
         scores = pickle.load(f)
     except:
         scores = []
     f.close()
-    name = "Matt"
-    entry = (name, self.time)
     if len(scores) < 10:
-        scores.append(entry)
+        return True
     else:
         min_high_score = min(b for (a,b) in scores)
         if self.time > min_high_score:
-            scores.append(entry)
-            scores.sort(key=lambda x: x[1], reverse=True)
-            scores = scores[0:10]
-    f = open(Constants.HIGH_SCORE_FILE, "wb")
-    pickle.dump(scores, f)
-    f.close()
+            return True
+    return False
+
+# Define function to allow a user to restart if their health reaches 0%
+def game_over(self):
+    if is_new_high_score(self):
+        Constants.STATE = NewHigh.NewHigh(self.time)
+    else:
+        Constants.STATE = GameEnded.GameEnded()

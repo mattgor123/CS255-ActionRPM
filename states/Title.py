@@ -31,8 +31,8 @@ class Title(State.State):
             Constants.SCREEN.fill((0, 0, 0))
             #Center our 'Press any key text'
             font = pygame.font.Font(None, 30)
-            presskey = font.render("Press any key to continue", 1, (255,
-                                                                   255, 255))
+            presskey = font.render("Press any key to continue to the Menu", 1,
+                                                (255, 255, 255))
             background = pygame.Surface(Constants.SCREEN.get_size())
             presskeyrect = presskey.get_rect()
             presskeyrect.centerx = background.get_rect().centerx
