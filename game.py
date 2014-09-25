@@ -56,9 +56,18 @@ def main_loop():
 def init():
     # Initialize Screen
     pygame.init()
+    # Create the high scores file
+    try:
+        f = open(Constants.HIGH_SCORE_FILE,'rb')
+        f.close()
+    except:
+        f = open(Constants.HIGH_SCORE_FILE, 'wb')
+        f.close()
+    # Set the constants
     Constants.WIDTH = 800
     Constants.HEIGHT = 600
     Constants.SCREEN = display.set_mode((Constants.WIDTH, Constants.HEIGHT))
+    # Display the title screen
     Constants.STATE = Title.Title()
     Constants.STATE.__init__()
 

@@ -1,6 +1,6 @@
 import pygame
 import pygame.display as display
-import Play
+import HighScore
 import State
 from Constants import Constants
 
@@ -20,7 +20,7 @@ class Title(State.State):
         self.num_steps = Title.NUM_STEPS
         self.rect = self.image.get_rect()
         self.speed = (Constants.WIDTH) / Title.NUM_STEPS
-        self.font = pygame.font.Font(None, 150)
+        self.font = pygame.font.Font(None, Constants.HEIGHT / 4)
 
     def update(self, time):
         self.steps += 1
@@ -52,4 +52,4 @@ class Title(State.State):
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN and not event.key == pygame.K_ESCAPE:
-            Constants.STATE = Play.Play()
+            Constants.STATE = HighScore.HighScore()

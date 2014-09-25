@@ -1,6 +1,7 @@
 import pygame
 import pygame.display as display
 import random
+import pickle
 import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
@@ -105,6 +106,7 @@ class Play(State.State):
 
 # Define function to allow a user to restart if their health reaches 0%
 def game_over(self):
+    new_score(self)
     global myFont
     for label1 in labels:
         myFont = label1.font
@@ -125,3 +127,26 @@ def game_over(self):
                     return
                 if eve.key == pygame.K_n or eve.key == pygame.K_ESCAPE:
                     exit()
+
+#Function to see if the new score is a high score - will eventually move to
+# its own state with game_over
+def new_score(self):
+    f = open(Constants.HIGH_SCORE_FILE, "rb")
+    try:
+        scores = pickle.load(f)
+    except:
+        scores = []
+    f.close()
+    name = "Matt"
+    entry = (name, self.time)
+    if len(scores) < 10:
+        scores.append(entry)
+    else:
+        min_high_score = min(b for (a,b) in scores)
+        if self.time > min_high_score:
+            scores.append(entry)
+            scores.sort(key=lambda x: x[1], reverse=True)
+            scores = scores[0:10]
+    f = open(Constants.HIGH_SCORE_FILE, "wb")
+    pickle.dump(scores, f)
+    f.close()

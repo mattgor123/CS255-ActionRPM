@@ -17,7 +17,6 @@ class Player(game.sprite.Sprite):
         Player.screen_width = screensize[0]
         Player.screen_height = screensize[1]
         self.direction = "right"
-
         # set the images to the appropriate ones based on the direction of the
         # character
         if Player.full_health is None:
@@ -36,6 +35,7 @@ class Player(game.sprite.Sprite):
         self.crash = Player.crash
         self.damage = 0
         self.health = Constants.PLAYER_STARTING_HEALTH
+        self.set_image_rotations(self.health)
         self.speed = speed
         self.rect = self.image.get_rect()
         self.rect.center = location
@@ -43,6 +43,7 @@ class Player(game.sprite.Sprite):
         self.screen_height = Player.screen_height
         self.dir_changed = False
         self.difficulty = difficulty
+        #self.has_initialized = True
 
     # update method moves the sprite & possibly changes its image based on the
     # keypress
