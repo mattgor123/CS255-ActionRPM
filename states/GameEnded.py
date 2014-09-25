@@ -1,5 +1,6 @@
 import State
 import Play
+import Menu
 import pygame
 import pygame.display as display
 from Constants import Constants
@@ -41,4 +42,4 @@ class GameEnded(State.State):
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN and not event.key == pygame.K_ESCAPE:
-            Constants.STATE = Play.Play()
+            Constants.STATE = Menu.Menu()

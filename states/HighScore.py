@@ -1,6 +1,6 @@
 import pygame
 import pygame.display as display
-import Play
+import Menu
 import State
 import pickle
 from Constants import Constants
@@ -83,4 +83,4 @@ class HighScore(State.State):
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN and not event.key == pygame.K_ESCAPE:
-            Constants.STATE = Play.Play()
+            Constants.STATE = Menu.Menu()

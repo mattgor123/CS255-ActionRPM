@@ -1,6 +1,6 @@
 import pygame
 import pygame.display as display
-import HighScore
+import Menu
 import State
 from Constants import Constants
 
@@ -52,4 +52,4 @@ class Title(State.State):
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN and not event.key == pygame.K_ESCAPE:
-            Constants.STATE = HighScore.HighScore("",0, False)
+            Constants.STATE = Menu.Menu()

@@ -86,6 +86,6 @@ def change_event(selected):
     if(selected == 0):
         Constants.STATE = Play.Play()
     elif(selected == 3):
-        Constants.STATE = HighScore.HighScore()
+        Constants.STATE = HighScore.HighScore("",0, False)
     elif(selected == 4):
         exit()
