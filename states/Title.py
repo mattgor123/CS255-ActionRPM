@@ -52,4 +52,4 @@ class Title(State.State):
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN and not event.key == pygame.K_ESCAPE:
-            Constants.STATE = HighScore.HighScore()
+            Constants.STATE = HighScore.HighScore("",0, False)

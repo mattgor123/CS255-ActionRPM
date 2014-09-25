@@ -9,7 +9,7 @@ from Constants import Constants
 # This is the state for the HighScore screen
 class HighScore(State.State):
     # Code to initialize a new title screen instance
-    def __init__(self):
+    def __init__(self, name, score, from_new):
         super(HighScore, self).__init__()
         self.title_font = pygame.font.Font(None, Constants.WIDTH / 7)
         self.score_font = pygame.font.Font(None, Constants.WIDTH / 16)
@@ -21,6 +21,10 @@ class HighScore(State.State):
             self.scores = []
         f.close()
         self.drawn = False
+        self.from_new = False
+        self.score = score
+        self.name = name
+        self.from_new = from_new
 
     def update(self, time):
         pass
@@ -56,9 +60,16 @@ class HighScore(State.State):
                 rect_top = high_title_rect.bottom + Constants.HEIGHT / 100
                 rect_left = high_title_rect.left + Constants.WIDTH / 40
                 for i in range(len(self.scores)):
+                    color = (255, 0, 0)
+                    curr_name = self.scores[i][0]
+                    curr_score = self.scores[i][1]
+                    if (self.from_new):
+                        if (self.name == curr_name):
+                            if (abs(self.score - curr_score) < .01):
+                                color = (0, 255, 0)
                     curr_score = self.score_font.render(
                         str(i + 1) + ". " + self.scores[i][0] + ": " +
-                        "%3.2f" % self.scores[i][1], 1, (255, 0, 0))
+                        "%3.2f" % self.scores[i][1], 1, color)
                     curr_score_rect = curr_score.get_rect()
                     curr_score_rect.left = rect_left
                     curr_score_rect.top = rect_top

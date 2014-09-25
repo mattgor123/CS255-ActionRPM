@@ -88,4 +88,4 @@ def save_scores(self):
     f = open(Constants.HIGH_SCORE_FILE, "wb")
     pickle.dump(self.scores, f)
     f.close()
-    Constants.STATE = HighScore.HighScore()
+    Constants.STATE = HighScore.HighScore(self.name, self.score, True)
