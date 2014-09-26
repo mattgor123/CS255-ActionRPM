@@ -8,6 +8,7 @@ import sprites.Player as Player
 import sprites.Enemy as Enemy
 import NewHigh
 import GameEnded
+import Menu
 from Constants import Constants
 
 
@@ -68,8 +69,8 @@ class Play(State.State):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
                 game_over(self)
-            elif event.key == pygame.K_r:
-                game_over(self)
+            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
+                Constants.STATE = Menu.Menu()
 
     #Code to update all of the sprite groups and clear them from the screen
     def update(self, time):

@@ -41,7 +41,8 @@ class HighScore(State.State):
             Constants.SCREEN.blit(high_title, high_title_rect)
             # Center our 'Press any key text'
             font = pygame.font.Font(None, 30)
-            presskey = font.render("Press any key to get back to the Menu", 1,
+            presskey = font.render("Press any key to get back to the Menu, "
+                                   "or the ESC key to quit", 1,
                                    (255, 255, 255))
             background = pygame.Surface(Constants.SCREEN.get_size())
             presskeyrect = presskey.get_rect()
@@ -82,5 +83,8 @@ class HighScore(State.State):
             pass
 
     def keyEvent(self, event):
-        if event.type == pygame.KEYDOWN and not event.key == pygame.K_ESCAPE:
-            Constants.STATE = Menu.Menu()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                exit()
+            else:
+                Constants.STATE = Menu.Menu()

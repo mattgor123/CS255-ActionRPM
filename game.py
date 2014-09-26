@@ -11,7 +11,7 @@ import pygame.time as time
 # Import our State and Constants classes
 from states.Constants import Constants
 import states.Title as Title
-
+import states.Menu as Menu
 
 # Define function to actually perform the game logic (update positions,
 # health, etc.)
@@ -46,8 +46,9 @@ def main_loop():
         for eve in event.get():
             if eve.type == pygame.QUIT:
                 exit()
-            elif eve.type == pygame.KEYDOWN and eve.key == pygame.K_ESCAPE:
-                exit()
+            elif eve.type == pygame.KEYDOWN and eve.key == pygame.K_m and \
+                    eve.mod & (pygame.KMOD_CTRL or pygame.KMOD_LCTRL):
+                Constants.STATE = Menu.Menu()
             else:
                 Constants.STATE.keyEvent(eve)
 
