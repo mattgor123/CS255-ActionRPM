@@ -59,7 +59,7 @@ class Player(game.sprite.Sprite):
 
             # check for collision with top or left
             if (self.rect.left - self.speed * interval) > 0 and (
-                self.rect.top - self.speed * interval) > 0:
+                    self.rect.top - self.speed * interval) > 0:
                 # no collision, move
                 self.rect = self.rect.move(-self.speed * interval,
                                            -self.speed * interval)
@@ -100,10 +100,10 @@ class Player(game.sprite.Sprite):
                 self.set_direction("upright")
                 self.crash.stop()
             if (
-                        self.rect.right + self.speed * interval) < \
+                    self.rect.right + self.speed * interval) < \
                     self.screen_width \
                     and (
-                            self.rect.top) > 0:
+                        self.rect.top) > 0:
                 self.rect = self.rect.move(self.speed * interval,
                                            -self.speed * interval)
             else:
@@ -116,11 +116,11 @@ class Player(game.sprite.Sprite):
                 self.set_direction("downright")
                 self.crash.stop()
             if (
-                        self.rect.right + self.speed * interval) < \
+                    self.rect.right + self.speed * interval) < \
                     self.screen_width \
                     and (
-                                self.rect.bottom + self.speed * interval) < \
-                            self.screen_height:
+                        self.rect.bottom + self.speed * interval) < \
+                    self.screen_height:
                 self.rect = self.rect.move(self.speed * interval,
                                            self.speed * interval)
             else:

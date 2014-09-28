@@ -36,7 +36,7 @@ class Play(State.State):
         enemies = pygame.sprite.Group()
         for i in range(Constants.ENEMY_COUNT):
             enemy_speed = random.randint(1, Constants.ENEMY_SPEEDS) * \
-                          Constants.PLAYER_SPEED * 2 / Constants.ENEMY_SPEEDS
+                Constants.PLAYER_SPEED * 2 / Constants.ENEMY_SPEEDS
             new_enemy = Enemy.Enemy(
                 [random.randint(0, Constants.WIDTH - player1.rect.width),
                  random.randint(0, Constants.HEIGHT - player1.rect.height)],
@@ -106,7 +106,7 @@ def is_new_high_score(self):
     if len(scores) < 10:
         return True
     else:
-        min_high_score = min(b for (a,b) in scores)
+        min_high_score = min(b for (a, b) in scores)
         if self.time > min_high_score:
             return True
     return False

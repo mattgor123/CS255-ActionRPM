@@ -18,7 +18,7 @@ class GameEnded(State.State):
         pass
 
     def draw(self):
-        if (self.drawn == False):
+        if self.drawn is False:
             Constants.SCREEN.fill((0, 0, 0))
             game_ended = self.title_font.render("GAME OVER", 1,
                                                 (255, 255, 255))

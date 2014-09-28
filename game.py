@@ -15,7 +15,10 @@ import states.Menu as Menu
 
 # Define function to actually perform the game logic (update positions,
 # health, etc.)
+
+
 def main_loop():
+
     # Clock code adapted from Peter's leftover-interval.py
     clock = time.Clock()
     current_time = time.get_ticks()
@@ -59,7 +62,7 @@ def init():
     pygame.init()
     # Create the high scores file
     try:
-        f = open(Constants.HIGH_SCORE_FILE,'rb')
+        f = open(Constants.HIGH_SCORE_FILE, 'rb')
         f.close()
     except:
         f = open(Constants.HIGH_SCORE_FILE, 'wb')

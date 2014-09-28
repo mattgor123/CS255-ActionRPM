@@ -47,11 +47,11 @@ class NewHigh(State.State):
         Constants.SCREEN.blit(presskey, presskeyrect)
         #Print a red rectangle in the middle of the screen
         rect = pygame.draw.rect(Constants.SCREEN, (255, 0, 0),
-                         (0, Constants.HEIGHT / 2,
-                          Constants.WIDTH, 30))
+                                (0, Constants.HEIGHT / 2,
+                                    Constants.WIDTH, 30))
 
         if len(self.name) != 0:
-            name_msg = font.render(string.join(self.name,""), 1, (0, 0, 0))
+            name_msg = font.render(string.join(self.name, ""), 1, (0, 0, 0))
             name_msg_rect = name_msg.get_rect()
             name_msg_rect.center = rect.center
             Constants.SCREEN.blit(name_msg, name_msg_rect)
@@ -69,7 +69,7 @@ class NewHigh(State.State):
             elif event.key == pygame.K_RETURN:
                 if len(self.name) == 0:
                     self.name = "blank"
-                self.name = string.join(self.name,"")
+                self.name = string.join(self.name, "")
                 entry = (str(self.name), self.score)
                 self.scores.append(entry)
                 save_scores(self)

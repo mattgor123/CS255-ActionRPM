@@ -30,7 +30,7 @@ class HighScore(State.State):
         pass
 
     def draw(self):
-        if (self.drawn == False):
+        if self.drawn is False:
             Constants.SCREEN.fill((0, 0, 0))
             high_title = self.title_font.render("Your High Scores", 1,
                                                 (255, 255, 255))

@@ -26,10 +26,11 @@ class Menu(State.State):
     #Function to draw the sprite groups
     def draw(self):
         if self.moved:
-            Constants.SCREEN.fill((0,0,0))
+            Constants.SCREEN.fill((0, 0, 0))
             self.play_color, self.adjustv_color, self.adjusta_color, \
-            self.high_color, self.quit_color, self.text_color = ((255, 255,
-                                                                  255),) * 6
+                self.high_color, self.quit_color, self.text_color = ((255, 255,
+                                                                      255),) \
+                * 6
 
             if (self.selected == 0):
                 self.play_color = (255, 255, 0)
