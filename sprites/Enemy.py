@@ -23,7 +23,7 @@ class Enemy(game.sprite.Sprite):
             # on direction of travel
 
             sprites = SP.loadSheet(
-                "images/sprites/enemyfullhealthlights.png", 52,26,[3,1])
+                "images/sprites/enemyfullhealthlights.png", 52, 26, [3, 1])
             Enemy.right = sprites[0]
             Enemy.left = SP.rotateSprites(Enemy.right, 180)
             Enemy.up = SP.rotateSprites(Enemy.right, 90)
@@ -32,15 +32,6 @@ class Enemy(game.sprite.Sprite):
             Enemy.upleft = SP.rotateSprites(Enemy.right, 135)
             Enemy.downright = SP.rotateSprites(Enemy.right, -45)
             Enemy.downleft = SP.rotateSprites(Enemy.right, -135)
-            #Enemy.image = game.image.load("images/sprites/enemyfullhealth.png")
-            #Enemy.right = Enemy.image
-            #Enemy.left = game.transform.rotate(Enemy.right, 180)
-            #Enemy.up = game.transform.rotate(Enemy.right, 90)
-            #Enemy.down = game.transform.rotate(Enemy.right, -90)
-            #Enemy.upright = game.transform.rotate(Enemy.right, 45)
-            #Enemy.upleft = game.transform.rotate(Enemy.right, 135)
-            #Enemy.downright = game.transform.rotate(Enemy.right, -45)
-            #Enemy.downleft = game.transform.rotate(Enemy.right, -135)
 
         # set the image based on the direction
         if direction == 1:
@@ -287,7 +278,6 @@ class Enemy(game.sprite.Sprite):
             self.IMAGES = Enemy.upright
             if Enemy.should_change_motion_direction:
                 self.direction = "upright"
-
 
     def set_image(self):
         self.image = self.IMAGES[self.frame]
