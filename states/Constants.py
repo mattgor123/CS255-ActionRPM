@@ -7,7 +7,7 @@ class Constants(object):
     PLAYER_SPEED = 500
     ENEMY_COUNT = 13
     ENEMY_SPEEDS = 6
-    DIFFICULTY = 10  # 1-10
+    DIFFICULTY = 10
     INTERVAL = .01
     SCREEN = None
     STATE = None
