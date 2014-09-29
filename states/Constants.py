@@ -4,7 +4,7 @@
 class Constants(object):
     WIDTH = None
     HEIGHT = None
-    PLAYER_SPEED = 500
+    PLAYER_SPEED = 300
     ENEMY_COUNT = 13
     ENEMY_SPEEDS = 6
     DIFFICULTY = 10

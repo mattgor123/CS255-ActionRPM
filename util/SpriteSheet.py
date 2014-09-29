@@ -16,7 +16,7 @@ def loadSheet(path, x, y, dimensions):
     for j in range(0, dimensions[1]):
         toReturn.append([])
         for i in range(0, dimensions[0]):
-            surface = PG.Surface((x, y)).convert()
+            surface = PG.Surface((x, y)).convert_alpha()
             surface.blit(sheet, (0, 0), (currentX, currentY, currentX + x,
                                          currentY + y))
             #surface = PG.transform.scale(surface, (128,64))

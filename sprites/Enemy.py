@@ -1,13 +1,13 @@
 import pygame as game
+import util.SpriteSheet as SP
 
 
-# Commit https://bitbucket.org/actionrpm/actionrpm/commits/
-# fca93eaebb9d4a62fb649ee34e8c291e9673404e has our enemy animation.
 class Enemy(game.sprite.Sprite):
     image = None
     screen_width = 0
     screen_height = 0
     should_change_motion_direction = False
+    FRAME_SLOW = 10
 
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
@@ -16,18 +16,22 @@ class Enemy(game.sprite.Sprite):
         self.direction = direction
         Enemy.screen_width = screensize[0]
         Enemy.screen_height = screensize[1]
+        self.frame = 0
+        self.frameCalls = 0
         if Enemy.image is None:
             # make all of the appropriate transformations of the image based
             # on direction of travel
-            Enemy.image = game.image.load("images/sprites/enemyfullhealth.png")
-            Enemy.right = Enemy.image
-            Enemy.left = game.transform.rotate(Enemy.right, 180)
-            Enemy.up = game.transform.rotate(Enemy.right, 90)
-            Enemy.down = game.transform.rotate(Enemy.right, -90)
-            Enemy.upright = game.transform.rotate(Enemy.right, 45)
-            Enemy.upleft = game.transform.rotate(Enemy.right, 135)
-            Enemy.downright = game.transform.rotate(Enemy.right, -45)
-            Enemy.downleft = game.transform.rotate(Enemy.right, -135)
+
+            sprites = SP.loadSheet(
+                "images/sprites/enemyfullhealthlights.png", 52, 26, [3, 1])
+            Enemy.right = sprites[0]
+            Enemy.left = SP.rotateSprites(Enemy.right, 180)
+            Enemy.up = SP.rotateSprites(Enemy.right, 90)
+            Enemy.down = SP.rotateSprites(Enemy.right, -90)
+            Enemy.upright = SP.rotateSprites(Enemy.right, 45)
+            Enemy.upleft = SP.rotateSprites(Enemy.right, 135)
+            Enemy.downright = SP.rotateSprites(Enemy.right, -45)
+            Enemy.downleft = SP.rotateSprites(Enemy.right, -135)
 
         # set the image based on the direction
         if direction == 1:
@@ -54,7 +58,7 @@ class Enemy(game.sprite.Sprite):
         elif direction == 8:
             self.set_direction("upright")
             self.moving_direction = "upright"
-
+        self.set_image()
         #set the speed & get the rectangle
         self.speed = speed
         self.rect = self.image.get_rect()
@@ -84,6 +88,7 @@ class Enemy(game.sprite.Sprite):
                 self.set_direction("down")
             elif direction == "upright" and self.direction != "downleft":
                 self.set_direction("downleft")
+        self.set_image()
         self.move(interval, Enemy.should_change_motion_direction)
 
     #this moves the Enemy to where he is supposed to be based on the direction
@@ -242,34 +247,43 @@ class Enemy(game.sprite.Sprite):
     def set_direction(self, direction):
         #set the image based on the direction
         if direction == "right":
-            self.image = Enemy.right
+            self.IMAGES = Enemy.right
             if Enemy.should_change_motion_direction:
                 self.direction = "right"
         elif direction == "downright":
-            self.image = Enemy.downright
+            self.IMAGES = Enemy.downright
             if Enemy.should_change_motion_direction:
                 self.direction = "downright"
         elif direction == "down":
-            self.image = Enemy.down
+            self.IMAGES = Enemy.down
             if Enemy.should_change_motion_direction:
                 self.direction = "down"
         elif direction == "downleft":
-            self.image = Enemy.downleft
+            self.IMAGES = Enemy.downleft
             if Enemy.should_change_motion_direction:
                 self.direction = "downleft"
         elif direction == "left":
-            self.image = Enemy.left
+            self.IMAGES = Enemy.left
             if Enemy.should_change_motion_direction:
                 self.direction = "left"
         elif direction == "upleft":
-            self.image = Enemy.upleft
+            self.IMAGES = Enemy.upleft
             if Enemy.should_change_motion_direction:
                 self.direction = "upleft"
         elif direction == "up":
-            self.image = Enemy.up
+            self.IMAGES = Enemy.up
             if Enemy.should_change_motion_direction:
                 self.direction = "up"
         elif direction == "upright":
-            self.image = Enemy.upright
+            self.IMAGES = Enemy.upright
             if Enemy.should_change_motion_direction:
                 self.direction = "upright"
+
+    def set_image(self):
+        self.image = self.IMAGES[self.frame]
+        self.frameCalls += 1
+        if self.frameCalls % Enemy.FRAME_SLOW == 0:
+            self.frame += 1
+
+        if self.frame == len(self.IMAGES):
+            self.frame = 0
