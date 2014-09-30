@@ -9,10 +9,13 @@ class Player(game.sprite.Sprite):
     quarter_health = None
     crash = None
     current = None
+    max_speed = Constants.PLAYER_MAX_SPEED
 
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
-    def __init__(self, location, screensize, speed, difficulty):
+
+    def __init__(self, location, screensize, difficulty):
+
         game.sprite.Sprite.__init__(self)
         Player.screen_width = screensize[0]
         Player.screen_height = screensize[1]
@@ -36,7 +39,8 @@ class Player(game.sprite.Sprite):
         self.damage = 0
         self.health = Constants.PLAYER_STARTING_HEALTH
         self.set_image_rotations(self.health)
-        self.speed = speed
+        self.speed = Constants.PLAYER_MIN_SPEED
+        self.is_accelerating = False
         self.rect = self.image.get_rect()
         self.rect.center = location
         self.screen_width = Player.screen_width
@@ -56,109 +60,73 @@ class Player(game.sprite.Sprite):
                 self.dir_changed = True
                 self.set_direction("upleft")
                 self.crash.stop()
-
+            self.is_accelerating = True
             # check for collision with top or left
-            if (self.rect.left - self.speed * interval) > 0 and (
-                    self.rect.top - self.speed * interval) > 0:
-                # no collision, move
-                self.rect = self.rect.move(-self.speed * interval,
-                                           -self.speed * interval)
-
-            # collision!
-            else:
-                self.damage += 1
-                self.crash.play()
 
         elif keys_pressed[game.K_LEFT] and keys_pressed[game.K_DOWN]:
             if self.direction != "downleft":
                 self.dir_changed = True
                 self.set_direction("downleft")
                 self.crash.stop()
-            if (self.rect.left - self.speed * interval) > 0 and (
-                    self.rect.bottom + self.speed * interval) < \
-                    self.screen_height:
-                self.rect = self.rect.move(-self.speed * interval,
-                                           +self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
 
         elif keys_pressed[game.K_LEFT]:
             if self.direction != "left":
                 self.dir_changed = True
                 self.set_direction("left")
                 self.crash.stop()
-            if (self.rect.left - self.speed * interval) > 0:
-                self.rect = self.rect.move(-self.speed * interval, 0)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
 
         elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_UP]:
             if self.direction != "upright":
                 self.dir_changed = True
                 self.set_direction("upright")
                 self.crash.stop()
-            if (
-                    self.rect.right + self.speed * interval) < \
-                    self.screen_width \
-                    and (
-                        self.rect.top) > 0:
-                self.rect = self.rect.move(self.speed * interval,
-                                           -self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
 
         elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_DOWN]:
             if self.direction != "downright":
                 self.dir_changed = True
                 self.set_direction("downright")
                 self.crash.stop()
-            if (
-                    self.rect.right + self.speed * interval) < \
-                    self.screen_width \
-                    and (
-                        self.rect.bottom + self.speed * interval) < \
-                    self.screen_height:
-                self.rect = self.rect.move(self.speed * interval,
-                                           self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
 
         elif keys_pressed[game.K_RIGHT]:
             if self.direction != "right":
                 self.dir_changed = True
                 self.set_direction("right")
                 self.crash.stop()
-            if (self.rect.right + self.speed * interval) < self.screen_width:
-                self.rect = self.rect.move(self.speed * interval, 0)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
 
         elif keys_pressed[game.K_UP]:
             if self.direction != "up":
                 self.dir_changed = True
                 self.set_direction("up")
                 self.crash.stop()
-            if (self.rect.top - self.speed * interval) > 0:
-                self.rect = self.rect.move(0, -self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
 
         elif keys_pressed[game.K_DOWN]:
             if self.direction != "down":
                 self.dir_changed = True
                 self.set_direction("down")
                 self.crash.stop()
-            if (self.rect.bottom + self.speed * interval) < self.screen_height:
-                self.rect = self.rect.move(0, self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
+            self.is_accelerating = True
+
+        else:
+            self.is_accelerating = False
+
+        if self.is_accelerating is True:
+            acceleration = Constants.PLAYER_ACCELERATION
+        else:
+            acceleration = -Constants.PLAYER_ACCELERATION
+
+        self.speed = self.speed + acceleration*interval
+
+        if self.speed > Player.max_speed:
+            self.speed = Player.max_speed
+        if self.speed < Constants.PLAYER_MIN_SPEED:
+            self.speed = Constants.PLAYER_MIN_SPEED
+        self.move(interval)
 
     def set_direction(self, direction):
         self.direction = direction
@@ -220,3 +188,72 @@ class Player(game.sprite.Sprite):
         Player.downright = game.transform.rotate(Player.right, -45)
         Player.downleft = game.transform.rotate(Player.right, -135)
         self.set_direction(self.direction)
+
+    def move(self, interval):
+        if self.direction == "upleft":
+            if (self.rect.left - self.speed * interval) > 0 and (
+                    self.rect.top - self.speed * interval) > 0:
+                # no collision, move
+                self.rect = self.rect.move(-self.speed * interval,
+                                           -self.speed * interval)
+
+            # collision!
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "downleft":
+            if (self.rect.left - self.speed * interval) > 0 and (
+                    self.rect.bottom + self.speed * interval) < \
+                    self.screen_height:
+                self.rect = self.rect.move(-self.speed * interval,
+                                           +self.speed * interval)
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "left":
+            if (self.rect.left - self.speed * interval) > 0:
+                self.rect = self.rect.move(-self.speed * interval, 0)
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "upright":
+            if (
+                    self.rect.right + self.speed * interval) < \
+                    self.screen_width \
+                    and (
+                        self.rect.top) > 0:
+                self.rect = self.rect.move(self.speed * interval,
+                                           -self.speed * interval)
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "downright":
+            if (
+                    self.rect.right + self.speed * interval) < \
+                    self.screen_width \
+                    and (
+                        self.rect.bottom + self.speed * interval) < \
+                    self.screen_height:
+                self.rect = self.rect.move(self.speed * interval,
+                                           self.speed * interval)
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "right":
+            if (self.rect.right + self.speed * interval) < self.screen_width:
+                self.rect = self.rect.move(self.speed * interval, 0)
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "up":
+            if (self.rect.top - self.speed * interval) > 0:
+                self.rect = self.rect.move(0, -self.speed * interval)
+            else:
+                self.damage += 1
+                self.crash.play()
+        elif self.direction == "down":
+            if (self.rect.bottom + self.speed * interval) < self.screen_height:
+                self.rect = self.rect.move(0, self.speed * interval)
+            else:
+                self.damage += 1
+                self.crash.play()

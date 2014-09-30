@@ -31,12 +31,12 @@ class Play(State.State):
         players = pygame.sprite.Group()
         player1 = Player.Player([Constants.WIDTH / 2, Constants.HEIGHT / 2],
                                 [Constants.WIDTH, Constants.HEIGHT],
-                                Constants.PLAYER_SPEED, Constants.DIFFICULTY)
+                                Constants.DIFFICULTY)
         players.add(player1)
         enemies = pygame.sprite.Group()
         for i in range(Constants.ENEMY_COUNT):
             enemy_speed = random.randint(1, Constants.ENEMY_SPEEDS) * \
-                Constants.PLAYER_SPEED * 2 / Constants.ENEMY_SPEEDS
+                Constants.PLAYER_MAX_SPEED * 2 / Constants.ENEMY_SPEEDS
             new_enemy = Enemy.Enemy(
                 [random.randint(0, Constants.WIDTH - player1.rect.width),
                  random.randint(0, Constants.HEIGHT - player1.rect.height)],
