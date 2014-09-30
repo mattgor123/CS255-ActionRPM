@@ -1,0 +1,16 @@
+Carlo Olcese
+Matt Gorelik
+Joshua You
+Tuvia Lerea
+
+For this assignment we believe we completed everything. For the animations, we have that our car continues to get more
+and more damaged as he loses health. You will notice that when he gets to a lower health (~20%), he will look as though
+he is all banged up. In order to lose health, try to move the player outside of the game screen. For the other animation,
+we have our enemies headlights flashing on and off.
+
+For part 2, we used the states model to create our screens. We believe we followed all of Oeter's instructions.
+
+NOTE: Our high score does actually work! For now, your points keep moving upwards as time goes on. When you run out of health,
+our game will check if your score is higher than any of the saved scores, and if so, you can enter in a name for the high score.
+
+To run our game, go into the directory actionrpm/ and run the command "python game.py"
