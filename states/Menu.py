@@ -104,12 +104,18 @@ class Menu(State.State):
     #Function for key updates
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
-            if (event.key == pygame.K_DOWN and self.selected < 4):
+            if (event.key == pygame.K_DOWN):
                 self.moved = True
-                self.selected += 1
-            elif (event.key == pygame.K_UP and self.selected > 0):
+                if self.selected < 4:
+                    self.selected += 1
+                else:
+                    self.selected = 0
+            elif (event.key == pygame.K_UP):
                 self.moved = True
-                self.selected -= 1
+                if (self.selected > 0):
+                    self.selected -= 1
+                else:
+                    self.selected = 4
             elif (event.key == pygame.K_RETURN):
                 change_event(self.selected)
             else:

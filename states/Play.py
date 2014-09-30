@@ -6,6 +6,7 @@ import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
+import sprites.Wall as Wall
 import NewHigh
 import GameEnded
 import Menu
@@ -20,7 +21,7 @@ class Play(State.State):
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
-        global players, enemies, labels, background
+        global players, enemies, labels, background, walls
         background = pygame.Surface(Constants.SCREEN.get_size())
         Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
@@ -45,12 +46,17 @@ class Play(State.State):
             enemies.add(new_enemy)
         self.time = 0.00
 
+        walls = pygame.sprite.Group()
+        wall1 = Wall.Wall([300, 400])
+        walls.add(wall1)
+
     #Function to draw the sprite groups
     def draw(self):
         #Clear the sprite groups from the screen
         players.clear(Constants.SCREEN, background)
         enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
+        walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
             #labels.clear(Constants.SCREEN,background)
@@ -62,6 +68,7 @@ class Play(State.State):
             enemies.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
+            walls.draw(Constants.SCREEN)
             display.update()
 
     #Only specific key event we will handle for now is 'q' or 'r' to restart
