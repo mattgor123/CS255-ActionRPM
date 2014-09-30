@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Carlo Olcese
 Matt Gorelik
 Joshua You
@@ -14,3 +15,29 @@ NOTE: Our high score does actually work! For now, your points keep moving upward
 our game will check if your score is higher than any of the saved scores, and if so, you can enter in a name for the high score.
 
 To run our game, go into the directory actionrpm/ and run the command "python game.py"
+
+The code is organized into directories/packages:
+-audio: contains audio files for the game (will probably be organized into subfolders later)
+
+-images: contains image files for the game (organized into sprites and other images)
+
+-sprites: contains python code for any of our custom implementations of Pygame's Sprite class (currently, Enemy, Label, and Player) 
+
+-states: contains python code for all of our state-model logic. Play.py is our gameplay state. All of these classes are named intuitively and should be simple to find out how they interact. One note is the Menu state can always be accessed from any State by hitting 'Control + M'. The Play state can be exited at any time by hitting the 'q' key, which ends the game (even if you don't have 0% health).
+
+-util: contains the code to parse a SpriteSheet, which is currently being used to animate an enemy.
+
+
+Notes from assignment 3:
+-Our animations are: the car (player) is 'animated' in the sense that as it gains damage, it progressively gets more and more banged up. The three 'stages' of health are full health (100-75%), moderately damaged (75-25%), and severely damaged (25-0%), and these are represented by the color changing label and also the more damaged-looking sprite. The player's sprite also changes based on the direction in which the player is moving. The enemy sprite responds to the player's keypresses and instantly faces the opposite direction (NOTE: his motion can reflect the direction he's moving by modifying the should_change_motion_direction flag in Enemy.py). Also, the enemy's motion involves a headlights cycle in which his headlights toggle from off to half-on to on to half-off to off again, and this repeats indefinitely.
+
+-Our high score system is based solely on the duration a player has been able to survive. Since our interval is 0.01, every update cycle raises the user's score by .01. When a game ends (either by the player reaching 0% health by colliding with the walls, or by hitting 'q' from the Play screen), the game checks if this score is a high score (top 10), and if it is it prompts you to input your name, then showing your position on the high score chart by coloring your text green. Otherwise, it displays the game over screen and shows you all the previous high scores.
+
+Notes from assignment 2:
+-We chose to follow the leftover-interval based approach so our gameplay should not change depending on the hardware. 
+
+-Note that game.py has a few constants at the top (BEEN MOVED TO states/Constants.py). These can be changed, but the game has not been extensively tested with settings other than the ones we are submitting (800 x 600, with PLAYER_SPEED = 500, ENEMY_COUNT = 13, and ENEMY_SPEEDS = 6), with a difficulty of 10 and interval of 0.01.
+
+-Also, if you want to see how our game worked before (with enemies moving away from the player), feel free to change should_change_motion_direction = True in Enemy.py (line 8).
+
+-The original red & yellow car sprites were found on openclipart.org, and the policies can be found here: https://openclipart.org/policies . The 'damage' art was added by our team after the fact.

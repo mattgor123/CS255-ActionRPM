@@ -21,15 +21,15 @@ class Player(game.sprite.Sprite):
         # character
         if Player.full_health is None:
             Player.full_health = game.image.load(
-                "images/sprites/playerfullhealth.png")
+                "images/sprites/playerfullhealth.png").convert_alpha()
         if Player.crash is None:
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
         if Player.half_health is None:
             Player.half_health = game.image.load(
-                "images/sprites/playerhalfhealth.png")
+                "images/sprites/playerhalfhealth.png").convert_alpha()
         if Player.quarter_health is None:
             Player.quarter_health = game.image.load(
-                "images/sprites/playerquarterhealth.png")
+                "images/sprites/playerquarterhealth.png").convert_alpha()
         # initialize
         self.image = Player.full_health
         self.crash = Player.crash

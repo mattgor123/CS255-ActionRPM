@@ -4,10 +4,10 @@
 class Constants(object):
     WIDTH = None
     HEIGHT = None
-    PLAYER_SPEED = 500
+    PLAYER_SPEED = 300
     ENEMY_COUNT = 13
     ENEMY_SPEEDS = 6
-    DIFFICULTY = 10  # 1-10
+    DIFFICULTY = 10
     INTERVAL = .01
     SCREEN = None
     STATE = None
