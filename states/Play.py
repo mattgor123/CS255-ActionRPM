@@ -22,6 +22,34 @@ class Play(State.State):
     def __init__(self):
         super(Play, self).__init__()
         global players, enemies, labels, background, walls
+
+        # read map file
+        walls = pygame.sprite.Group()
+        players = pygame.sprite.Group()
+        enemies = pygame.sprite.Group()
+        f = open('map/level_1', 'r')
+        x = y = 5
+        for row in f:
+            for col in row:
+                if (col == "W"):
+                    wall = Wall.Wall([x, y])
+                    walls.add(wall)
+                if (col == "P"):
+                    player1 = Player.Player([x, y], [
+                        Constants.WIDTH, Constants.HEIGHT],
+                        Constants.DIFFICULTY)
+                    players.add(player1)
+                if (col == "E"):
+                    enemy_speed = random.randint(1, Constants.ENEMY_SPEEDS) * \
+                        Constants.PLAYER_MAX_SPEED * 2 / Constants.ENEMY_SPEEDS
+                    new_enemy = Enemy.Enemy([x, y], [
+                        Constants.WIDTH, Constants.HEIGHT],
+                        enemy_speed, direction=random.randint(1, 8))
+                    enemies.add(new_enemy)
+                x += 10
+            y += 10
+            x = 5
+
         background = pygame.Surface(Constants.SCREEN.get_size())
         Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
@@ -29,26 +57,7 @@ class Play(State.State):
         s_label = Label.Label("score", "Score: ", (0, 24))
         labels.add(h_label)
         labels.add(s_label)
-        players = pygame.sprite.Group()
-        player1 = Player.Player([Constants.WIDTH / 2, Constants.HEIGHT / 2],
-                                [Constants.WIDTH, Constants.HEIGHT],
-                                Constants.DIFFICULTY)
-        players.add(player1)
-        enemies = pygame.sprite.Group()
-        for i in range(Constants.ENEMY_COUNT):
-            enemy_speed = random.randint(1, Constants.ENEMY_SPEEDS) * \
-                Constants.PLAYER_MAX_SPEED * 2 / Constants.ENEMY_SPEEDS
-            new_enemy = Enemy.Enemy(
-                [random.randint(0, Constants.WIDTH - player1.rect.width),
-                 random.randint(0, Constants.HEIGHT - player1.rect.height)],
-                [Constants.WIDTH, Constants.HEIGHT], enemy_speed,
-                direction=random.randint(1, 8))
-            enemies.add(new_enemy)
         self.time = 0.00
-
-        walls = pygame.sprite.Group()
-        wall1 = Wall.Wall([300, 400])
-        walls.add(wall1)
 
     #Function to draw the sprite groups
     def draw(self):
