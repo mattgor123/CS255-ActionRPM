@@ -25,30 +25,44 @@ class Play(State.State):
 
         # read map file
         walls = pygame.sprite.Group()
+        wall_rects = []
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
         f = open('map/level_1', 'r')
         x = y = 5
+        coord = False
         for row in f:
-            for col in row:
-                if (col == "W"):
-                    wall = Wall.Wall([x, y])
-                    walls.add(wall)
-                if (col == "P"):
-                    player1 = Player.Player([x, y], [
-                        Constants.WIDTH, Constants.HEIGHT],
-                        Constants.DIFFICULTY)
-                    players.add(player1)
-                if (col == "E"):
-                    enemy_speed = random.randint(1, Constants.ENEMY_SPEEDS) * \
-                        Constants.PLAYER_MAX_SPEED * 2 / Constants.ENEMY_SPEEDS
-                    new_enemy = Enemy.Enemy([x, y], [
-                        Constants.WIDTH, Constants.HEIGHT],
-                        enemy_speed, direction=random.randint(1, 8))
-                    enemies.add(new_enemy)
-                x += 10
-            y += 10
-            x = 5
+            if row[0] == "~" or coord:
+                if coord:
+                    where = row.split(",")
+                    rect = pygame.Rect(int(where[0]), int(where[1]), int(
+                        where[2]), int(where[3]))
+                    wall_rects.append(rect)
+                coord = True
+            else:
+                for col in row:
+                    if (col == "W"):
+                        wall = Wall.Wall([x, y])
+                        walls.add(wall)
+                    if (col == "P"):
+                        player1 = Player.Player([x, y], [
+                            Constants.WIDTH, Constants.HEIGHT],
+                            Constants.DIFFICULTY)
+                        players.add(player1)
+                    if (col == "E"):
+                        enemy_speed = random.randint(
+                            1, Constants.ENEMY_SPEEDS) * \
+                            Constants.PLAYER_MAX_SPEED * 2 \
+                            / Constants.ENEMY_SPEEDS
+                        new_enemy = Enemy.Enemy([x, y], [
+                            Constants.WIDTH, Constants.HEIGHT],
+                            enemy_speed, direction=random.randint(1, 8))
+                        enemies.add(new_enemy)
+                    x += 10
+                y += 10
+                x = 5
+
+        player1.add_walls(wall_rects)
 
         background = pygame.Surface(Constants.SCREEN.get_size())
         Constants.SCREEN.fill((0, 0, 0))

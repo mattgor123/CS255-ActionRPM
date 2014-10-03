@@ -1,22 +1,22 @@
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-W                                               W                              W
-W                                               W                              W
-W                                               W                              W
-W                                              WW                   E          W
-W                                              W                               W
-W                                              W                               W
-W                                              W                               W
-W                                            WWW       E                       W
-W                     P              WWWWWWWW                                  W
-W                                    W                                         W
-W                                    W                                         W
-W                                    W                                         W
-W                                    W                                         W
-W                                    W                                         W
-W                    WWWWWWWWWWWWWWWWW                                         W
-W                   W                                                          W
-W                 WW                                             E             W
-W                WW                                                            W
+W                                W                                             W
+W                                W                                             W
+W                                W                                             W
+W                                W                                  E          W
+W                                W                                             W
+W                                W                                             W
+W                                W                                             W
+W                                W                     E                       W
+W                     P          W                                             W
+W                                W                                             W
+W                                W                                             W
+W                                W                                             W
+W                                W                                             W
+W                 WWWWWWWWWWWWWWWW                                             W
+W                W                                                             W
+W                W                                                             W
+W                W                                               E             W
+W                W                                                             W
 W      WWWWWWWWWW                                                              W
 W                                                                              W
 W                                                                              W
@@ -58,3 +58,19 @@ W                                                                              W
 W                                                                              W
 W                                                                              W
 WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+~
+0,0,800,10
+0,0,10,600
+0,590,800,10
+790,0,10,600
+160,320,130,10
+290,330,150,10
+440,330,10,70
+440,390,120,10
+550,400,80,10
+630,410,110,10
+730,420,60,10
+70,190,100,10
+170,150,10,40
+180,140,160,10
+330,0,10,150

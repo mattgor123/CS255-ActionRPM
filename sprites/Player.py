@@ -10,6 +10,9 @@ class Player(game.sprite.Sprite):
     crash = None
     current = None
     max_speed = Constants.PLAYER_MAX_SPEED
+    wall_rects = None
+    last_move_1 = ""
+    last_move_2 = ""
 
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
@@ -190,45 +193,73 @@ class Player(game.sprite.Sprite):
         self.set_direction(self.direction)
 
     def move(self, interval):
+        print(Player.last_move_1 + " " + Player.last_move_2)
+        is_collision = False
+        for r in Player.wall_rects:
+            if self.rect.colliderect(r):
+                if (self.speed != Constants.PLAYER_MIN_SPEED):
+                    self.damage += 1
+                    self.crash.play()
+                is_collision = True
+
         if self.direction == "upleft":
-            if (self.rect.left - self.speed * interval) > 0 and (
+            if (
+                is_collision and
+                (Player.last_move_1 in self.direction
+                    or Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (self.rect.left - self.speed * interval) > 0 and (
                     self.rect.top - self.speed * interval) > 0:
                 # no collision, move
                 self.rect = self.rect.move(-self.speed * interval,
                                            -self.speed * interval)
-
-            # collision!
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "downleft":
-            if (self.rect.left - self.speed * interval) > 0 and (
+            Player.last_move_1 = "up"
+            Player.last_move_2 = "left"
+        if self.direction == "downleft":
+            if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (self.rect.left - self.speed * interval) > 0 and (
                     self.rect.bottom + self.speed * interval) < \
                     self.screen_height:
                 self.rect = self.rect.move(-self.speed * interval,
                                            +self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "left":
-            if (self.rect.left - self.speed * interval) > 0:
-                self.rect = self.rect.move(-self.speed * interval, 0)
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "upright":
+            Player.last_move_1 = "down"
+            Player.last_move_2 = "left"
+        if self.direction == "left":
             if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (self.rect.left - self.speed * interval) > 0:
+                self.rect = self.rect.move(-self.speed * interval, 0)
+            Player.last_move_1 = "left"
+            Player.last_move_2 = "LEFT"
+        if self.direction == "upright":
+            if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (
                     self.rect.right + self.speed * interval) < \
                     self.screen_width \
                     and (
                         self.rect.top) > 0:
                 self.rect = self.rect.move(self.speed * interval,
                                            -self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "downright":
+            Player.last_move_1 = "up"
+            Player.last_move_2 = "right"
+        if self.direction == "downright":
             if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (
                     self.rect.right + self.speed * interval) < \
                     self.screen_width \
                     and (
@@ -236,24 +267,39 @@ class Player(game.sprite.Sprite):
                     self.screen_height:
                 self.rect = self.rect.move(self.speed * interval,
                                            self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "right":
-            if (self.rect.right + self.speed * interval) < self.screen_width:
+            Player.last_move_1 = "down"
+            Player.last_move_2 = "right"
+        if self.direction == "right":
+            if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (self.rect.right + self.speed * interval) < self.screen_width:
                 self.rect = self.rect.move(self.speed * interval, 0)
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "up":
-            if (self.rect.top - self.speed * interval) > 0:
+            Player.last_move_1 = "right"
+            Player.last_move_2 = "RIGHT"
+        if self.direction == "up":
+            if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (self.rect.top - self.speed * interval) > 0:
                 self.rect = self.rect.move(0, -self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
-        elif self.direction == "down":
-            if (self.rect.bottom + self.speed * interval) < self.screen_height:
+            Player.last_move_1 = "up"
+            Player.last_move_2 = "UP"
+        if self.direction == "down":
+            if (
+                is_collision and
+                (Player.last_move_1 in self.direction or
+                    Player.last_move_2 in self.direction)):
+                print('stop')
+            elif (self.rect.bottom + self.speed * interval) < \
+                    self.screen_height:
                 self.rect = self.rect.move(0, self.speed * interval)
-            else:
-                self.damage += 1
-                self.crash.play()
+            Player.last_move_1 = "down"
+            Player.last_move_2 = "DOWN"
+
+    def add_walls(self, wrects):
+        Player.wall_rects = wrects
