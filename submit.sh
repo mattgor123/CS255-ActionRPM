@@ -9,6 +9,7 @@ find . -name "*~" -print0 | xargs -0 rm -rf
 
 mkdir cs255-assignment-$1-actionrpm
 cp -r audio cs255-assignment-$1-actionrpm
+cp -r map cs255-assignment-$1-actionrpm
 cp -r states cs255-assignment-$1-actionrpm
 cp -r images cs255-assignment-$1-actionrpm
 cp -r sprites cs255-assignment-$1-actionrpm
