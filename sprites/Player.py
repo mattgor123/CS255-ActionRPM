@@ -1,16 +1,22 @@
 import pygame as game
 from states.Constants import Constants
+import util.SpriteSheet as SS
 
 
 class Player(game.sprite.Sprite):
+
     # These are the images
-    full_health = None
-    half_health = None
-    quarter_health = None
+    # full_health = None
+    # half_health = None
+    # quarter_health = None
+    stopped = None
+    accelerating = None
+    full_speed = None
     crash = None
     current = None
     max_speed = Constants.PLAYER_MAX_SPEED
     wall_rects = None
+    FRAME_SLOW = 10
 
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
@@ -23,23 +29,50 @@ class Player(game.sprite.Sprite):
         self.direction = "right"
         # set the images to the appropriate ones based on the direction of the
         # character
-        if Player.full_health is None:
-            Player.full_health = game.image.load(
-                "images/sprites/playerfullhealth.png").convert_alpha()
+        # if Player.full_health is None:
+        #     Player.full_health = game.image.load(
+        #         "images/sprites/playerfullhealth.png").convert_alpha()
         if Player.crash is None:
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
-        if Player.half_health is None:
-            Player.half_health = game.image.load(
-                "images/sprites/playerhalfhealth.png").convert_alpha()
-        if Player.quarter_health is None:
-            Player.quarter_health = game.image.load(
-                "images/sprites/playerquarterhealth.png").convert_alpha()
+        # if Player.half_health is None:
+        #     Player.half_health = game.image.load(
+        #         "images/sprites/playerhalfhealth.png").convert_alpha()
+        # if Player.quarter_health is None:
+        #     Player.quarter_health = game.image.load(
+        #         "images/sprites/playerquarterhealth.png").convert_alpha()
+
+        if Player.stopped is None:
+            tmp = SS.loadSheet("images/sprites/player_animations.png",
+                               52, 26, [8, 1])
+            tmp = tmp[0]
+            Player.stopped = []
+            Player.stopped.append(tmp[0])
+        if Player.accelerating is None:
+            tmp = SS.loadSheet("images/sprites/player_animations.png",
+                               52, 26, [8, 1])
+            tmp = tmp[0]
+            Player.accelerating = []
+            for i in range(1, 5):
+                Player.accelerating.append(tmp[i])
+        if Player.full_speed is None:
+            tmp = SS.loadSheet("images/sprites/player_animations.png",
+                               52, 26, [8, 1])
+            tmp = tmp[0]
+            Player.full_speed = []
+            for i in range(5, len(tmp)):
+                Player.full_speed.append(tmp[i])
         # initialize
-        self.image = Player.full_health
+        self.imageArray = Player.stopped
+        Player.right = self.imageArray
+        self.accelerationState = "stopped"
+        self.set_rotations()
+        self.frame = 0
+        self.frameCalls = 0
+        self.set_image()
         self.crash = Player.crash
         self.damage = 0
         self.health = Constants.PLAYER_STARTING_HEALTH
-        self.set_image_rotations(self.health)
+        # self.set_image_rotations(self.health)
         self.speed = Constants.PLAYER_MIN_SPEED
         self.is_accelerating = False
         self.rect = self.image.get_rect()
@@ -121,55 +154,94 @@ class Player(game.sprite.Sprite):
         else:
             acceleration = -Constants.PLAYER_ACCELERATION
 
-        self.speed = self.speed + acceleration*interval
+        self.speed += acceleration * interval
 
         if self.speed > Player.max_speed:
             self.speed = Player.max_speed
         if self.speed < Constants.PLAYER_MIN_SPEED:
             self.speed = Constants.PLAYER_MIN_SPEED
+        self.check_acceleration_state()
+        self.set_image()
         self.move(interval)
+
+    def check_acceleration_state(self):
+        if self.accelerationState == "stopped":
+            if self.speed != Constants.PLAYER_MIN_SPEED:
+                self.accelerationState = "accelerating"
+                self.set_image_array()
+        elif self.accelerationState == "accelerating":
+            if self.speed == Constants.PLAYER_MAX_SPEED:
+                self.accelerationState = "maxed"
+                self.set_image_array()
+            elif self.speed == Constants.PLAYER_MIN_SPEED:
+                self.accelerationState = "stopped"
+                self.set_image_array()
+        elif self.accelerationState == "maxed":
+            if self.speed < Constants.PLAYER_MAX_SPEED:
+                self.accelerationState = "accelerating"
+                self.set_image_array()
+
+    def set_image_array(self):
+        if self.accelerationState == "stopped":
+            Player.right = Player.stopped
+        elif self.accelerationState == "accelerating":
+            Player.right = Player.accelerating
+        elif self.accelerationState == "maxed":
+            Player.right = Player.full_speed
+        self.set_rotations()
+
+    def set_rotations(self):
+        Player.left = SS.rotateSprites(Player.right, 180)
+        Player.up = SS.rotateSprites(Player.right, 90)
+        Player.down = SS.rotateSprites(Player.right, -90)
+        Player.upright = SS.rotateSprites(Player.right, 45)
+        Player.upleft = SS.rotateSprites(Player.right, 135)
+        Player.downright = SS.rotateSprites(Player.right, -45)
+        Player.downleft = SS.rotateSprites(Player.right, -135)
+        self.set_direction(self.direction)
+        self.frame = 0
 
     def set_direction(self, direction):
         self.direction = direction
         # set the image based on the direction
         if direction == "right":
-            self.image = Player.right
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.right
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "downright":
-            self.image = Player.downright
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.downright
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "down":
-            self.image = Player.down
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.down
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "downleft":
-            self.image = Player.downleft
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.downleft
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "left":
-            self.image = Player.left
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.left
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "upleft":
-            self.image = Player.upleft
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.upleft
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "up":
-            self.image = Player.up
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.up
+            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "upright":
-            self.image = Player.upright
-            self.rect = self.image.get_rect(center=self.rect.center)
+            self.imageArray = Player.upright
+            # self.rect = self.image.get_rect(center=self.rect.center)
 
     def calculate_health(self):
-        self.health = Constants.PLAYER_STARTING_HEALTH - (
-            self.damage / (10 * (11 - self.difficulty)))
-        if self.health < 25 and not self.current == "quarter":
-            self.current = "quarter"
-            self.set_image_rotations("quarter")
-        elif 25 < self.health < 75 and not self.current == \
-                "half":
-            self.current = "half"
-            self.set_image_rotations("half")
-        elif self.health > 75 and not self.current == "full":
-            self.current = "full"
-            self.set_image_rotations("full")
+        # self.health = Constants.PLAYER_STARTING_HEALTH - (
+        #     self.damage / (10 * (11 - self.difficulty)))
+        # if self.health < 25 and not self.current == "quarter":
+        #     self.current = "quarter"
+        #     self.set_image_rotations("quarter")
+        # elif 25 < self.health < 75 and not self.current == \
+        #         "half":
+        #     self.current = "half"
+        #     self.set_image_rotations("half")
+        # elif self.health > 75 and not self.current == "full":
+        #     self.current = "full"
+        #     self.set_image_rotations("full")
         return self.health
 
     def set_image_rotations(self, healthlevel):
@@ -189,6 +261,14 @@ class Player(game.sprite.Sprite):
         Player.downright = game.transform.rotate(Player.right, -45)
         Player.downleft = game.transform.rotate(Player.right, -135)
         self.set_direction(self.direction)
+
+    def set_image(self):
+        self.image = self.imageArray[self.frame]
+        self.frameCalls += 1
+        if self.frameCalls % Player.FRAME_SLOW == 0:
+            self.frame += 1
+        if self.frame >= len(self.imageArray):
+            self.frame = 0
 
     def move(self, interval):
         is_collision = False
