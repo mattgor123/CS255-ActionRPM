@@ -192,13 +192,29 @@ class Player(game.sprite.Sprite):
         self.set_direction(self.direction)
 
     def move(self, interval):
-        print(Player.last_move_1)
         is_collision = False
         for r in Player.wall_rects:
             if self.rect.colliderect(r):
                 if (self.speed != Constants.PLAYER_MIN_SPEED):
+                    self.speed = Constants.PLAYER_MIN_SPEED
                     self.damage += 1
                     self.crash.play()
+                if (self.direction == "up"):
+                    self.rect = self.rect.move(0, 3)
+                if (self.direction == "down"):
+                    self.rect = self.rect.move(0, -3)
+                if (self.direction == "left"):
+                    self.rect = self.rect.move(3, 0)
+                if (self.direction == "right"):
+                    self.rect = self.rect.move(-3, 0)
+                if (self.direction == "upleft"):
+                    self.rect = self.rect.move(3, 3)
+                if (self.direction == "upright"):
+                    self.rect = self.rect.move(-3, 3)
+                if (self.direction == "downright"):
+                    self.rect = self.rect.move(-3, -3)
+                if (self.direction == "downleft"):
+                    self.rect = self.rect.move(3, -3)
                 is_collision = True
 
         if self.direction == "upleft":
