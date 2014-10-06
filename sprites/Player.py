@@ -64,6 +64,9 @@ class Player(game.sprite.Sprite):
         # initialize
         self.imageArray = Player.stopped
         Player.right = self.imageArray
+        self.image = self.imageArray[0]
+        self.rect = self.image.get_rect()
+
         self.accelerationState = "stopped"
         self.set_rotations()
         self.frame = 0
@@ -75,7 +78,6 @@ class Player(game.sprite.Sprite):
         # self.set_image_rotations(self.health)
         self.speed = Constants.PLAYER_MIN_SPEED
         self.is_accelerating = False
-        self.rect = self.image.get_rect()
         self.rect.center = location
         self.screen_width = Player.screen_width
         self.screen_height = Player.screen_height
@@ -262,7 +264,8 @@ class Player(game.sprite.Sprite):
         self.set_direction(self.direction)
 
     def set_image(self):
-        self.image = self.imageArray[self.frame].convert_alpha()
+        self.image = self.imageArray[self.frame]
+        self.rect = self.image.get_rect(center=self.rect.center)
         self.frameCalls += 1
         if self.frameCalls % Player.FRAME_SLOW == 0:
             self.frame += 1
