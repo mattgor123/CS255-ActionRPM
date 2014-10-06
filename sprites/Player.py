@@ -162,11 +162,11 @@ class Player(game.sprite.Sprite):
             self.speed = Player.max_speed
         if self.speed < Constants.PLAYER_MIN_SPEED:
             self.speed = Constants.PLAYER_MIN_SPEED
-        self.check_acceleration_state()
+        self.check_acceleration_state(acceleration)
         self.set_image()
         self.move(interval)
 
-    def check_acceleration_state(self):
+    def check_acceleration_state(self, accel):
         if self.accelerationState == "stopped":
             if self.speed != Constants.PLAYER_MIN_SPEED:
                 self.accelerationState = "accelerating"
@@ -175,12 +175,19 @@ class Player(game.sprite.Sprite):
             if self.speed == Constants.PLAYER_MAX_SPEED:
                 self.accelerationState = "maxed"
                 self.set_image_array()
-            elif self.speed == Constants.PLAYER_MIN_SPEED:
+            elif accel < 0:
+                self.accelerationState = "slowing"
+                self.set_image_array()
+        elif self.accelerationState == "slowing":
+            if self.speed == Constants.PLAYER_MIN_SPEED:
                 self.accelerationState = "stopped"
+                self.set_image_array()
+            elif accel > 0:
+                self.accelerationState = "accelerating"
                 self.set_image_array()
         elif self.accelerationState == "maxed":
             if self.speed < Constants.PLAYER_MAX_SPEED:
-                self.accelerationState = "accelerating"
+                self.accelerationState = "slowing"
                 self.set_image_array()
 
     def set_image_array(self):
@@ -190,6 +197,8 @@ class Player(game.sprite.Sprite):
             Player.right = Player.accelerating
         elif self.accelerationState == "maxed":
             Player.right = Player.full_speed
+        elif self.accelerationState == "slowing":
+            Player.right = Player.stopped
         self.set_rotations()
 
     def set_rotations(self):
