@@ -206,7 +206,6 @@ class Player(game.sprite.Sprite):
         # set the image based on the direction
         if direction == "right":
             self.imageArray = Player.right
-            # self.rect = self.image.get_rect(center=self.rect.center)
         elif direction == "downright":
             self.imageArray = Player.downright
             # self.rect = self.image.get_rect(center=self.rect.center)
@@ -263,7 +262,7 @@ class Player(game.sprite.Sprite):
         self.set_direction(self.direction)
 
     def set_image(self):
-        self.image = self.imageArray[self.frame]
+        self.image = self.imageArray[self.frame].convert_alpha()
         self.frameCalls += 1
         if self.frameCalls % Player.FRAME_SLOW == 0:
             self.frame += 1

@@ -67,8 +67,8 @@ class Play(State.State):
         background = pygame.Surface(Constants.SCREEN.get_size())
         Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
-        h_label = Label.Label("health", "Health: 100%", (0, 0))
-        s_label = Label.Label("score", "Score: ", (0, 24))
+        h_label = Label.Label("health", "Health: 100%", (10, 10))
+        s_label = Label.Label("score", "Score: ", (10, 34))
         labels.add(h_label)
         labels.add(s_label)
         self.time = 0.00
