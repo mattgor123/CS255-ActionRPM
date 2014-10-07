@@ -165,15 +165,21 @@ class Player(game.sprite.Sprite):
             self.speed = Constants.PLAYER_MIN_SPEED
         self.check_acceleration_state(acceleration)
         self.set_image()
+        self.can_move = True
         self.check_collision(tmp)
-        self.move(interval)
+        if self.can_move:
+            self.move(interval)
 
     def check_collision(self, old):
         for r in Player.wall_rects:
             if self.rect.colliderect(r):
-                print(old)
                 self.set_direction(old)
+                self.is_accelerating = False
+                self.accelerationState = "stopped"
+                self.check_acceleration_state("stopped")
+                self.acceleration = Constants.PLAYER_MIN_SPEED
                 self.set_image()
+                self.can_move = False
                 break
 
     def check_acceleration_state(self, accel):
@@ -250,18 +256,15 @@ class Player(game.sprite.Sprite):
             # self.rect = self.image.get_rect(center=self.rect.center)
 
     def calculate_health(self):
-        # self.health = Constants.PLAYER_STARTING_HEALTH - (
-        #     self.damage / (10 * (11 - self.difficulty)))
-        # if self.health < 25 and not self.current == "quarter":
-        #     self.current = "quarter"
-        #     self.set_image_rotations("quarter")
-        # elif 25 < self.health < 75 and not self.current == \
-        #         "half":
-        #     self.current = "half"
-        #     self.set_image_rotations("half")
-        # elif self.health > 75 and not self.current == "full":
-        #     self.current = "full"
-        #     self.set_image_rotations("full")
+        self.health = Constants.PLAYER_STARTING_HEALTH - (
+            self.damage / (10 * (11 - self.difficulty)))
+        if self.health < 25 and not self.current == "quarter":
+            self.current = "quarter"
+        elif 25 < self.health < 75 and not self.current == \
+                "half":
+            self.current = "half"
+        elif self.health > 75 and not self.current == "full":
+            self.current = "full"
         return self.health
 
     def set_image_rotations(self, healthlevel):
@@ -297,25 +300,17 @@ class Player(game.sprite.Sprite):
             if self.rect.colliderect(r):
                 if (self.speed != Constants.PLAYER_MIN_SPEED):
                     self.speed = Constants.PLAYER_MIN_SPEED
-                    self.damage += 1
+                    self.damage += 5
                     self.crash.play()
-                # if (self.direction == "up"):
-                # if (self.direction == "down"):
-                # if (self.direction == "left"):
-                # if (self.direction == "right"):
-                # if (self.direction == "upleft"):
-                # if (self.direction == "upright"):
-                # if (self.direction == "downright"):
-                # if (self.direction == "downleft"):
                 is_collision = True
 
         if self.direction == "upleft":
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(1, 1)
-                else:
-                    self.rect = self.rect.move(-self.speed * interval,
-                                               -self.speed * interval)
+                # else:
+                #     self.rect = self.rect.move(-self.speed * interval,
+                #                                -self.speed * interval)
             elif (self.rect.left - self.speed * interval) > 0 and (
                     self.rect.top - self.speed * interval) > 0:
                 # no collision, move
@@ -325,9 +320,9 @@ class Player(game.sprite.Sprite):
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(1, -1)
-                else:
-                    self.rect = self.rect.move(-self.speed * interval,
-                                               +self.speed * interval)
+                # else:
+                #     self.rect = self.rect.move(-self.speed * interval,
+                #                                +self.speed * interval)
             elif (self.rect.left - self.speed * interval) > 0 and (
                     self.rect.bottom + self.speed * interval) < \
                     self.screen_height:
@@ -337,17 +332,17 @@ class Player(game.sprite.Sprite):
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(1, 0)
-                else:
-                    self.rect = self.rect.move(-self.speed * interval, 0)
+                # else:
+                #     self.rect = self.rect.move(-self.speed * interval, 0)
             elif (self.rect.left - self.speed * interval) > 0:
                 self.rect = self.rect.move(-self.speed * interval, 0)
         if self.direction == "upright":
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(-1, 1)
-                else:
-                    self.rect = self.rect.move(self.speed * interval,
-                                               -self.speed * interval)
+                # else:
+                #     self.rect = self.rect.move(self.speed * interval,
+                #                                -self.speed * interval)
             elif (
                     self.rect.right + self.speed * interval) < \
                     self.screen_width \
@@ -359,9 +354,9 @@ class Player(game.sprite.Sprite):
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(-1, -1)
-                else:
-                    self.rect = self.rect.move(self.speed * interval,
-                                               self.speed * interval)
+                # else:
+                #     self.rect = self.rect.move(self.speed * interval,
+                #                                self.speed * interval)
             elif (
                     self.rect.right + self.speed * interval) < \
                     self.screen_width \
@@ -374,24 +369,24 @@ class Player(game.sprite.Sprite):
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(-1, 0)
-                else:
-                    self.rect = self.rect.move(self.speed * interval, 0)
+                # else:
+                #     self.rect = self.rect.move(self.speed * interval, 0)
             elif (self.rect.right + self.speed * interval) < self.screen_width:
                 self.rect = self.rect.move(self.speed * interval, 0)
         if self.direction == "up":
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(0, 1)
-                else:
-                    self.rect = self.rect.move(0, -self.speed * interval)
+                # else:
+                #     self.rect = self.rect.move(0, -self.speed * interval)
             elif (self.rect.top - self.speed * interval) > 0:
                 self.rect = self.rect.move(0, -self.speed * interval)
         if self.direction == "down":
             if (is_collision):
                 if (self.speed == Constants.PLAYER_MIN_SPEED):
                     self.rect = self.rect.move(0, -1)
-                else:
-                    self.rect = self.rect.move(0, self.speed * interval)
+                # else:
+                #     self.rect = self.rect.move(0, self.speed * interval)
             elif (self.rect.bottom + self.speed * interval) < \
                     self.screen_height:
                 self.rect = self.rect.move(0, self.speed * interval)
