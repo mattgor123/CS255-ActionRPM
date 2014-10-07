@@ -174,12 +174,7 @@ class Player(game.sprite.Sprite):
         for r in Player.wall_rects:
             if self.rect.colliderect(r):
                 self.set_direction(old)
-                self.is_accelerating = False
-                self.accelerationState = "stopped"
-                self.check_acceleration_state("stopped")
-                self.acceleration = Constants.PLAYER_MIN_SPEED
                 self.set_image()
-                self.can_move = False
                 break
 
     def check_acceleration_state(self, accel):
