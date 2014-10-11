@@ -9,16 +9,30 @@ import math
 
 class Map():
 
+    # Width of map a single letter counts for
     LETTER_WIDTH = Constants.WIDTH / Tile.WIDTH    # 10
+    # Height of map a single letter counts for
     LETTER_HEIGHT = Constants.HEIGHT / Tile.HEIGHT  # 10
+    # Maximum number of letters to read
     MAX_LETTERS = 2
+    # Maximum height of map
     MAX_HEIGHT = MAX_LETTERS * LETTER_HEIGHT
+    # Maximum width of map
     MAX_WIDTH = MAX_LETTERS * LETTER_WIDTH
+    # Range to give for checking collisions
+    TILE_RANGE = 5
 
+    # Initializes the map, reads map.txt
     def __init__(self):
         self.map = []
         self.init_map()
+        self.x_min = 0
+        self.x_max = 0
+        self.y_min = 0
+        self.y_max = 0
 
+    # Reads up to max letters from map.txt and loads
+    # them into RAM
     def init_map(self):
         map_file = open("map/map.txt", "r")
         for i in range(0, Map.MAX_LETTERS):
@@ -26,6 +40,8 @@ class Map():
             for j in range(0, Map.MAX_LETTERS):
                 self.map_load(j, i, line[j])
 
+    # Loads the more zoomed in map file for the specific
+    # character given
     def map_load(self, x, y, char):
         filename = "map/" + char + ".txt"
         map_x = x * Map.LETTER_WIDTH
@@ -40,6 +56,7 @@ class Map():
             map_y += 1
             map_x = x * Map.LETTER_WIDTH
 
+    # Creates an object represented by the given char
     def resolve(self, char):
         if char == 'w':
             return sprites.Wall.Wall()
@@ -48,6 +65,8 @@ class Map():
         else:
             return None
 
+    # Appends a new chunk starting at x,y to the map.
+    # Loads all Nones
     def add_chunk(self, x, y):
         while x > len(self.map):
             self.map.append([])
@@ -59,6 +78,7 @@ class Map():
                 self.map[x].append(None)
             x += 1
 
+    # Returns a string representation of the map
     def __str__(self):
         toReturn = ""
         for col in self.map:
@@ -67,39 +87,69 @@ class Map():
             toReturn += '\n'
         return toReturn
 
+    # Returns a sprite group of all the sprites that need
+    # to be rendered around the player_x, player_y.
+    # Adjusts the maps mins / maxes so that there is never
+    # black space rendered
     def render(self, player_x, player_y):
-        toRender = PG.sprite.Group()
+        to_render = PG.sprite.Group()
 
-        x_min = math.floor(player_x) - 40
-        x_max = math.floor(player_x) + 40
-        if x_min < 0:
-            x_max += math.fabs(x_min) - 1
-            x_min = 0
-        if x_max >= len(self.map):
-            x_min -= (x_max - len(self.map))
-            x_max = len(self.map) - 1
+        self.x_min = math.floor(player_x) - 40
+        self.x_max = math.floor(player_x) + 40
+        if self.x_min < 0:
+            self.x_max += math.fabs(self.x_min) - 1
+            self.x_min = 0
+        if self.x_max >= len(self.map):
+            self.x_min -= (self.x_max - len(self.map))
+            self.x_max = len(self.map) - 1
 
-        y_min = math.floor(player_y) - 30
-        y_max = math.floor(player_y) + 30
-        if y_min < 0:
-            y_max += math.fabs(y_min) - 1
-            y_min = 0
-        if y_max >= len(self.map[0]):
-            y_min -= (y_max - len(self.map[0]))
-            y_max = len(self.map[0]) - 1
+        self.y_min = math.floor(player_y) - 30
+        self.y_max = math.floor(player_y) + 30
+        if self.y_min < 0:
+            self.y_max += math.fabs(self.y_min) - 1
+            self.y_min = 0
+        if self.y_max >= len(self.map[0]):
+            self.y_min -= (self.y_max - len(self.map[0]))
+            self.y_max = len(self.map[0]) - 1
 
-        x_min = int(x_min)
-        x_max = int(x_max)
-        y_min = int(y_min)
-        y_max = int(y_max)
+        self.x_min = int(self.x_min)
+        self.x_max = int(self.x_max)
+        self.y_min = int(self.y_min)
+        self.y_max = int(self.y_max)
 
-        for x in range(x_min, x_max + 1):
-            for y in range(y_min, y_max + 1):
-                self.map[x][y].rect.topleft = ((x - x_min) * Tile.WIDTH,
-                                                (y - y_min) * Tile.HEIGHT)
-                toRender.add(self.map[x][y])
+        for x in range(self.x_min, self.x_max + 1):
+            for y in range(self.y_min, self.y_max + 1):
+                self.map[x][y].rect.topleft = ((x - self.x_min) * Tile.WIDTH,
+                                               (y - self.y_min) * Tile.HEIGHT)
+                to_render.add(self.map[x][y])
 
-        return toRender
+        return to_render
 
+    # Gets the tuple for the top_left corner of a sprite
+    # with map coordinates x,y
+    def get_top_left(self, x, y):
+        x_coor = (x - self.x_min) * Tile.WIDTH
+        y_coor = (y - self.y_min) * Tile.HEIGHT
+        return tuple(x_coor, y_coor)
+
+    # Gets all the tiles within a radius of TILE_RANGE from
+    # x,y
+    def get_tiles(self, x, y):
+        to_return = []
+        x = int(x)
+        y = int(y)
+        for x in range(x - Map.TILE_RANGE, x + Map.TILE_RANGE + 1):
+            for y in range(y - Map.TILE_RANGE, y + Map.TILE_RANGE + 1):
+                if self.inbound(x, y):
+                    to_return.append(self.map[x][y])
+        return to_return
+
+    # Checks if the given coordinates x,y are in the bounds of the map
+    def inbound(self, x, y):
+        if x >= len(self.map) or x < 0:
+            return False
+        if y >= len(self.map[0]) or y < 0:
+            return False
+        return True
 if __name__ == "__main__":
     test = Map()

@@ -1,6 +1,7 @@
 import pygame
 import Tile
 
+
 class Wall(Tile.Tile):
     wall_img = None
 
