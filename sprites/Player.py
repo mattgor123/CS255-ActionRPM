@@ -171,7 +171,8 @@ class Player(game.sprite.Sprite):
 
     def check_collision(self, old):
         for r in Player.wall_rects:
-            if self.rect.colliderect(r) and self.speed > Constants.PLAYER_MIN_SPEED:
+            if self.rect.colliderect(r) and
+            self.speed > Constants.PLAYER_MIN_SPEED:
                 self.set_direction(old)
                 self.set_image()
                 break
@@ -310,14 +311,19 @@ class Player(game.sprite.Sprite):
                         collisionFixed = True
 
                     #These collisions are to fix hitting any corners
-                    #Only happens if there wasnt a collision with one of the centers of the car
-                    if (not collisionFixed and r.collidepoint(self.rect.topright)):
+                    #Only happens if there wasnt a collision with one
+                    #of the centers of the car
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.topright)):
                         self.rect.right = r.left
-                    if (not collisionFixed and r.collidepoint(self.rect.bottomright)):
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.bottomright)):
                         self.rect.right = r.left
-                    if (not collisionFixed and r.collidepoint(self.rect.topleft)):
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.topleft)):
                         self.rect.left = r.right
-                    if (not collisionFixed and r.collidepoint(self.rect.bottomleft)):
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.bottomleft)):
                         self.rect.left = r.right
 
                             #self.crash.play()
