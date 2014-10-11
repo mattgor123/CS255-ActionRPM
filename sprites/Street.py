@@ -1,16 +1,20 @@
 import pygame
+import Tile
 
 
-class Street(pygame.sprite.Sprite):
+class Street(Tile.Tile):
     street_img = None
 
-    def __init__(self, location):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self):
+        Tile.Tile.__init__(self, False)
 
         # initialize street image
         if Street.street_img is None:
-            Street.wall_img = pygame.image.load(
-                "images/sprites/street/w_wall.png").convert_alpha()
+            Street.street_img = pygame.image.load(
+                "images/sprites/street/w_street.png").convert_alpha()
         self.image = Street.street_img
         self.rect = self.image.get_rect()
-        self.rect.center = location
+        # self.rect.center = location
+
+    def __str__(self):
+        return 's'

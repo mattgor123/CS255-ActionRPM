@@ -7,6 +7,7 @@ class Tile(PG.sprite.Sprite):
     WIDTH = 10
 
     def __init__(self, collidable):
+        PG.sprite.Sprite.__init__(self)
         self.collidable = collidable
 
     def isCollidable(self):

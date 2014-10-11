@@ -2,8 +2,8 @@
 
 # Constants (ALL MUST BE INTEGERS except INTERVAL)
 class Constants(object):
-    WIDTH = None
-    HEIGHT = None
+    WIDTH = 800
+    HEIGHT = 600
     INTERVAL = .01
     PLAYER_MAX_SPEED = 300
     PLAYER_MIN_SPEED = (1 / INTERVAL) - 10

@@ -1,11 +1,11 @@
 import pygame
+import Tile
 
-
-class Wall(pygame.sprite.Sprite):
+class Wall(Tile.Tile):
     wall_img = None
 
-    def __init__(self, location):
-        pygame.sprite.Sprite.__init__(self)
+    def __init__(self):
+        Tile.Tile.__init__(self, True)
 
         # initialize wall image
         if Wall.wall_img is None:
@@ -13,4 +13,7 @@ class Wall(pygame.sprite.Sprite):
                 "images/sprites/wall/h_wall.png").convert_alpha()
         self.image = Wall.wall_img
         self.rect = self.image.get_rect()
-        self.rect.center = location
+        # self.rect.center = location
+
+    def __str__(self):
+        return 'w'
