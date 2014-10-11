@@ -171,8 +171,8 @@ class Player(game.sprite.Sprite):
 
     def check_collision(self, old):
         for r in Player.wall_rects:
-            if self.rect.colliderect(r) and
-            self.speed > Constants.PLAYER_MIN_SPEED:
+            if self.rect.colliderect(r) \
+                    and self.speed > Constants.PLAYER_MIN_SPEED:
                 self.set_direction(old)
                 self.set_image()
                 break
