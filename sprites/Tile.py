@@ -1,5 +1,6 @@
 import pygame as PG
 
+
 class Tile(PG.sprite.Sprite):
 
     HEIGHT = 10
