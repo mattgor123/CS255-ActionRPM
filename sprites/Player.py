@@ -4,7 +4,6 @@ import util.SpriteSheet as SS
 
 
 class Player(game.sprite.Sprite):
-
     # These are the images
     # full_health = None
     # half_health = None
@@ -30,7 +29,7 @@ class Player(game.sprite.Sprite):
         # set the images to the appropriate ones based on the direction of the
         # character
         # if Player.full_health is None:
-        #     Player.full_health = game.image.load(
+        # Player.full_health = game.image.load(
         #         "images/sprites/playerfullhealth.png").convert_alpha()
         if Player.crash is None:
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
@@ -166,13 +165,14 @@ class Player(game.sprite.Sprite):
         self.check_acceleration_state(acceleration)
         self.set_image()
         self.can_move = True
-        self.check_collision(tmp)
+        # self.check_collision(tmp)
         if self.can_move:
             self.move(interval)
 
     def check_collision(self, old):
         for r in Player.wall_rects:
-            if self.rect.colliderect(r):
+            if self.rect.colliderect(r) \
+                    and self.speed > Constants.PLAYER_MIN_SPEED:
                 self.set_direction(old)
                 self.set_image()
                 break
@@ -295,96 +295,59 @@ class Player(game.sprite.Sprite):
             if self.rect.colliderect(r):
                 if (self.speed != Constants.PLAYER_MIN_SPEED):
                     self.speed = Constants.PLAYER_MIN_SPEED
-                    self.damage += 5
-                    self.crash.play()
-                is_collision = True
+                    # self.damage += 5
+                    collisionFixed = False
+                    if (r.collidepoint(self.rect.midbottom)):
+                        self.rect.bottom = r.top
+                        collisionFixed = True
+                    if (r.collidepoint(self.rect.midleft)):
+                        self.rect.left = r.right
+                        collisionFixed = True
+                    if (r.collidepoint(self.rect.midright)):
+                        self.rect.right = r.left
+                        collisionFixed = True
+                    if (r.collidepoint(self.rect.midtop)):
+                        self.rect.top = r.bottom
+                        collisionFixed = True
+
+                    #These collisions are to fix hitting any corners
+                    #Only happens if there wasnt a collision with one
+                    #of the centers of the car
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.topright)):
+                        self.rect.right = r.left
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.bottomright)):
+                        self.rect.right = r.left
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.topleft)):
+                        self.rect.left = r.right
+                    if (not collisionFixed
+                            and r.collidepoint(self.rect.bottomleft)):
+                        self.rect.left = r.right
+
+                            #self.crash.play()
 
         if self.direction == "upleft":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(1, 1)
-                # else:
-                #     self.rect = self.rect.move(-self.speed * interval,
-                #                                -self.speed * interval)
-            elif (self.rect.left - self.speed * interval) > 0 and (
-                    self.rect.top - self.speed * interval) > 0:
-                # no collision, move
-                self.rect = self.rect.move(-self.speed * interval,
-                                           -self.speed * interval)
+            self.rect = self.rect.move(-self.speed * interval,
+                                       -self.speed * interval)
         if self.direction == "downleft":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(1, -1)
-                # else:
-                #     self.rect = self.rect.move(-self.speed * interval,
-                #                                +self.speed * interval)
-            elif (self.rect.left - self.speed * interval) > 0 and (
-                    self.rect.bottom + self.speed * interval) < \
-                    self.screen_height:
-                self.rect = self.rect.move(-self.speed * interval,
-                                           +self.speed * interval)
+            self.rect = self.rect.move(-self.speed * interval,
+                                       +self.speed * interval)
         if self.direction == "left":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(1, 0)
-                # else:
-                #     self.rect = self.rect.move(-self.speed * interval, 0)
-            elif (self.rect.left - self.speed * interval) > 0:
-                self.rect = self.rect.move(-self.speed * interval, 0)
+            self.rect = self.rect.move(-self.speed * interval, 0)
         if self.direction == "upright":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(-1, 1)
-                # else:
-                #     self.rect = self.rect.move(self.speed * interval,
-                #                                -self.speed * interval)
-            elif (
-                    self.rect.right + self.speed * interval) < \
-                    self.screen_width \
-                    and (
-                        self.rect.top) > 0:
-                self.rect = self.rect.move(self.speed * interval,
-                                           -self.speed * interval)
+            self.rect = self.rect.move(self.speed * interval,
+                                       -self.speed * interval)
         if self.direction == "downright":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(-1, -1)
-                # else:
-                #     self.rect = self.rect.move(self.speed * interval,
-                #                                self.speed * interval)
-            elif (
-                    self.rect.right + self.speed * interval) < \
-                    self.screen_width \
-                    and (
-                        self.rect.bottom + self.speed * interval) < \
-                    self.screen_height:
-                self.rect = self.rect.move(self.speed * interval,
-                                           self.speed * interval)
+            self.rect = self.rect.move(self.speed * interval,
+                                       self.speed * interval)
         if self.direction == "right":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(-1, 0)
-                # else:
-                #     self.rect = self.rect.move(self.speed * interval, 0)
-            elif (self.rect.right + self.speed * interval) < self.screen_width:
-                self.rect = self.rect.move(self.speed * interval, 0)
+            self.rect = self.rect.move(self.speed * interval, 0)
         if self.direction == "up":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(0, 1)
-                # else:
-                #     self.rect = self.rect.move(0, -self.speed * interval)
-            elif (self.rect.top - self.speed * interval) > 0:
-                self.rect = self.rect.move(0, -self.speed * interval)
+            self.rect = self.rect.move(0, -self.speed * interval)
         if self.direction == "down":
-            if (is_collision):
-                if (self.speed == Constants.PLAYER_MIN_SPEED):
-                    self.rect = self.rect.move(0, -1)
-                # else:
-                #     self.rect = self.rect.move(0, self.speed * interval)
-            elif (self.rect.bottom + self.speed * interval) < \
-                    self.screen_height:
-                self.rect = self.rect.move(0, self.speed * interval)
+            self.rect = self.rect.move(0, self.speed * interval)
 
     def add_walls(self, wrects):
         Player.wall_rects = wrects
