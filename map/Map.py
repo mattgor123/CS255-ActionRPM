@@ -4,6 +4,7 @@ import sprites.Wall as Wall
 import sprites.Street as Street
 import sprites
 from states.Constants import Constants
+import math
 
 
 class Map():
@@ -65,6 +66,40 @@ class Map():
                 toReturn += item.__str__()
             toReturn += '\n'
         return toReturn
+
+    def render(self, player_x, player_y):
+        toRender = PG.sprite.Group()
+
+        x_min = math.floor(player_x) - 40
+        x_max = math.floor(player_x) + 40
+        if x_min < 0:
+            x_max += math.fabs(x_min) - 1
+            x_min = 0
+        if x_max >= len(self.map):
+            x_min -= (x_max - len(self.map))
+            x_max = len(self.map) - 1
+
+        y_min = math.floor(player_y) - 30
+        y_max = math.floor(player_y) + 30
+        if y_min < 0:
+            y_max += math.fabs(y_min) - 1
+            y_min = 0
+        if y_max >= len(self.map[0]):
+            y_min -= (y_max - len(self.map[0]))
+            y_max = len(self.map[0]) - 1
+
+        x_min = int(x_min)
+        x_max = int(x_max)
+        y_min = int(y_min)
+        y_max = int(y_max)
+
+        for x in range(x_min, x_max + 1):
+            for y in range(y_min, y_max + 1):
+                self.map[x][y].rect.topleft = ((x - x_min) * Tile.WIDTH,
+                                                (y - y_min) * Tile.HEIGHT)
+                toRender.add(self.map[x][y])
+
+        return toRender
 
 if __name__ == "__main__":
     test = Map()
