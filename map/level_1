@@ -13,7 +13,7 @@ W                                                                              W
 W                                                                              W
 W                                                                              W
 W                 WWWWWWWWWWWWWWWW                                             W
-WWWWWWWWWWWWWWWW                                                               W
+WWWWWWWWWWWWWWWW  WWWWWWWWWWWWWWWW                                             W
 W                                                                              W
 W                                                                E             W
 W                                                                              W
@@ -64,5 +64,5 @@ WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 0,590,800,10
 790,0,10,600
 1,150,160,10
-180,140,160,10
+180,140,160,20
 330,0,10,100
