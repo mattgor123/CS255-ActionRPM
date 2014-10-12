@@ -94,8 +94,8 @@ class Map():
     def render(self, player_x, player_y):
         to_render = PG.sprite.Group()
 
-        self.x_min = math.floor(player_x) - 40
-        self.x_max = math.floor(player_x) + 40
+        self.x_min = player_x - 42
+        self.x_max = player_x + 42
         if self.x_min < 0:
             self.x_max += math.fabs(self.x_min) - 1
             self.x_min = 0
@@ -103,8 +103,8 @@ class Map():
             self.x_min -= (self.x_max - len(self.map))
             self.x_max = len(self.map) - 1
 
-        self.y_min = math.floor(player_y) - 30
-        self.y_max = math.floor(player_y) + 30
+        self.y_min = player_y - 32
+        self.y_max = player_y + 32
         if self.y_min < 0:
             self.y_max += math.fabs(self.y_min) - 1
             self.y_min = 0
@@ -112,13 +112,13 @@ class Map():
             self.y_min -= (self.y_max - len(self.map[0]))
             self.y_max = len(self.map[0]) - 1
 
-        self.x_min = int(self.x_min)
-        self.x_max = int(self.x_max)
-        self.y_min = int(self.y_min)
-        self.y_max = int(self.y_max)
+        # self.x_min = int(self.x_min)
+        # self.x_max = int(self.x_max)
+        # self.y_min = int(self.y_min)
+        # self.y_max = int(self.y_max)
 
-        for x in range(self.x_min, self.x_max + 1):
-            for y in range(self.y_min, self.y_max + 1):
+        for x in range(int(self.x_min), int(self.x_max) + 1):
+            for y in range(int(self.y_min), int(self.y_max) + 1):
                 self.map[x][y].rect.topleft = ((x - self.x_min) * Tile.WIDTH,
                                                (y - self.y_min) * Tile.HEIGHT)
                 to_render.add(self.map[x][y])
