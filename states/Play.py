@@ -17,8 +17,6 @@ from Constants import Constants
 class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
     time = 0
-    m_x = 40
-    m_y = 30
 
     #Code to initialize a new game instance
     def __init__(self):
@@ -28,10 +26,10 @@ class Play(State.State):
         # read map file
         map = Map.Map()
         players = pygame.sprite.Group()
-        player = Player.Player(map.get_top_left(self.m_x, self.m_y), [
+        player = Player.Player(map.get_top_left(40, 30), [
             Constants.WIDTH, Constants.HEIGHT], Constants.DIFFICULTY)
         players.add(player)
-        maps = map.render(self.m_x, self.m_y)
+        maps = map.render(player.p_x, player.p_y)
         maps.update()
 
         background = pygame.Surface(Constants.SCREEN.get_size())
@@ -46,7 +44,7 @@ class Play(State.State):
     #Function to draw the sprite groups
     def draw(self):
         #Clear the sprite groups from the screen
-        maps = map.render(self.m_x, self.m_y)
+        maps = map.render(player.p_x, player.p_y)
         players.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
         maps.clear(Constants.SCREEN, background)
@@ -79,15 +77,6 @@ class Play(State.State):
 
         #Update the player
         players.update(Constants.INTERVAL)
-        keys_pressed = pygame.key.get_pressed()
-        if keys_pressed[pygame.K_RIGHT]:
-            self.m_x += 1
-        if keys_pressed[pygame.K_LEFT]:
-            self.m_x -= 1
-        if keys_pressed[pygame.K_DOWN]:
-            self.m_y += 1
-        if keys_pressed[pygame.K_UP]:
-            self.m_y -= 1
         for player in players.sprites():
                 dir_changed = player.dir_changed
                 direction = player.direction
