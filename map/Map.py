@@ -130,7 +130,7 @@ class Map():
     def get_top_left(self, x, y):
         x_coor = (x - self.x_min) * Tile.WIDTH
         y_coor = (y - self.y_min) * Tile.HEIGHT
-        return tuple(x_coor, y_coor)
+        return (x_coor, y_coor)
 
     # Gets all the tiles within a radius of TILE_RANGE from
     # x,y

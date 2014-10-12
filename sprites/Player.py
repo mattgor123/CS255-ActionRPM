@@ -290,64 +290,65 @@ class Player(game.sprite.Sprite):
             self.frame = 0
 
     def move(self, interval):
-        is_collision = False
-        for r in Player.wall_rects:
-            if self.rect.colliderect(r):
-                if (self.speed != Constants.PLAYER_MIN_SPEED):
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    # self.damage += 5
-                    collisionFixed = False
-                    if (r.collidepoint(self.rect.midbottom)):
-                        self.rect.bottom = r.top
-                        collisionFixed = True
-                    if (r.collidepoint(self.rect.midleft)):
-                        self.rect.left = r.right
-                        collisionFixed = True
-                    if (r.collidepoint(self.rect.midright)):
-                        self.rect.right = r.left
-                        collisionFixed = True
-                    if (r.collidepoint(self.rect.midtop)):
-                        self.rect.top = r.bottom
-                        collisionFixed = True
+        pass
+    #     is_collision = False
+    #     for r in Player.wall_rects:
+    #         if self.rect.colliderect(r):
+    #             if (self.speed != Constants.PLAYER_MIN_SPEED):
+    #                 self.speed = Constants.PLAYER_MIN_SPEED
+    #                 # self.damage += 5
+    #                 collisionFixed = False
+    #                 if (r.collidepoint(self.rect.midbottom)):
+    #                     self.rect.bottom = r.top
+    #                     collisionFixed = True
+    #                 if (r.collidepoint(self.rect.midleft)):
+    #                     self.rect.left = r.right
+    #                     collisionFixed = True
+    #                 if (r.collidepoint(self.rect.midright)):
+    #                     self.rect.right = r.left
+    #                     collisionFixed = True
+    #                 if (r.collidepoint(self.rect.midtop)):
+    #                     self.rect.top = r.bottom
+    #                     collisionFixed = True
 
-                    #These collisions are to fix hitting any corners
-                    #Only happens if there wasnt a collision with one
-                    #of the centers of the car
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.topright)):
-                        self.rect.right = r.left
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.bottomright)):
-                        self.rect.right = r.left
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.topleft)):
-                        self.rect.left = r.right
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.bottomleft)):
-                        self.rect.left = r.right
+    #                 #These collisions are to fix hitting any corners
+    #                 #Only happens if there wasnt a collision with one
+    #                 #of the centers of the car
+    #                 if (not collisionFixed
+    #                         and r.collidepoint(self.rect.topright)):
+    #                     self.rect.right = r.left
+    #                 if (not collisionFixed
+    #                         and r.collidepoint(self.rect.bottomright)):
+    #                     self.rect.right = r.left
+    #                 if (not collisionFixed
+    #                         and r.collidepoint(self.rect.topleft)):
+    #                     self.rect.left = r.right
+    #                 if (not collisionFixed
+    #                         and r.collidepoint(self.rect.bottomleft)):
+    #                     self.rect.left = r.right
 
-                            #self.crash.play()
+    #                         #self.crash.play()
 
-        if self.direction == "upleft":
-            self.rect = self.rect.move(-self.speed * interval,
-                                       -self.speed * interval)
-        if self.direction == "downleft":
-            self.rect = self.rect.move(-self.speed * interval,
-                                       +self.speed * interval)
-        if self.direction == "left":
-            self.rect = self.rect.move(-self.speed * interval, 0)
-        if self.direction == "upright":
-            self.rect = self.rect.move(self.speed * interval,
-                                       -self.speed * interval)
-        if self.direction == "downright":
-            self.rect = self.rect.move(self.speed * interval,
-                                       self.speed * interval)
-        if self.direction == "right":
-            self.rect = self.rect.move(self.speed * interval, 0)
-        if self.direction == "up":
-            self.rect = self.rect.move(0, -self.speed * interval)
-        if self.direction == "down":
-            self.rect = self.rect.move(0, self.speed * interval)
+    #     if self.direction == "upleft":
+    #         self.rect = self.rect.move(-self.speed * interval,
+    #                                    -self.speed * interval)
+    #     if self.direction == "downleft":
+    #         self.rect = self.rect.move(-self.speed * interval,
+    #                                    +self.speed * interval)
+    #     if self.direction == "left":
+    #         self.rect = self.rect.move(-self.speed * interval, 0)
+    #     if self.direction == "upright":
+    #         self.rect = self.rect.move(self.speed * interval,
+    #                                    -self.speed * interval)
+    #     if self.direction == "downright":
+    #         self.rect = self.rect.move(self.speed * interval,
+    #                                    self.speed * interval)
+    #     if self.direction == "right":
+    #         self.rect = self.rect.move(self.speed * interval, 0)
+    #     if self.direction == "up":
+    #         self.rect = self.rect.move(0, -self.speed * interval)
+    #     if self.direction == "down":
+    #         self.rect = self.rect.move(0, self.speed * interval)
 
-    def add_walls(self, wrects):
-        Player.wall_rects = wrects
+    # def add_walls(self, wrects):
+    #     Player.wall_rects = wrects
