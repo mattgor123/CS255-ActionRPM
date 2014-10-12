@@ -1,6 +1,7 @@
 import pygame as game
 from states.Constants import Constants
 import util.SpriteSheet as SS
+import map.Map as Map
 
 
 class Player(game.sprite.Sprite):
@@ -16,6 +17,8 @@ class Player(game.sprite.Sprite):
     max_speed = Constants.PLAYER_MAX_SPEED
     wall_rects = None
     FRAME_SLOW = 10
+    p_x = None
+    p_y = None
 
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
@@ -23,6 +26,8 @@ class Player(game.sprite.Sprite):
     def __init__(self, location, screensize):
 
         game.sprite.Sprite.__init__(self)
+        global map
+        map = Map.Map()
         Player.screen_width = screensize[0]
         Player.screen_height = screensize[1]
         self.direction = "right"
@@ -80,7 +85,10 @@ class Player(game.sprite.Sprite):
         # self.set_image_rotations(self.health)
         self.speed = Constants.PLAYER_MIN_SPEED
         self.is_accelerating = False
-        # self.rect.center = location
+
+        self.rect.center = location
+        self.x = location[0]
+        self.y = location[1]
         self.screen_width = Player.screen_width
         self.screen_height = Player.screen_height
         self.dir_changed = False
@@ -293,6 +301,7 @@ class Player(game.sprite.Sprite):
 
     def move(self, interval):
         is_collision = False
+
         # for r in Player.wall_rects:
         #     if self.rect.colliderect(r):
         #         if (self.speed != Constants.PLAYER_MIN_SPEED):
@@ -311,7 +320,6 @@ class Player(game.sprite.Sprite):
         #             if (r.collidepoint(self.rect.midtop)):
         #                 self.rect.top = r.bottom
         #                 collisionFixed = True
-        #
         #             #These collisions are to fix hitting any corners
         #             #Only happens if there wasnt a collision with one
         #             #of the centers of the car

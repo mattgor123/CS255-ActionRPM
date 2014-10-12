@@ -6,7 +6,7 @@ import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
-import sprites.Wall as Wall
+import map.Map as Map
 import NewHigh
 import GameEnded
 import Menu
@@ -26,8 +26,7 @@ class Play(State.State):
         global players, enemies, labels, background, walls, map
 
         # read map file
-        walls = pygame.sprite.Group()
-        wall_rects = []
+        map = Map.Map()
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
         Play.tiles = pygame.sprite.Group()
@@ -127,8 +126,6 @@ class Play(State.State):
         for player in players.sprites():
                 dir_changed = player.dir_changed
                 direction = player.direction
-
-        # enemies.update(dir_changed, direction, Constants.INTERVAL)
 
         #Determine current health status & update Label
         for player in players.sprites():
