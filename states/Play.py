@@ -95,6 +95,7 @@ class Play(State.State):
 
         else:
             # enemies.draw(Constants.SCREEN)
+            Play.tiles.empty()
             self.set_tiles()
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
