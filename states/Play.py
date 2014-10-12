@@ -11,58 +11,61 @@ import NewHigh
 import GameEnded
 import Menu
 from Constants import Constants
+from map import Map
 
 
 #This is the state for playing the game
 class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
     time = 0
+    tiles = None
 
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
-        global players, enemies, labels, background, walls
+        global players, enemies, labels, background, walls, map
 
         # read map file
         walls = pygame.sprite.Group()
         wall_rects = []
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
-        f = open('map/level_1', 'r')
-        x = y = 5
-        coord = False
-        for row in f:
-            if row[0] == "~" or coord:
-                if coord:
-                    where = row.split(",")
-                    rect = pygame.Rect(int(where[0]), int(where[1]), int(
-                        where[2]), int(where[3]))
-                    wall_rects.append(rect)
-                coord = True
-            else:
-                for col in row:
-                    if (col == "W"):
-                        wall = Wall.Wall([x, y])
-                        walls.add(wall)
-                    if (col == "P"):
-                        player1 = Player.Player([x, y], [
-                            Constants.WIDTH, Constants.HEIGHT],
-                            Constants.DIFFICULTY)
-                        players.add(player1)
-                    if (col == "E"):
-                        enemy_speed = random.randint(
-                            1, Constants.ENEMY_SPEEDS) * \
-                            Constants.PLAYER_MAX_SPEED * 2 \
-                            / Constants.ENEMY_SPEEDS
-                        new_enemy = Enemy.Enemy([x, y], [
-                            Constants.WIDTH, Constants.HEIGHT],
-                            enemy_speed, direction=random.randint(1, 8))
-                        enemies.add(new_enemy)
-                    x += 10
-                y += 10
-                x = 5
+        Play.tiles = pygame.sprite.Group()
+        # f = open('map/level_1', 'r')
+        # x = y = 5
+        # coord = False
+        # for row in f:
+        #     if row[0] == "~" or coord:
+        #         if coord:
+        #             where = row.split(",")
+        #             rect = pygame.Rect(int(where[0]), int(where[1]), int(
+        #                 where[2]), int(where[3]))
+        #             wall_rects.append(rect)
+        #         coord = True
+        #     else:
+        #         for col in row:
+        #             if (col == "W"):
+        #                 wall = Wall.Wall([x, y])
+        #                 walls.add(wall)
+        #             if (col == "P"):
+        #                 player1 = Player.Player([x, y], [
+        #                     Constants.WIDTH, Constants.HEIGHT],
+        #                     Constants.DIFFICULTY)
+        #                 players.add(player1)
+        #             if (col == "E"):
+        #                 enemy_speed = random.randint(
+        #                     1, Constants.ENEMY_SPEEDS) * \
+        #                     Constants.PLAYER_MAX_SPEED * 2 \
+        #                     / Constants.ENEMY_SPEEDS
+        #                 new_enemy = Enemy.Enemy([x, y], [
+        #                     Constants.WIDTH, Constants.HEIGHT],
+        #                     enemy_speed, direction=random.randint(1, 8))
+        #                 enemies.add(new_enemy)
+        #             x += 10
+        #         y += 10
+        #         x = 5
 
-        player1.add_walls(wall_rects)
+        # player1.add_walls(wall_rects)
 
         background = pygame.Surface(Constants.SCREEN.get_size())
         Constants.SCREEN.fill((0, 0, 0))
@@ -71,15 +74,19 @@ class Play(State.State):
         s_label = Label.Label("score", "Score: ", (10, 34))
         labels.add(h_label)
         labels.add(s_label)
+        player1 = Player.Player([40,40], [Constants.WIDTH,Constants.HEIGHT])
+        players.add(player1)
+        map = Map.Map()
         self.time = 0.00
 
     #Function to draw the sprite groups
     def draw(self):
         #Clear the sprite groups from the screen
         players.clear(Constants.SCREEN, background)
-        enemies.clear(Constants.SCREEN, background)
+        Play.tiles.clear(Constants.SCREEN, background)
+        # enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
-        walls.clear(Constants.SCREEN, background)
+        # walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
             #labels.clear(Constants.SCREEN,background)
@@ -88,13 +95,21 @@ class Play(State.State):
             game_over(self)
 
         else:
-            enemies.draw(Constants.SCREEN)
+            # enemies.draw(Constants.SCREEN)
+            self.set_tiles()
+            Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
-            walls.draw(Constants.SCREEN)
+            # walls.draw(Constants.SCREEN)
             display.update()
 
     #Only specific key event we will handle for now is 'q' or 'r' to restart
+
+    def set_tiles(self):
+        for player in players.sprites():
+            Play.tiles = map.render(player.x, player.y)
+            player.rect.topleft = map.get_topleft(player.x, player.y)
+
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
@@ -112,7 +127,8 @@ class Play(State.State):
         for player in players.sprites():
                 dir_changed = player.dir_changed
                 direction = player.direction
-        enemies.update(dir_changed, direction, Constants.INTERVAL)
+
+        # enemies.update(dir_changed, direction, Constants.INTERVAL)
 
         #Determine current health status & update Label
         for player in players.sprites():

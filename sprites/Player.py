@@ -20,7 +20,7 @@ class Player(game.sprite.Sprite):
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
 
-    def __init__(self, location, screensize, difficulty):
+    def __init__(self, location, screensize):
 
         game.sprite.Sprite.__init__(self)
         Player.screen_width = screensize[0]
@@ -65,6 +65,8 @@ class Player(game.sprite.Sprite):
         Player.right = self.imageArray
         self.image = self.imageArray[0]
         self.rect = self.image.get_rect()
+        self.x = location[0]
+        self.y = location[1]
 
         self.accelerationState = "stopped"
         self.set_rotations()
@@ -73,15 +75,15 @@ class Player(game.sprite.Sprite):
         self.set_image()
         self.crash = Player.crash
         self.damage = 0
+        self.difficulty = Constants.DIFFICULTY
         self.health = Constants.PLAYER_STARTING_HEALTH
         # self.set_image_rotations(self.health)
         self.speed = Constants.PLAYER_MIN_SPEED
         self.is_accelerating = False
-        self.rect.center = location
+        # self.rect.center = location
         self.screen_width = Player.screen_width
         self.screen_height = Player.screen_height
         self.dir_changed = False
-        self.difficulty = difficulty
         #self.has_initialized = True
 
     # update method moves the sprite & possibly changes its image based on the
@@ -291,63 +293,75 @@ class Player(game.sprite.Sprite):
 
     def move(self, interval):
         is_collision = False
-        for r in Player.wall_rects:
-            if self.rect.colliderect(r):
-                if (self.speed != Constants.PLAYER_MIN_SPEED):
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    # self.damage += 5
-                    collisionFixed = False
-                    if (r.collidepoint(self.rect.midbottom)):
-                        self.rect.bottom = r.top
-                        collisionFixed = True
-                    if (r.collidepoint(self.rect.midleft)):
-                        self.rect.left = r.right
-                        collisionFixed = True
-                    if (r.collidepoint(self.rect.midright)):
-                        self.rect.right = r.left
-                        collisionFixed = True
-                    if (r.collidepoint(self.rect.midtop)):
-                        self.rect.top = r.bottom
-                        collisionFixed = True
-
-                    #These collisions are to fix hitting any corners
-                    #Only happens if there wasnt a collision with one
-                    #of the centers of the car
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.topright)):
-                        self.rect.right = r.left
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.bottomright)):
-                        self.rect.right = r.left
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.topleft)):
-                        self.rect.left = r.right
-                    if (not collisionFixed
-                            and r.collidepoint(self.rect.bottomleft)):
-                        self.rect.left = r.right
-
-                            #self.crash.play()
+        # for r in Player.wall_rects:
+        #     if self.rect.colliderect(r):
+        #         if (self.speed != Constants.PLAYER_MIN_SPEED):
+        #             self.speed = Constants.PLAYER_MIN_SPEED
+        #             # self.damage += 5
+        #             collisionFixed = False
+        #             if (r.collidepoint(self.rect.midbottom)):
+        #                 self.rect.bottom = r.top
+        #                 collisionFixed = True
+        #             if (r.collidepoint(self.rect.midleft)):
+        #                 self.rect.left = r.right
+        #                 collisionFixed = True
+        #             if (r.collidepoint(self.rect.midright)):
+        #                 self.rect.right = r.left
+        #                 collisionFixed = True
+        #             if (r.collidepoint(self.rect.midtop)):
+        #                 self.rect.top = r.bottom
+        #                 collisionFixed = True
+        #
+        #             #These collisions are to fix hitting any corners
+        #             #Only happens if there wasnt a collision with one
+        #             #of the centers of the car
+        #             if (not collisionFixed
+        #                     and r.collidepoint(self.rect.topright)):
+        #                 self.rect.right = r.left
+        #             if (not collisionFixed
+        #                     and r.collidepoint(self.rect.bottomright)):
+        #                 self.rect.right = r.left
+        #             if (not collisionFixed
+        #                     and r.collidepoint(self.rect.topleft)):
+        #                 self.rect.left = r.right
+        #             if (not collisionFixed
+        #                     and r.collidepoint(self.rect.bottomleft)):
+        #                 self.rect.left = r.right
+        #
+        #                     #self.crash.play()
 
         if self.direction == "upleft":
-            self.rect = self.rect.move(-self.speed * interval,
-                                       -self.speed * interval)
+            self.x -= self.speed * interval
+            self.y -= self.speed * interval
+            # self.rect = self.rect.move(-self.speed * interval,
+            #                            -self.speed * interval)
         if self.direction == "downleft":
-            self.rect = self.rect.move(-self.speed * interval,
-                                       +self.speed * interval)
+            self.x -= self.speed * interval
+            self.y += self.speed * interval
+            # self.rect = self.rect.move(-self.speed * interval,
+            #                            +self.speed * interval)
         if self.direction == "left":
-            self.rect = self.rect.move(-self.speed * interval, 0)
+            self.x -= self.speed * interval
+            # self.rect = self.rect.move(-self.speed * interval, 0)
         if self.direction == "upright":
-            self.rect = self.rect.move(self.speed * interval,
-                                       -self.speed * interval)
+            self.x += self.speed * interval
+            self.y -= self.speed * interval
+            # self.rect = self.rect.move(self.speed * interval,
+            #                            -self.speed * interval)
         if self.direction == "downright":
-            self.rect = self.rect.move(self.speed * interval,
-                                       self.speed * interval)
+            self.x += self.speed * interval
+            self.y += self.speed * interval
+            # self.rect = self.rect.move(self.speed * interval,
+            #                            self.speed * interval)
         if self.direction == "right":
-            self.rect = self.rect.move(self.speed * interval, 0)
+            self.x += self.speed * interval
+            # self.rect = self.rect.move(self.speed * interval, 0)
         if self.direction == "up":
-            self.rect = self.rect.move(0, -self.speed * interval)
+            self.y -= self.speed * interval
+            # self.rect = self.rect.move(0, -self.speed * interval)
         if self.direction == "down":
-            self.rect = self.rect.move(0, self.speed * interval)
+            self.y += self.speed * interval
+            # self.rect = self.rect.move(0, self.speed * interval)
 
     def add_walls(self, wrects):
         Player.wall_rects = wrects

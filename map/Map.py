@@ -127,10 +127,10 @@ class Map():
 
     # Gets the tuple for the top_left corner of a sprite
     # with map coordinates x,y
-    def get_top_left(self, x, y):
+    def get_topleft(self, x, y):
         x_coor = (x - self.x_min) * Tile.WIDTH
         y_coor = (y - self.y_min) * Tile.HEIGHT
-        return tuple(x_coor, y_coor)
+        return tuple((x_coor, y_coor))
 
     # Gets all the tiles within a radius of TILE_RANGE from
     # x,y
