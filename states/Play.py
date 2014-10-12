@@ -73,10 +73,11 @@ class Play(State.State):
         s_label = Label.Label("score", "Score: ", (10, 34))
         labels.add(h_label)
         labels.add(s_label)
-        player1 = Player.Player([40,30], [Constants.WIDTH,Constants.HEIGHT])
-        players.add(player1)
         map = Map.Map()
+        player1 = Player.Player([40,30], [Constants.WIDTH,Constants.HEIGHT], map)
+        players.add(player1)
         self.time = 0.00
+
 
     #Function to draw the sprite groups
     def draw(self):

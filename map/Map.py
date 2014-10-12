@@ -21,7 +21,6 @@ class Map():
     MAX_WIDTH = MAX_LETTERS * LETTER_WIDTH
     # Range to give for checking collisions
     TILE_RANGE = 5
-
     # Initializes the map, reads map.txt
     def __init__(self):
         self.map = []
@@ -51,7 +50,7 @@ class Map():
         for line in file:
             line = line.rstrip('\n')
             for char in line:
-                self.map[map_x][map_y] = self.resolve(char, map_x, map_y)
+                self.map[map_x][map_y] = self.resolve(char, x, y)
                 map_x += 1
             map_y += 1
             map_x = x * Map.LETTER_WIDTH
@@ -59,7 +58,7 @@ class Map():
     # Creates an object represented by the given char
     def resolve(self, char, map_x, map_y):
         if char == 'w':
-            return sprites.Wall.Wall(map_x, map_y)
+            return sprites.Wall.Wall()
         elif char == 's':
             return sprites.Street.Street()
         else:
@@ -123,7 +122,8 @@ class Map():
                                                (y - self.y_min) * Tile.HEIGHT)
                 to_render.add(self.map[x][y])
 
-        return to_render
+	#print self.map[20][20].rect
+	return to_render
 
     # Gets the tuple for the top_left corner of a sprite
     # with map coordinates x,y
@@ -142,6 +142,7 @@ class Map():
             for j in range(y - Map.TILE_RANGE, y + Map.TILE_RANGE + 1):
                 if self.inbound(i, j):
                     to_return.append(self.map[i][j])
+		    #print i, ",", j
         return to_return
 
     # Checks if the given coordinates x,y are in the bounds of the map

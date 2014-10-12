@@ -21,11 +21,11 @@ class Player(game.sprite.Sprite):
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
 
-    def __init__(self, location, screensize):
+    def __init__(self, location, screensize, tempMap):
 
         game.sprite.Sprite.__init__(self)
         global map
-        map = Map.Map()
+        map = tempMap
         Player.screen_width = screensize[0]
         Player.screen_height = screensize[1]
         self.direction = "right"
@@ -299,11 +299,16 @@ class Player(game.sprite.Sprite):
 
     def move(self, interval):
         #tl = map.get_topleft(self.x, self.y)
-        Player.wall_rects = map.get_tiles(self.x, self.y)
+	Player.wall_rects = map.get_tiles(self.x, self.y)
         is_collision = False
 
+	#temp = map.map[20][20].rect
         # print("-------")
-        #print(Player.wall_rects[0].rect)
+        #print(temp)
+	#print self.x, ",", self.y
+	#print "-----"
+	#print(Player.wall_rects[0].rect)
+	#print "-------"
         # print(len(Player.wall_rects))
 
         for r in Player.wall_rects:
