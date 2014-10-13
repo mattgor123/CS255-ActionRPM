@@ -5,8 +5,8 @@ import Tile
 class Wall(Tile.Tile):
     wall_img = None
 
-    def __init__(self):
-        Tile.Tile.__init__(self, True)
+    def __init__(self,x,y):
+        Tile.Tile.__init__(self, True, x, y)
 
         # initialize wall image
         if Wall.wall_img is None:

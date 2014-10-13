@@ -5,8 +5,8 @@ import Tile
 class Street(Tile.Tile):
     street_img = None
 
-    def __init__(self):
-        Tile.Tile.__init__(self, False)
+    def __init__(self, x, y):
+        Tile.Tile.__init__(self, False, x, y)
 
         # initialize street image
         if Street.street_img is None:

@@ -50,17 +50,17 @@ class Map():
         for line in file:
             line = line.rstrip('\n')
             for char in line:
-                self.map[map_x][map_y] = self.resolve(char, x, y)
+                self.map[map_x][map_y] = self.resolve(char, x, y, map_x, map_y)
                 map_x += 1
             map_y += 1
             map_x = x * Map.LETTER_WIDTH
 
     # Creates an object represented by the given char
-    def resolve(self, char, map_x, map_y):
+    def resolve(self, char, x, y, map_x, map_y):
         if char == 'w':
-            return sprites.Wall.Wall()
+            return sprites.Wall.Wall(map_x, map_y)
         elif char == 's':
-            return sprites.Street.Street()
+            return sprites.Street.Street(map_x, map_y)
         else:
             return None
 
