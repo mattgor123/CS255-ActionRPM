@@ -228,6 +228,7 @@ class Player(game.sprite.Sprite):
             if tempRect.colliderect(g.rect):
                 if not g.has_been_gotten:
                     g.get()
+
     def is_point_in_rect(self, rect, p_x, p_y):
         min_x = rect[0]
         min_y = rect[1]
