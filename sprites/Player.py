@@ -223,26 +223,30 @@ class Player(game.sprite.Sprite):
                 if self.check_player_wall_collision(r):
                     self.x = oldx
                     self.y = oldy
-                    return True
 
         for g in gettables:
             if tempRect.colliderect(g.rect):
                 if not g.has_been_gotten:
                     g.get()
+    def is_point_in_rect(self, rect, p_x, p_y):
+        min_x = rect[0]
+        min_y = rect[1]
+        max_x = rect[2]
+        max_y = rect[3]
+        return (min_x < p_x and min_y < p_y and
+                max_x > p_x and max_y > p_y)
 
     def check_player_wall_collision(self, wall):
         player_rect = self.rect
         x_offset = player_rect.width / (Tile.Tile.WIDTH * 1.0)
         y_offset = player_rect.height / (Tile.Tile.HEIGHT * 1.0)
-        player_min_x = round(self.x)
-        player_min_y = round(self.y)
-        player_max_x = round(self.x + x_offset)
-        player_max_y = round(self.y + y_offset)
+        player_min_x = math.floor(self.x)
+        player_min_y = math.floor(self.y)
+        player_max_x = math.floor(self.x + x_offset)
+        player_max_y = math.floor(self.y + y_offset)
+        coords = (player_min_x, player_min_y, player_max_x, player_max_y)
+        return self.is_point_in_rect(coords, wall.x, wall.y)
 
-        if (player_min_x < wall.x and player_min_y < wall.y and
-                player_max_x > wall.x and player_max_y > wall.y):
-                return True
-    '''
     def check_collision(self, old):
         for r in Player.wall_rects:
             if self.rect.colliderect(r) \
@@ -250,7 +254,7 @@ class Player(game.sprite.Sprite):
                 self.set_direction(old)
                 self.set_image()
                 break
-    '''
+
 
     def check_acceleration_state(self, accel):
         if self.accelerationState == "stopped":
