@@ -5,7 +5,7 @@ import Tile
 class Wall(Tile.Tile):
     wall_img = None
 
-    def __init__(self):
+    def __init__(self, map_x, map_y):
         Tile.Tile.__init__(self, True)
 
         # initialize wall image
@@ -13,7 +13,7 @@ class Wall(Tile.Tile):
             Wall.wall_img = pygame.image.load(
                 "images/sprites/wall/h_wall.png").convert_alpha()
         self.image = Wall.wall_img
-        self.rect = self.image.get_rect()
+        self.rect = pygame.Rect(map_x, map_y, 10, 10)
         # self.rect.center = location
 
     def __str__(self):

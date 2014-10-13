@@ -51,15 +51,15 @@ class Map():
         for line in file:
             line = line.rstrip('\n')
             for char in line:
-                self.map[map_x][map_y] = self.resolve(char)
+                self.map[map_x][map_y] = self.resolve(char, map_x, map_y)
                 map_x += 1
             map_y += 1
             map_x = x * Map.LETTER_WIDTH
 
     # Creates an object represented by the given char
-    def resolve(self, char):
+    def resolve(self, char, map_x, map_y):
         if char == 'w':
-            return sprites.Wall.Wall()
+            return sprites.Wall.Wall(map_x, map_y)
         elif char == 's':
             return sprites.Street.Street()
         else:
@@ -138,10 +138,10 @@ class Map():
         to_return = []
         x = int(x)
         y = int(y)
-        for x in range(x - Map.TILE_RANGE, x + Map.TILE_RANGE + 1):
-            for y in range(y - Map.TILE_RANGE, y + Map.TILE_RANGE + 1):
-                if self.inbound(x, y):
-                    to_return.append(self.map[x][y])
+        for i in range(x - Map.TILE_RANGE, x + Map.TILE_RANGE + 1):
+            for j in range(y - Map.TILE_RANGE, y + Map.TILE_RANGE + 1):
+                if self.inbound(i, j):
+                    to_return.append(self.map[i][j])
         return to_return
 
     # Checks if the given coordinates x,y are in the bounds of the map
