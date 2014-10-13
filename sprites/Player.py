@@ -172,18 +172,8 @@ class Player(game.sprite.Sprite):
             self.speed = Constants.PLAYER_MIN_SPEED
         self.check_acceleration_state(acceleration)
         self.set_image()
-        self.can_move = True
-        # self.check_collision(tmp)
-        if self.can_move:
-            self.move(interval)
-
-    def check_collision(self, old):
-        for r in Player.wall_rects:
-            if self.rect.colliderect(r) \
-                    and self.speed > Constants.PLAYER_MIN_SPEED:
-                self.set_direction(old)
-                self.set_image()
-                break
+        Player.wall_rects = map.get_tiles(self.x, self.y)
+        self.move(interval)
 
     def check_acceleration_state(self, accel):
         if self.accelerationState == "stopped":
@@ -298,21 +288,11 @@ class Player(game.sprite.Sprite):
             self.frame = 0
 
     def move(self, interval):
-        #tl = map.get_topleft(self.x, self.y)
-	Player.wall_rects = map.get_tiles(self.x, self.y)
         is_collision = False
-
-	#temp = map.map[20][20].rect
-        # print("-------")
-        #print(temp)
-	#print self.x, ",", self.y
-	#print "-----"
-	#print(Player.wall_rects[0].rect)
-	#print "-------"
-        # print(len(Player.wall_rects))
 
         for r in Player.wall_rects:
             if r.isCollidable() and self.rect.colliderect(r.rect):
+                is_collision = True
                 if (self.speed != Constants.PLAYER_MIN_SPEED):
                     self.speed = Constants.PLAYER_MIN_SPEED
                     # self.damage += 5
@@ -346,38 +326,36 @@ class Player(game.sprite.Sprite):
                         self.rect.left = r.rect.right
                             #self.crash.play()
 
-        if self.direction == "upleft":
-            self.x -= self.speed * interval
-            self.y -= self.speed * interval
-            # self.rect = self.rect.move(-self.speed * interval,
-            #                            -self.speed * interval)
-        if self.direction == "downleft":
-            self.x -= self.speed * interval
-            self.y += self.speed * interval
-            # self.rect = self.rect.move(-self.speed * interval,
-            #                            +self.speed * interval)
-        if self.direction == "left":
-            self.x -= self.speed * interval
-            # self.rect = self.rect.move(-self.speed * interval, 0)
-        if self.direction == "upright":
-            self.x += self.speed * interval
-            self.y -= self.speed * interval
-            # self.rect = self.rect.move(self.speed * interval,
-            #                            -self.speed * interval)
-        if self.direction == "downright":
-            self.x += self.speed * interval
-            self.y += self.speed * interval
-            # self.rect = self.rect.move(self.speed * interval,
-            #                            self.speed * interval)
-        if self.direction == "right":
-            self.x += self.speed * interval
-            # self.rect = self.rect.move(self.speed * interval, 0)
-        if self.direction == "up":
-            self.y -= self.speed * interval
-            # self.rect = self.rect.move(0, -self.speed * interval)
-        if self.direction == "down":
-            self.y += self.speed * interval
-            # self.rect = self.rect.move(0, self.speed * interval)
-
-    def add_walls(self, wrects):
-        Player.wall_rects = wrects
+        if not is_collision:
+            if self.direction == "upleft":
+                self.x -= self.speed * interval
+                self.y -= self.speed * interval
+                # self.rect = self.rect.move(-self.speed * interval,
+                #                            -self.speed * interval)
+            if self.direction == "downleft":
+                self.x -= self.speed * interval
+                self.y += self.speed * interval
+                # self.rect = self.rect.move(-self.speed * interval,
+                #                            +self.speed * interval)
+            if self.direction == "left":
+                self.x -= self.speed * interval
+                # self.rect = self.rect.move(-self.speed * interval, 0)
+            if self.direction == "upright":
+                self.x += self.speed * interval
+                self.y -= self.speed * interval
+                # self.rect = self.rect.move(self.speed * interval,
+                #                            -self.speed * interval)
+            if self.direction == "downright":
+                self.x += self.speed * interval
+                self.y += self.speed * interval
+                # self.rect = self.rect.move(self.speed * interval,
+                #                            self.speed * interval)
+            if self.direction == "right":
+                self.x += self.speed * interval
+                # self.rect = self.rect.move(self.speed * interval, 0)
+            if self.direction == "up":
+                self.y -= self.speed * interval
+                # self.rect = self.rect.move(0, -self.speed * interval)
+            if self.direction == "down":
+                self.y += self.speed * interval
+                # self.rect = self.rect.move(0, self.speed * interval)
