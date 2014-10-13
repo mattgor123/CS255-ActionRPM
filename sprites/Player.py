@@ -299,6 +299,8 @@ class Player(game.sprite.Sprite):
         #tl = map.get_topleft(self.x, self.y)
 	Player.wall_rects = map.get_tiles(self.x, self.y)
 
+	#print self.rect.midbottom
+
         for r in Player.wall_rects:
             if r.isCollidable() and self.rect.colliderect(r.rect):
                 self.speed = Constants.PLAYER_MIN_SPEED
@@ -317,15 +319,16 @@ class Player(game.sprite.Sprite):
                         collisionFixed = True
                     if (r.rect.collidepoint(self.rect.midleft[0], self.rect.midleft[1])):
                         self.rect.left = r.rect.right
-			self.x = (r.rect.right / 10) 
+			#self.x = (r.rect.right / 10) 
+			self.x -= 2 
                         collisionFixed = True
-		    print self.rect.midright, r.rect
-		    print self.x
+		    #print self.rect.midright, r.rect
+		    #print self.x
                     if (r.rect.collidepoint(self.rect.midright[0], self.rect.midright[1])):
-			print "hello"
+			#print "hello"
                         self.rect.right = r.rect.left
-			#self.x = (r.rect.left / 10) 
-			self.x = math.floor((r.rect.left / 10)) - 2 
+			self.x = (r.rect.left / 10) 
+			#self.x = math.floor((r.rect.left / 10)) - 2 
                         collisionFixed = True
                     if (r.rect.collidepoint(self.rect.midtop[0]-10, self.rect.midtop[1])):
                         self.rect.top = r.rect.bottom
@@ -336,12 +339,22 @@ class Player(game.sprite.Sprite):
                     #of the centers of the car
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.topright)):
+			print self.x
                         self.rect.right = r.rect.left
-			self.x = math.floor((r.rect.left / 10)) - 2 
+			#self.x = math.floor((r.rect.left / 10)) - 2 
+			self.x = (r.rect.left / 10) + 3
+			print r.rect.left
+			print self.rect.width/10
+			print "-----"
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.bottomright)):
+			print self.x
                         self.rect.right = r.rect.left
-			self.x = math.floor((r.rect.left / 10)) - 2
+			#self.x = math.floor((r.rect.left / 10)) - 2
+			self.x = (r.rect.left / 10) + 3
+			print r.rect.left
+			print self.rect.width/10
+			print "-----"
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.topleft)):
                         self.rect.left = r.rect.right
