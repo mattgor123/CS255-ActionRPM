@@ -2,7 +2,7 @@ import pygame as game
 from states.Constants import Constants
 import util.SpriteSheet as SS
 import map.Map as Map
-
+import math
 
 class Player(game.sprite.Sprite):
     # These are the images
@@ -171,11 +171,9 @@ class Player(game.sprite.Sprite):
         if self.speed < Constants.PLAYER_MIN_SPEED:
             self.speed = Constants.PLAYER_MIN_SPEED
         self.check_acceleration_state(acceleration)
-        self.set_image()
-        self.can_move = True
+	self.set_image()
         # self.check_collision(tmp)
-        if self.can_move:
-            self.move(interval)
+        self.move(interval)
 
     def check_collision(self, old):
         for r in Player.wall_rects:
@@ -300,50 +298,58 @@ class Player(game.sprite.Sprite):
     def move(self, interval):
         #tl = map.get_topleft(self.x, self.y)
 	Player.wall_rects = map.get_tiles(self.x, self.y)
-        is_collision = False
-
-	#temp = map.map[20][20].rect
-        # print("-------")
-        #print(temp)
-	#print self.x, ",", self.y
-	#print "-----"
-	#print(Player.wall_rects[0].rect)
-	#print "-------"
-        # print(len(Player.wall_rects))
 
         for r in Player.wall_rects:
             if r.isCollidable() and self.rect.colliderect(r.rect):
-                if (self.speed != Constants.PLAYER_MIN_SPEED):
+                self.speed = Constants.PLAYER_MIN_SPEED
+                #if (self.speed != Constants.PLAYER_MIN_SPEED):
+                if (True):
                     self.speed = Constants.PLAYER_MIN_SPEED
                     # self.damage += 5
                     collisionFixed = False
-                    if (r.rect.collidepoint(self.rect.midbottom)):
-                        self.rect.bottom = r.rect.top
+                    #if (r.rect.collidepoint(self.rect.midbottom)):
+		    #print r.rect.topleft[0], self.rect.midbottom[0]-10, r.rect.topleft[0] + 10
+		    #print r.rect.topleft[1], self.rect.midbottom[1], r.rect.topleft[1] + 10
+		    #print "------"
+                    if (r.rect.collidepoint(self.rect.midbottom[0], self.rect.midbottom[1])):
+			#self.rect.bottom = r.rect.top
+			self.y = (r.rect.top / 10)
                         collisionFixed = True
-                    if (r.rect.collidepoint(self.rect.midleft)):
+                    if (r.rect.collidepoint(self.rect.midleft[0], self.rect.midleft[1])):
                         self.rect.left = r.rect.right
+			self.x = (r.rect.right / 10) 
                         collisionFixed = True
-                    if (r.rect.collidepoint(self.rect.midright)):
+		    print self.rect.midright, r.rect
+		    print self.x
+                    if (r.rect.collidepoint(self.rect.midright[0], self.rect.midright[1])):
+			print "hello"
                         self.rect.right = r.rect.left
+			#self.x = (r.rect.left / 10) 
+			self.x = math.floor((r.rect.left / 10)) - 2 
                         collisionFixed = True
-                    if (r.rect.collidepoint(self.rect.midtop)):
+                    if (r.rect.collidepoint(self.rect.midtop[0]-10, self.rect.midtop[1])):
                         self.rect.top = r.rect.bottom
-                        collisionFixed = True
+                        self.y = r.rect.bottom/ 10
+			collisionFixed = True
                     #These collisions are to fix hitting any corners
                     #Only happens if there wasnt a collision with one
                     #of the centers of the car
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.topright)):
                         self.rect.right = r.rect.left
+			self.x = math.floor((r.rect.left / 10)) - 2 
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.bottomright)):
                         self.rect.right = r.rect.left
+			self.x = math.floor((r.rect.left / 10)) - 2
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.topleft)):
                         self.rect.left = r.rect.right
+			self.x = (r.rect.right / 10) 
                     if (not collisionFixed
                             and r.rect.collidepoint(self.rect.bottomleft)):
                         self.rect.left = r.rect.right
+			self.x = (r.rect.right / 10) 
                             #self.crash.play()
 
         if self.direction == "upleft":
