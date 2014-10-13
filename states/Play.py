@@ -75,6 +75,10 @@ class Play(State.State):
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
+            k_tl = map.get_topleft(40, 60)
+            g_tl = map.get_topleft(200, 30)
+            key.update(k_tl)
+            garage.update(g_tl)
             key.draw(Constants.SCREEN)
             garage.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
@@ -104,11 +108,6 @@ class Play(State.State):
         for player in players.sprites():
             dir_changed = player.dir_changed
             direction = player.direction
-
-        k_tl = map.get_topleft(40, 60)
-        g_tl = map.get_topleft(200, 30)
-        key.update(k_tl)
-        garage.update(g_tl)
 
         #Determine current health status & update Label
         for player in players.sprites():

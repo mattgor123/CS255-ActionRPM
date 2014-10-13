@@ -153,5 +153,6 @@ class Map():
         if y >= len(self.map[0]) or y < 0:
             return False
         return True
+
 if __name__ == "__main__":
     test = Map()
