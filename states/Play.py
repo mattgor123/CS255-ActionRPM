@@ -38,7 +38,7 @@ class Play(State.State):
         Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
         h_label = Label.Label("health", "Health: 100%", (10, 10))
-        s_label = Label.Label("score", "Score: ", (10, 34))
+        s_label = Label.Label("score", "Time: ", (10, 34))
         labels.add(h_label)
         labels.add(s_label)
         map = Map.Map()
@@ -138,7 +138,7 @@ def is_new_high_score(self):
         return True
     else:
         min_high_score = min(b for (a, b) in scores)
-        if self.time > min_high_score:
+        if self.time < min_high_score:
             return True
     return False
 

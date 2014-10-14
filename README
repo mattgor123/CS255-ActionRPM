@@ -1,9 +1,42 @@
-<<<<<<< HEAD
-Carlo Olcese
-Matt Gorelik
-Joshua You
-Tuvia Lerea
+ActionRPM
 
+Matt Gorelik - mgoreli5@jhu.edu
+Tuvia Lerea - tlerea1@jhu.edu
+Carlo Olcese - colcese1@jhu.edu
+Joshua You - jyou8@jhu.edu
+
+To run our game, go into the directory actionrpm/ and run the command "python game.py"
+
+Current Assignment Notes:
+Problem 1: Level Zero
+
+We have built our level using 9 screens (1.txt through 9.txt in the map/ directory). The overlay is something like:
+
+______________________
+|                     |
+|  SSSSSSSSSSSSSSSG   |
+|  S              S   |
+|  S              S   |
+|  S              S   |
+|  S              S   |
+|  S       SSSKSSSS   |
+|  S       S      S   |
+|  S       S      S   |
+|  S       S      S   |
+|  SSSSSSSSSSSSSSSS   |
+|_____________________|
+
+The Key is the key, and the Garage is the G. Feel free to drive around the map and explore. You have to grab the key before you go into the garage. When you enter the garage, if you did it faster than the 10 previous fastest times, you will be given the high score screen.
+
+Problem 2: Camera and Scrolling
+We do scrolling by keeping the player's position constant unless the map cannot scroll anymore, in which case he moves around the screen. This introduced a minor bug which we are looking to work out where the player is slightly "in" the wall when he collides. However, we took care to ensure that he never gets stuck in the wall and can always move in the opposite direction. To avoid needing thousands of collision checks, our Map class has a function to return the set of tiles within 5 tiles of the player's top left corner.
+
+
+
+
+
+
+Notes from assignment 4:
 For this assignment we believe we completed everything. For the animations, we have that our car continues to get more
 and more damaged as he loses health. You will notice that when he gets to a lower health (~20%), he will look as though
 he is all banged up. In order to lose health, try to move the player outside of the game screen. For the other animation,
@@ -14,7 +47,6 @@ For part 2, we used the states model to create our screens. We believe we follow
 NOTE: Our high score does actually work! For now, your points keep moving upwards as time goes on. When you run out of health,
 our game will check if your score is higher than any of the saved scores, and if so, you can enter in a name for the high score.
 
-To run our game, go into the directory actionrpm/ and run the command "python game.py"
 
 The code is organized into directories/packages:
 -audio: contains audio files for the game (will probably be organized into subfolders later)

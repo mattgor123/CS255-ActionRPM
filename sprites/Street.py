@@ -5,7 +5,7 @@ import Tile
 class Street(Tile.Tile):
     street_img = None
 
-    def __init__(self):
+    def __init__(self, x, y):
         Tile.Tile.__init__(self, False)
 
         # initialize street image
@@ -15,6 +15,8 @@ class Street(Tile.Tile):
         self.image = Street.street_img
         self.rect = self.image.get_rect()
         # self.rect.center = location
+        self.x = x
+        self.y = y
 
     def __str__(self):
         return 's'

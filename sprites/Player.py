@@ -2,7 +2,8 @@ import pygame as game
 from states.Constants import Constants
 import util.SpriteSheet as SS
 import map.Map as Map
-
+import Tile
+import math
 
 class Player(game.sprite.Sprite):
     # These are the images
@@ -189,6 +190,84 @@ class Player(game.sprite.Sprite):
                 return True
         return False
 
+    def move(self, interval):
+        if self.should_move(Player.wall_rects, [], interval):
+            #Do something
+            moved = True
+
+    def should_move(self, walls, gettables, interval):
+        tempRect = self.rect
+
+        oldx = self.x
+        oldy = self.y
+
+        if self.direction == "upleft":
+            self.x -= self.speed * interval
+            self.y -= self.speed * interval
+            #tempRect = tempRect.move(-self.speed * interval,
+            #                            -self.speed * interval)
+        if self.direction == "downleft":
+            self.x -= self.speed * interval
+            self.y += self.speed * interval
+            #tempRect = tempRect.move(-self.speed * interval,
+             #                           +self.speed * interval)
+        if self.direction == "left":
+            self.x -= self.speed * interval
+            #tempRect = tempRect.move(-self.speed * interval, 0)
+        if self.direction == "upright":
+            self.x += self.speed * interval
+            self.y -= self.speed * interval
+            #tempRect = tempRect.move(self.speed * interval,
+            #                            -self.speed * interval)
+        if self.direction == "downright":
+            self.x += self.speed * interval
+            self.y += self.speed * interval
+            #tempRect = tempRect.move(self.speed * interval,
+            #                            self.speed * interval)
+        if self.direction == "right":
+            self.x += self.speed * interval
+            #tempRect = tempRect.move(self.speed * interval, 0)
+        if self.direction == "up":
+            self.y -= self.speed * interval
+            #tempRect = tempRect.move(0, -self.speed * interval)
+        if self.direction == "down":
+            self.y += self.speed * interval
+            #tempRect = tempRect.move(0, self.speed * interval)
+
+        for r in walls:
+            if r.isCollidable():
+                if self.check_player_wall_collision(r):
+                    self.x = oldx
+                    self.y = oldy
+                    return False
+        else:
+            return True
+        '''
+        for g in gettables:
+            if tempRect.colliderect(g.rect):
+                if not g.has_been_gotten:
+                    g.get()
+                    '''
+
+    def is_point_in_rect(self, rect, p_x, p_y):
+        min_x = rect[0]
+        min_y = rect[1]
+        max_x = rect[2]
+        max_y = rect[3]
+        return (min_x < p_x and min_y < p_y and
+                max_x > p_x and max_y > p_y)
+
+    def check_player_wall_collision(self, wall):
+        player_rect = self.rect
+        x_offset = player_rect.width / (Tile.Tile.WIDTH * 1.0)
+        y_offset = player_rect.height / (Tile.Tile.HEIGHT * 1.0)
+        player_min_x = math.floor(self.x)
+        player_min_y = math.floor(self.y)
+        player_max_x = math.floor(self.x + x_offset)
+        player_max_y = math.floor(self.y + y_offset)
+        coords = (player_min_x, player_min_y, player_max_x, player_max_y)
+        return self.is_point_in_rect(coords, wall.x, wall.y)
+
     def check_acceleration_state(self, accel):
         if self.accelerationState == "stopped":
             if self.speed != Constants.PLAYER_MIN_SPEED:
@@ -300,88 +379,3 @@ class Player(game.sprite.Sprite):
             self.frame += 1
         if self.frame >= len(self.imageArray):
             self.frame = 0
-
-    def find_first_collide(self):
-        i = 0
-        for r in Player.wall_rects:
-            i += 1
-            if r.isCollidable() and self.rect.colliderect(r.rect):
-                return r
-        return None
-
-    def move(self, interval):
-        r = self.find_first_collide()
-        if (r is not None):
-            if self.speed is not Constants.PLAYER_MIN_SPEED:
-                self.speed = Constants.PLAYER_MIN_SPEED
-            if self.direction is "down":
-                self.rect.bottom = r.rect.top
-        else:
-            if self.direction == "upleft":
-                self.x -= self.speed * interval
-                self.y -= self.speed * interval
-                # self.rect = self.rect.move(-self.speed * interval,
-                #                            -self.speed * interval)
-            if self.direction == "downleft":
-                self.x -= self.speed * interval
-                self.y += self.speed * interval
-                # self.rect = self.rect.move(-self.speed * interval,
-                #                            +self.speed * interval)
-            if self.direction == "left":
-                self.x -= self.speed * interval
-                # self.rect = self.rect.move(-self.speed * interval, 0)
-            if self.direction == "upright":
-                self.x += self.speed * interval
-                self.y -= self.speed * interval
-                # self.rect = self.rect.move(self.speed * interval,
-                #                            -self.speed * interval)
-            if self.direction == "downright":
-                self.x += self.speed * interval
-                self.y += self.speed * interval
-                # self.rect = self.rect.move(self.speed * interval,
-                #                            self.speed * interval)
-            if self.direction == "right":
-                self.x += self.speed * interval
-                # self.rect = self.rect.move(self.speed * interval, 0)
-            if self.direction == "up":
-                self.y -= self.speed * interval
-                # self.rect = self.rect.move(0, -self.speed * interval)
-            if self.direction == "down":
-                self.y += self.speed * interval
-                # self.rect = self.rect.move(0, self.speed * interval)
-
-        # for r in Player.wall_rects:
-        #     if r.isCollidable() and self.rect.colliderect(r.rect):
-        #         is_collision = True
-        #         if (self.speed != Constants.PLAYER_MIN_SPEED):
-        #             self.speed = Constants.PLAYER_MIN_SPEED
-        #             # self.damage += 5
-        #             collisionFixed = False
-        #             if (r.rect.collidepoint(self.rect.midbottom)):
-        #                 self.rect.bottom = r.rect.top
-        #                 collisionFixed = True
-        #             if (r.rect.collidepoint(self.rect.midleft)):
-        #                 self.rect.left = r.rect.right
-        #                 collisionFixed = True
-        #             if (r.rect.collidepoint(self.rect.midright)):
-        #                 self.rect.right = r.rect.left
-        #                 collisionFixed = True
-        #             if (r.rect.collidepoint(self.rect.midtop)):
-        #                 self.rect.top = r.rect.bottom
-        #                 collisionFixed = True
-        #             #These collisions are to fix hitting any corners
-        #             #Only happens if there wasnt a collision with one
-        #             #of the centers of the car
-        #             if (not collisionFixed
-        #                     and r.rect.collidepoint(self.rect.topright)):
-        #                 self.rect.right = r.rect.left
-        #             if (not collisionFixed
-        #                     and r.rect.collidepoint(self.rect.bottomright)):
-        #                 self.rect.right = r.rect.left
-        #             if (not collisionFixed
-        #                     and r.rect.collidepoint(self.rect.topleft)):
-        #                 self.rect.left = r.rect.right
-        #             if (not collisionFixed
-        #                     and r.rect.collidepoint(self.rect.bottomleft)):
-        #                 self.rect.left = r.rect.right
-        #                     #self.crash.play()

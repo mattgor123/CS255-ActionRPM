@@ -5,7 +5,7 @@ import Tile
 class Wall(Tile.Tile):
     wall_img = None
 
-    def __init__(self):
+    def __init__(self, x, y):
         Tile.Tile.__init__(self, True)
 
         # initialize wall image
@@ -15,6 +15,8 @@ class Wall(Tile.Tile):
         self.image = Wall.wall_img
         self.rect = self.image.get_rect()
         # self.rect.center = location
+        self.x = x
+        self.y = y
 
     def __str__(self):
         return 'w'
