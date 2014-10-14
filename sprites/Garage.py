@@ -24,5 +24,9 @@ class Garage(pygame.sprite.Sprite):
     def isOpened(self):
         return is_opened
 
+    def open_door(self):
+        self.image = Garage.g_img_opened
+        self.rect = self.image.get_rect()
+
     def update(self, loc):
         self.rect.center = loc

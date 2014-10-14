@@ -42,10 +42,10 @@ class Play(State.State):
         labels.add(h_label)
         labels.add(s_label)
         map = Map.Map()
-        player1 = Player.Player([40, 30], [
+        player1 = Player.Player([40, 150], [
             Constants.WIDTH, Constants.HEIGHT], map)
         players.add(player1)
-        k_tl = map.get_topleft(40, 60)
+        k_tl = map.get_topleft(150, 90)
         g_tl = map.get_topleft(200, 30)
         key.add(Key.Key(k_tl))
         garage.add(Garage.Garage(g_tl))
@@ -70,17 +70,16 @@ class Play(State.State):
 
         else:
             # enemies.draw(Constants.SCREEN)
-            Play.tiles.empty()
             self.set_tiles()
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
-            players.draw(Constants.SCREEN)
-            k_tl = map.get_topleft(40, 60)
+            k_tl = map.get_topleft(150, 90)
             g_tl = map.get_topleft(200, 30)
             key.update(k_tl)
             garage.update(g_tl)
             key.draw(Constants.SCREEN)
             garage.draw(Constants.SCREEN)
+            players.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
@@ -104,10 +103,17 @@ class Play(State.State):
         self.time += time
 
         #Update the player
-        players.update(Constants.INTERVAL)
-        for player in players.sprites():
-            dir_changed = player.dir_changed
-            direction = player.direction
+        for player in players:
+            player.update(Constants.INTERVAL)
+            if player.check_key(key):
+                for k in key:
+                    key.remove(k)
+                for g in garage:
+                    g.open_door()
+            if player.check_garage(garage):
+                labels.draw(Constants.SCREEN)
+                display.update()
+                game_over(self)
 
         #Determine current health status & update Label
         for player in players.sprites():

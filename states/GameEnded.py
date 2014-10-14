@@ -12,7 +12,7 @@ class GameEnded(State.State):
     def __init__(self):
         self.drawn = False
         super(GameEnded, self).__init__()
-        self.title_font = pygame.font.Font(None, Constants.HEIGHT * 3 / 10)
+        self.title_font = pygame.font.Font(None, Constants.HEIGHT * 3 / 15)
 
     def update(self, time):
         pass
@@ -20,7 +20,7 @@ class GameEnded(State.State):
     def draw(self):
         if self.drawn is False:
             Constants.SCREEN.fill((0, 0, 0))
-            game_ended = self.title_font.render("GAME OVER", 1,
+            game_ended = self.title_font.render('LEVEL CLEAR', 1,
                                                 (255, 255, 255))
             background = pygame.Surface(Constants.SCREEN.get_size())
             game_ended_rect = game_ended.get_rect()
@@ -28,8 +28,8 @@ class GameEnded(State.State):
             Constants.SCREEN.blit(game_ended, game_ended_rect)
             #Center our 'Press any key text'
             font = pygame.font.Font(None, 30)
-            presskey = font.render("Press the ESC key to quit, or any other "
-                                   "key to go back to the Menu", 1,
+            presskey = font.render("Press the ESC key to quit, or (m) "
+                                   "to go back to the Menu", 1,
                                    (255, 255, 255))
             background = pygame.Surface(Constants.SCREEN.get_size())
             presskeyrect = presskey.get_rect()
@@ -45,5 +45,5 @@ class GameEnded(State.State):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 exit()
-            else:
+            if event.key == pygame.K_m:
                 Constants.STATE = Menu.Menu()
