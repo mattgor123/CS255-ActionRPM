@@ -5,6 +5,7 @@ import map.Map as Map
 import Tile
 import math
 
+
 class Player(game.sprite.Sprite):
     # These are the images
     # full_health = None
