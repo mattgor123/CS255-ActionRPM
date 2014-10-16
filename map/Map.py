@@ -21,6 +21,7 @@ class Map():
     MAX_WIDTH = MAX_LETTERS * LETTER_WIDTH
     # Range to give for checking collisions
     TILE_RANGE = 5
+
     # Initializes the map, reads map.txt
     def __init__(self):
         self.map = []
@@ -121,9 +122,7 @@ class Map():
                 self.map[x][y].rect.topleft = ((x - self.x_min) * Tile.WIDTH,
                                                (y - self.y_min) * Tile.HEIGHT)
                 to_render.add(self.map[x][y])
-
-	#print self.map[20][20].rect
-	return to_render
+        return to_render
 
     # Gets the tuple for the top_left corner of a sprite
     # with map coordinates x,y
@@ -138,11 +137,11 @@ class Map():
         to_return = []
         x = int(x)
         y = int(y)
-        for i in range(x - Map.TILE_RANGE, x + Map.TILE_RANGE + 1):
-            for j in range(y - Map.TILE_RANGE, y + Map.TILE_RANGE + 1):
+        for i in range(x - Map.TILE_RANGE - 1, x + Map.TILE_RANGE + 1):
+            for j in range(y - Map.TILE_RANGE - 1, y + Map.TILE_RANGE + 1):
                 if self.inbound(i, j):
                     to_return.append(self.map[i][j])
-		    #print i, ",", j
+            #print i, ",", j
         return to_return
 
     # Checks if the given coordinates x,y are in the bounds of the map
