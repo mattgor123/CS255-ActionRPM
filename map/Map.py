@@ -94,8 +94,8 @@ class Map():
     def render(self, player_x, player_y):
         to_render = PG.sprite.Group()
 
-        self.x_min = player_x - (Map.LETTER_WIDTH + 2)
-        self.x_max = player_x + (Map.LETTER_WIDTH + 2)
+        self.x_min = player_x - ((Map.LETTER_WIDTH / 2))
+        self.x_max = player_x + ((Map.LETTER_WIDTH / 2))
         if self.x_min < 0:
             self.x_max += math.fabs(self.x_min) - 1
             self.x_min = 0
@@ -103,8 +103,8 @@ class Map():
             self.x_min -= (self.x_max - len(self.map))
             self.x_max = len(self.map) - 1
 
-        self.y_min = player_y - (Map.LETTER_HEIGHT + 2)
-        self.y_max = player_y + (Map.LETTER_HEIGHT + 2)
+        self.y_min = player_y - (Map.LETTER_HEIGHT / 2)
+        self.y_max = player_y + (Map.LETTER_HEIGHT / 2)
         if self.y_min < 0:
             self.y_max += math.fabs(self.y_min) - 1
             self.y_min = 0

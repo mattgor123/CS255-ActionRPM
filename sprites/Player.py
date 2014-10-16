@@ -192,15 +192,15 @@ class Player(game.sprite.Sprite):
         return False
 
     def move(self, interval):
-        if self.should_move(Player.wall_rects, [], interval):
-            #Do something
-            moved = True
+        #if self.should_move(Player.wall_rects, [], interval):
+        #Do something
+        moved = True
+        walls = Player.wall_rects
+        for r in walls:
+            if r.isCollidable():
+                if self.rect.colliderect(r.rect):
+                    self.rect.left = r.rect.right
 
-    def should_move(self, walls, gettables, interval):
-        tempRect = self.rect
-
-        oldx = self.x
-        oldy = self.y
 
         if self.direction == "upleft":
             self.x -= self.speed * interval
@@ -211,7 +211,7 @@ class Player(game.sprite.Sprite):
             self.x -= self.speed * interval
             self.y += self.speed * interval
             #tempRect = tempRect.move(-self.speed * interval,
-             #                           +self.speed * interval)
+            #                           +self.speed * interval)
         if self.direction == "left":
             self.x -= self.speed * interval
             #tempRect = tempRect.move(-self.speed * interval, 0)
@@ -235,20 +235,9 @@ class Player(game.sprite.Sprite):
             self.y += self.speed * interval
             #tempRect = tempRect.move(0, self.speed * interval)
 
-        for r in walls:
-            if r.isCollidable():
-                if self.check_player_wall_collision(r):
-                    self.x = oldx
-                    self.y = oldy
-                    return False
-        else:
-            return True
-        '''
-        for g in gettables:
-            if tempRect.colliderect(g.rect):
-                if not g.has_been_gotten:
-                    g.get()
-                    '''
+
+    def should_move(self, walls, gettables, interval):
+        return True
 
     def is_point_in_rect(self, rect, p_x, p_y):
         min_x = rect[0]
