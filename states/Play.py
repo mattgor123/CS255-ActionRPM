@@ -42,7 +42,7 @@ class Play(State.State):
         labels.add(h_label)
         labels.add(s_label)
         map = Map.Map()
-        player1 = Player.Player([40, 150], [
+        player1 = Player.Player([6, 6], [
             Constants.WIDTH, Constants.HEIGHT], map)
         players.add(player1)
         k_tl = map.get_topleft(150, 90)
@@ -70,7 +70,7 @@ class Play(State.State):
 
         else:
             # enemies.draw(Constants.SCREEN)
-            self.set_tiles()
+            #self.set_tiles()
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             k_tl = map.get_topleft(150, 90)
@@ -102,6 +102,7 @@ class Play(State.State):
         #1 point per 1/Constants.INTERVAL cycles
         self.time += time
 
+        self.set_tiles()
         #Update the player
         for player in players:
             player.update(Constants.INTERVAL)

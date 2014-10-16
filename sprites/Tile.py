@@ -3,8 +3,8 @@ import pygame as PG
 
 class Tile(PG.sprite.Sprite):
 
-    HEIGHT = 10
-    WIDTH = 10
+    HEIGHT = 50
+    WIDTH = 50
 
     def __init__(self, collidable):
         PG.sprite.Sprite.__init__(self)
