@@ -197,6 +197,7 @@ class Player(game.sprite.Sprite):
         oldx = self.x
         oldy = self.y
         tempRect = self.rect
+        oldRect = tempRect
 
         if self.direction == "upleft":
             self.x -= self.speed * interval
@@ -234,19 +235,19 @@ class Player(game.sprite.Sprite):
         if not self.should_move(tempRect, Player.wall_rects):
             self.x = oldx
             self.y = oldy
+            self.rect = oldRect
 
 
     def should_move(self, tempRect, walls):
+        real_walls = game.sprite.Group()
         for r in walls:
             if r.isCollidable():
-                custom = self.check_player_wall_collision(r, tempRect)
-                colliderect = tempRect.colliderect(r.rect)
-                if (custom != colliderect):
-                    print "Something went wrong here; custom = " + str(
-                        custom) + ", colliderect = " + str(colliderect)
-                if colliderect or custom:
-                    print ((r.x, r.y))
-                    return False
+                real_walls.add(r)
+        hit_list = game.sprite.spritecollide(self, real_walls, False)
+        if len(hit_list) > 1:
+            print ((hit_list[0].x, hit_list[0].y))
+            print "Total collisions = " + str(len(hit_list))
+            return False
         return True
 
 
