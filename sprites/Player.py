@@ -194,50 +194,61 @@ class Player(game.sprite.Sprite):
     def move(self, interval):
         #if self.should_move(Player.wall_rects, [], interval):
         #Do something
-        moved = True
-        walls = Player.wall_rects
-        for r in walls:
-            if r.isCollidable():
-                if self.rect.colliderect(r.rect):
-                    self.rect.left = r.rect.right
-
+        oldx = self.x
+        oldy = self.y
+        tempRect = self.rect
 
         if self.direction == "upleft":
             self.x -= self.speed * interval
             self.y -= self.speed * interval
-            #tempRect = tempRect.move(-self.speed * interval,
-            #                            -self.speed * interval)
+            tempRect = tempRect.move(-self.speed * interval,
+                                        -self.speed * interval)
         if self.direction == "downleft":
             self.x -= self.speed * interval
             self.y += self.speed * interval
-            #tempRect = tempRect.move(-self.speed * interval,
-            #                           +self.speed * interval)
+            tempRect = tempRect.move(-self.speed * interval,
+                                       +self.speed * interval)
         if self.direction == "left":
             self.x -= self.speed * interval
-            #tempRect = tempRect.move(-self.speed * interval, 0)
+            tempRect = tempRect.move(-self.speed * interval, 0)
         if self.direction == "upright":
             self.x += self.speed * interval
             self.y -= self.speed * interval
-            #tempRect = tempRect.move(self.speed * interval,
-            #                            -self.speed * interval)
+            tempRect = tempRect.move(self.speed * interval,
+                                        -self.speed * interval)
         if self.direction == "downright":
             self.x += self.speed * interval
             self.y += self.speed * interval
-            #tempRect = tempRect.move(self.speed * interval,
-            #                            self.speed * interval)
+            tempRect = tempRect.move(self.speed * interval,
+                                        self.speed * interval)
         if self.direction == "right":
             self.x += self.speed * interval
-            #tempRect = tempRect.move(self.speed * interval, 0)
+            tempRect = tempRect.move(self.speed * interval, 0)
         if self.direction == "up":
             self.y -= self.speed * interval
-            #tempRect = tempRect.move(0, -self.speed * interval)
+            tempRect = tempRect.move(0, -self.speed * interval)
         if self.direction == "down":
             self.y += self.speed * interval
-            #tempRect = tempRect.move(0, self.speed * interval)
+            tempRect = tempRect.move(0, self.speed * interval)
+
+        if not self.should_move(tempRect, Player.wall_rects):
+            self.x = oldx
+            self.y = oldy
 
 
-    def should_move(self, walls, gettables, interval):
+    def should_move(self, tempRect, walls):
+        for r in walls:
+            if r.isCollidable():
+                custom = self.check_player_wall_collision(r, tempRect)
+                colliderect = tempRect.colliderect(r.rect)
+                if (custom != colliderect):
+                    print "Something went wrong here; custom = " + str(
+                        custom) + ", colliderect = " + str(colliderect)
+                if colliderect or custom:
+                    print ((r.x, r.y))
+                    return False
         return True
+
 
     def is_point_in_rect(self, rect, p_x, p_y):
         min_x = rect[0]
@@ -247,8 +258,8 @@ class Player(game.sprite.Sprite):
         return (min_x < p_x and min_y < p_y and
                 max_x > p_x and max_y > p_y)
 
-    def check_player_wall_collision(self, wall):
-        player_rect = self.rect
+    def check_player_wall_collision(self, wall, tempRect):
+        player_rect = tempRect
         x_offset = player_rect.width / (Tile.Tile.WIDTH * 1.0)
         y_offset = player_rect.height / (Tile.Tile.HEIGHT * 1.0)
         player_min_x = math.floor(self.x)
