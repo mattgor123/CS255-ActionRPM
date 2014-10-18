@@ -14,7 +14,7 @@ class Map():
     # Height of map a single letter counts for
     LETTER_HEIGHT = Constants.HEIGHT / Tile.HEIGHT  # 10
     # Maximum number of letters to read
-    MAX_LETTERS = 2
+    MAX_LETTERS = 3
     # Maximum height of map
     MAX_HEIGHT = MAX_LETTERS * LETTER_HEIGHT
     # Maximum width of map
