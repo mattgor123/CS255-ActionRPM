@@ -194,48 +194,70 @@ class Player(game.sprite.Sprite):
     def move(self, interval):
         #if self.should_move(Player.wall_rects, [], interval):
         #Do something
-        oldx = self.x
-        oldy = self.y
-        tempRect = self.rect
-        oldRect = tempRect
+     
+	for r in Player.wall_rects:
+            if r.isCollidable():
+                collisionFixed = False
+                if (r.rect.collidepoint(self.rect.midbottom)):
+                    self.rect.bottom = r.rect.top
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.y -= .01
+                if (r.rect.collidepoint(self.rect.midleft)):
+                    self.rect.left = r.rect.right
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x += .01
+                if (r.rect.collidepoint(self.rect.midright)):
+                    self.rect.right = r.rect.left
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x -= .01
+                if (r.rect.collidepoint(self.rect.midtop)):
+                    self.rect.top = r.rect.bottom
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.y += .01
+                    #These collisions are to fix hitting any corners
+                    #Only happens if there wasnt a collision with one of the centers of the car
+                if (not collisionFixed and r.rect.collidepoint(self.rect.topright)):
+                    self.rect.right = r.rect.left
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x -= .01
+                if (not collisionFixed and r.rect.collidepoint(self.rect.bottomright)):
+                    self.rect.right = r.rect.left
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x -= .01
+                if (not collisionFixed and r.rect.collidepoint(self.rect.topleft)):
+                    self.rect.left = r.rect.right
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x += .01
+                if (not collisionFixed and r.rect.collidepoint(self.rect.bottomleft)):
+                    self.rect.left = r.rect.right
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x += .01
+
 
         if self.direction == "upleft":
             self.x -= self.speed * interval
             self.y -= self.speed * interval
-            tempRect = tempRect.move(-self.speed * interval,
-                                        -self.speed * interval)
         if self.direction == "downleft":
             self.x -= self.speed * interval
             self.y += self.speed * interval
-            tempRect = tempRect.move(-self.speed * interval,
-                                       +self.speed * interval)
         if self.direction == "left":
             self.x -= self.speed * interval
-            tempRect = tempRect.move(-self.speed * interval, 0)
         if self.direction == "upright":
             self.x += self.speed * interval
             self.y -= self.speed * interval
-            tempRect = tempRect.move(self.speed * interval,
-                                        -self.speed * interval)
         if self.direction == "downright":
             self.x += self.speed * interval
             self.y += self.speed * interval
-            tempRect = tempRect.move(self.speed * interval,
-                                        self.speed * interval)
         if self.direction == "right":
             self.x += self.speed * interval
-            tempRect = tempRect.move(self.speed * interval, 0)
         if self.direction == "up":
             self.y -= self.speed * interval
-            tempRect = tempRect.move(0, -self.speed * interval)
         if self.direction == "down":
             self.y += self.speed * interval
-            tempRect = tempRect.move(0, self.speed * interval)
-
-        if not self.should_move(tempRect, Player.wall_rects):
-            self.x = oldx
-            self.y = oldy
-            self.rect = oldRect
 
 
     def should_move(self, tempRect, walls):
