@@ -13,6 +13,9 @@ class Label(game.sprite.Sprite):
         self.rect.topleft = location
         self.name = name
 
+    def set_score_pos(self, pos):
+        self.rect.topleft = pos
+
     #one method for all the updates - type will be used kinda like an enum
     def update(self, param):
         if self.name == "health":
@@ -25,7 +28,9 @@ class Label(game.sprite.Sprite):
                 color = (0, 255, 0)
             self.image = self.font.render("Health: " + str(param) + "%", 1,
                                           color)
+        elif self.name == "sl":
+            self.image = self.font.render(str(param), 1, (0, 255, 0))
         else:
             color = (255, 255, 255)
-            self.image = self.font.render(self.text + "%3.4f" % param, 1,
+            self.image = self.font.render(self.text + "%3.0f" % param, 1,
                                           color)

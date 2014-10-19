@@ -179,23 +179,24 @@ class Player(game.sprite.Sprite):
         self.move(interval)
 
     def check_key(self, key):
+        index = 0
         for k in key:
             if self.rect.colliderect(k.rect):
-                self.CAN_END = True
-                return True
-        return False
+                return (k, index)
+            index += 1
+        return None
 
     def check_garage(self, garage):
         for g in garage:
-            if self.CAN_END and self.rect.colliderect(g.rect):
+            if g.isOpened() and self.rect.colliderect(g.rect):
                 return True
         return False
 
     def move(self, interval):
         #if self.should_move(Player.wall_rects, [], interval):
         #Do something
-     
-	for r in Player.wall_rects:
+
+        for r in Player.wall_rects:
             if r.isCollidable():
                 collisionFixed = False
                 if (r.rect.collidepoint(self.rect.midbottom)):
@@ -219,24 +220,28 @@ class Player(game.sprite.Sprite):
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.y += .01
                     #These collisions are to fix hitting any corners
-                    #Only happens if there wasnt a collision with one of the centers of the car
-                if (not collisionFixed and r.rect.collidepoint(self.rect.topright)):
+                    #Only happens if there wasnt a collision with one of the
+                    #centers of the car
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.topright)):
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
-                if (not collisionFixed and r.rect.collidepoint(self.rect.bottomright)):
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.bottomright)):
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
-                if (not collisionFixed and r.rect.collidepoint(self.rect.topleft)):
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.topleft)):
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
-                if (not collisionFixed and r.rect.collidepoint(self.rect.bottomleft)):
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.bottomleft)):
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
-
 
         if self.direction == "upleft":
             self.x -= self.speed * interval
@@ -259,7 +264,6 @@ class Player(game.sprite.Sprite):
         if self.direction == "down":
             self.y += self.speed * interval
 
-
     def should_move(self, tempRect, walls):
         real_walls = game.sprite.Group()
         for r in walls:
@@ -271,7 +275,6 @@ class Player(game.sprite.Sprite):
             print "Total collisions = " + str(len(hit_list))
             return False
         return True
-
 
     def is_point_in_rect(self, rect, p_x, p_y):
         min_x = rect[0]

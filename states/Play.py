@@ -21,33 +21,45 @@ class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
     time = 0
     tiles = None
+    NUM_KEYS = 0
+    KEY_LOC = None
+    GAR_LOC = None
+    START_SCORE = None
+    SCORE_TIME = 0
 
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
-        global players, labels, background, map, key, garage
+        global players, labels, background, map, key, garage, score_label
+        self.NUM_KEYS = 3
+        self.KEY_LOC = [(15, 6), (20, 30), (30, 17)]
+        self.GAR_LOC = (42, 4)
+        self.START_SCORE = 1000
+        self.SCORE_TIME = 0
 
         # read map file
         map = Map.Map()
         players = pygame.sprite.Group()
         Play.tiles = pygame.sprite.Group()
         key = pygame.sprite.Group()
+        score_label = pygame.sprite.Group()
         garage = pygame.sprite.Group()
 
         background = pygame.Surface(Constants.SCREEN.get_size())
         Constants.SCREEN.fill((0, 0, 0))
         labels = pygame.sprite.Group()
         h_label = Label.Label("health", "Health: 100%", (10, 10))
-        s_label = Label.Label("score", "Time: ", (10, 34))
+        s_label = Label.Label("score", "Score: ", (10, 34))
         labels.add(h_label)
         labels.add(s_label)
         map = Map.Map()
         player1 = Player.Player([6, 6], [
             Constants.WIDTH, Constants.HEIGHT], map)
         players.add(player1)
-        k_tl = map.get_topleft(150, 90)
-        g_tl = map.get_topleft(200, 30)
-        key.add(Key.Key(k_tl))
+        for i in range(self.NUM_KEYS):
+            k_tl = map.get_topleft(self.KEY_LOC[i][0], self.KEY_LOC[i][1])
+            key.add(Key.Key(k_tl))
+        g_tl = map.get_topleft(self.GAR_LOC[0], self.GAR_LOC[1])
         garage.add(Garage.Garage(g_tl))
 
         self.time = 0.00
@@ -60,6 +72,8 @@ class Play(State.State):
         # enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
         key.clear(Constants.SCREEN, background)
+        garage.clear(Constants.SCREEN, background)
+        score_label.clear(Constants.SCREEN, background)
         # walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
@@ -73,9 +87,14 @@ class Play(State.State):
             #self.set_tiles()
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
-            k_tl = map.get_topleft(150, 90)
-            g_tl = map.get_topleft(200, 30)
-            key.update(k_tl)
+            score_label.draw(Constants.SCREEN)
+            g_tl = map.get_topleft(self.GAR_LOC[0], self.GAR_LOC[1])
+            ind = 0
+            for k in key:
+                k_tl = map.get_topleft(
+                    self.KEY_LOC[ind][0], self.KEY_LOC[ind][1])
+                k.update(k_tl)
+                ind += 1
             garage.update(g_tl)
             key.draw(Constants.SCREEN)
             garage.draw(Constants.SCREEN)
@@ -106,11 +125,18 @@ class Play(State.State):
         #Update the player
         for player in players:
             player.update(Constants.INTERVAL)
-            if player.check_key(key):
-                for k in key:
-                    key.remove(k)
-                for g in garage:
-                    g.open_door()
+            k = player.check_key(key)
+            if k is not None:
+                key.remove(k[0])
+                self.KEY_LOC.remove(self.KEY_LOC[k[1]])
+                self.START_SCORE += 200
+                sl = Label.Label("sl", "+200", (126, 38))
+                self.SCORE_TIME = self.time
+                score_label.add(sl)
+                self.NUM_KEYS -= 1
+                if self.NUM_KEYS is 0:
+                    for g in garage:
+                        g.open_door()
             if player.check_garage(garage):
                 labels.draw(Constants.SCREEN)
                 display.update()
@@ -123,7 +149,13 @@ class Play(State.State):
             if label.name == "health":
                 label.update(self.health)
             elif label.name == "score":
-                label.update(self.time)
+                label.update(self.START_SCORE - (self.time * 15))
+        for s in score_label.sprites():
+            delta = self.time - self.SCORE_TIME
+            if delta > 1.2:
+                score_label.remove(s)
+            else:
+                s.set_score_pos((126, 38 - (delta * 4)))
 
 
 # Function to determine if the current score was a high score

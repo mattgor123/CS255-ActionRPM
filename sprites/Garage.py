@@ -22,11 +22,12 @@ class Garage(pygame.sprite.Sprite):
         # self.rect.center = location
 
     def isOpened(self):
-        return is_opened
+        return self.is_opened
 
     def open_door(self):
         self.image = Garage.g_img_opened
         self.rect = self.image.get_rect()
+        self.is_opened = True
 
     def update(self, loc):
         self.rect.center = loc
