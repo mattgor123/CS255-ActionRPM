@@ -70,7 +70,7 @@ class HighScore(State.State):
                                 color = (0, 255, 0)
                     curr_score = self.score_font.render(
                         str(i + 1) + ". " + self.scores[i][0] + ": " +
-                        "%3.2f" % self.scores[i][1], 1, color)
+                        "%3.0f" % self.scores[i][1], 1, color)
                     curr_score_rect = curr_score.get_rect()
                     curr_score_rect.left = rect_left
                     curr_score_rect.top = rect_top

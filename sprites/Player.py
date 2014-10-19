@@ -176,7 +176,7 @@ class Player(game.sprite.Sprite):
         self.check_acceleration_state(acceleration)
         self.set_image()
         Player.wall_rects = map.get_tiles(self.x, self.y)
-        self.move(interval)
+        return self.move(interval)
 
     def check_key(self, key):
         index = 0
@@ -196,9 +196,9 @@ class Player(game.sprite.Sprite):
         #if self.should_move(Player.wall_rects, [], interval):
         #Do something
 
+        collisionFixed = False
         for r in Player.wall_rects:
             if r.isCollidable():
-                collisionFixed = False
                 if (r.rect.collidepoint(self.rect.midbottom)):
                     self.rect.bottom = r.rect.top
                     collisionFixed = True
@@ -263,6 +263,8 @@ class Player(game.sprite.Sprite):
             self.y -= self.speed * interval
         if self.direction == "down":
             self.y += self.speed * interval
+
+        return collisionFixed
 
     def should_move(self, tempRect, walls):
         real_walls = game.sprite.Group()

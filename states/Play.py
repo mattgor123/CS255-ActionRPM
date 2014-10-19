@@ -26,6 +26,7 @@ class Play(State.State):
     GAR_LOC = None
     START_SCORE = None
     SCORE_TIME = 0
+    END_SCORE = 0
 
     #Code to initialize a new game instance
     def __init__(self):
@@ -124,12 +125,23 @@ class Play(State.State):
         self.set_tiles()
         #Update the player
         for player in players:
-            player.update(Constants.INTERVAL)
+            if player.update(Constants.INTERVAL):
+                if len(score_label) != 0:
+                    for s in score_label:
+                        score_label.remove(s)
+                sl = Label.Label("sl", "-20", (126, 38))
+                sl.set_green(False)
+                self.START_SCORE -= 4
+                self.SCORE_TIME = self.time
+                score_label.add(sl)
             k = player.check_key(key)
             if k is not None:
                 key.remove(k[0])
                 self.KEY_LOC.remove(self.KEY_LOC[k[1]])
                 self.START_SCORE += 200
+                if len(score_label) != 0:
+                    for s in score_label:
+                        score_label.remove(s)
                 sl = Label.Label("sl", "+200", (126, 38))
                 self.SCORE_TIME = self.time
                 score_label.add(sl)
@@ -149,7 +161,8 @@ class Play(State.State):
             if label.name == "health":
                 label.update(self.health)
             elif label.name == "score":
-                label.update(self.START_SCORE - (self.time * 15))
+                self.END_SCORE = self.START_SCORE - (self.time * 15)
+                label.update(self.END_SCORE)
         for s in score_label.sprites():
             delta = self.time - self.SCORE_TIME
             if delta > 1.2:
@@ -171,7 +184,7 @@ def is_new_high_score(self):
         return True
     else:
         min_high_score = min(b for (a, b) in scores)
-        if self.time < min_high_score:
+        if self.time > min_high_score:
             return True
     return False
 
@@ -179,6 +192,6 @@ def is_new_high_score(self):
 # Define function to allow a user to restart if their health reaches 0%
 def game_over(self):
     if is_new_high_score(self):
-        Constants.STATE = NewHigh.NewHigh(self.time)
+        Constants.STATE = NewHigh.NewHigh(self.END_SCORE)
     else:
         Constants.STATE = GameEnded.GameEnded()

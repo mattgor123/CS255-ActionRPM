@@ -83,7 +83,7 @@ class NewHigh(State.State):
 
 # Function to add a score to the list
 def save_scores(self):
-    self.scores.sort(key=lambda x: x[1])
+    self.scores.sort(key=lambda x: x[1], reverse=True)
     self.scores = self.scores[0:10]
     f = open(Constants.HIGH_SCORE_FILE, "wb")
     pickle.dump(self.scores, f)
