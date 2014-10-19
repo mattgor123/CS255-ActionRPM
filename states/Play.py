@@ -81,7 +81,7 @@ class Play(State.State):
             #labels.clear(Constants.SCREEN,background)
             labels.draw(Constants.SCREEN)
             display.update()
-            game_over(self)
+            game_over(self, True)
 
         else:
             # enemies.draw(Constants.SCREEN)
@@ -113,7 +113,7 @@ class Play(State.State):
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_q:
-                game_over(self)
+                game_over(self, False)
             elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
 
@@ -152,7 +152,7 @@ class Play(State.State):
             if player.check_garage(garage):
                 labels.draw(Constants.SCREEN)
                 display.update()
-                game_over(self)
+                game_over(self, False)
 
         #Determine current health status & update Label
         for player in players.sprites():
@@ -162,6 +162,9 @@ class Play(State.State):
                 label.update(self.health)
             elif label.name == "score":
                 self.END_SCORE = self.START_SCORE - (self.time * 15)
+                if self.END_SCORE <= 0:
+                    game_over(self, True)
+
                 label.update(self.END_SCORE)
         for s in score_label.sprites():
             delta = self.time - self.SCORE_TIME
@@ -190,8 +193,10 @@ def is_new_high_score(self):
 
 
 # Define function to allow a user to restart if their health reaches 0%
-def game_over(self):
-    if is_new_high_score(self):
+def game_over(self, died):
+    if died:
+        Constants.STATE = GameEnded.GameEnded("GAME OVER")
+    elif is_new_high_score(self):
         Constants.STATE = NewHigh.NewHigh(self.END_SCORE)
     else:
-        Constants.STATE = GameEnded.GameEnded()
+        Constants.STATE = GameEnded.GameEnded("LEVEL CLEARED")

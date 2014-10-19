@@ -224,24 +224,32 @@ class Player(game.sprite.Sprite):
                     #centers of the car
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.topright)):
+                    collisionFixed = True
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.bottomright)):
+                    collisionFixed = True
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.topleft)):
+                    collisionFixed = True
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.bottomleft)):
+                    collisionFixed = True
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
+
+        if collisionFixed:
+            self.damage += 10
+            self.crash.play()
 
         if self.direction == "upleft":
             self.x -= self.speed * interval
