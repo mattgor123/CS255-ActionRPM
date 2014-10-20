@@ -203,23 +203,26 @@ class Player(game.sprite.Sprite):
         collisionFixed = False
         for r in Player.wall_rects:
             if r.get_strength() > 0:
-                damage_to_do = r.get_strength()
                 if (r.rect.collidepoint(self.rect.midbottom)):
+                    damage_to_do = r.get_strength()
                     self.rect.bottom = r.rect.top
                     collisionFixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.y -= .01
                 if (r.rect.collidepoint(self.rect.midleft)):
+                    damage_to_do = r.get_strength()
                     self.rect.left = r.rect.right
                     collisionFixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
                 if (r.rect.collidepoint(self.rect.midright)):
+                    damage_to_do = r.get_strength()
                     self.rect.right = r.rect.left
                     collisionFixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
                 if (r.rect.collidepoint(self.rect.midtop)):
+                    damage_to_do = r.get_strength()
                     self.rect.top = r.rect.bottom
                     collisionFixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
@@ -229,35 +232,41 @@ class Player(game.sprite.Sprite):
                     #centers of the car
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.topright)):
+                    damage_to_do = r.get_strength()
                     collisionFixed = True
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.bottomright)):
+                    damage_to_do = r.get_strength()
                     collisionFixed = True
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.topleft)):
+                    damage_to_do = r.get_strength()
                     collisionFixed = True
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
                 if (not collisionFixed and r.rect.collidepoint(
                         self.rect.bottomleft)):
+                    damage_to_do = r.get_strength()
                     collisionFixed = True
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
 
         if collisionFixed:
+            print(damage_to_do)
             self.damage += damage_to_do
+            print(self.damage)
             self.crash.play()
 
         if self.direction == "upleft":
-            self.x -= self.speed * interval * .7071 # 1/Sqrt 2
+            self.x -= self.speed * interval * .7071  # 1/Sqrt 2
             self.y -= self.speed * interval * .7071
         if self.direction == "downleft":
             self.x -= self.speed * interval * .7071
@@ -394,6 +403,19 @@ class Player(game.sprite.Sprite):
         elif self.health > 75 and not self.current == "full":
             self.current = "full"
         return self.health
+
+    def heal(self):
+        self.damage -= 150
+        if self.damage < 0:
+            self.damage = 0
+
+    def check_health(self, pack):
+        index = 0
+        for p in pack:
+            if self.rect.colliderect(p.rect):
+                return (p, index)
+            index += 1
+        return None
 
     def set_image_rotations(self, healthlevel):
         if healthlevel == "half":

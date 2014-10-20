@@ -140,7 +140,7 @@ class Play(State.State):
                         score_label.remove(s)
                 sl = Label.Label("sl", "-20", (126, 38))
                 sl.set_green(False)
-                self.START_SCORE -= 4
+                self.START_SCORE -= 1
                 self.SCORE_TIME = self.time
                 score_label.add(sl)
             k = player.check_key(key)
@@ -170,7 +170,7 @@ class Play(State.State):
             if label.name == "health":
                 label.update(self.health)
             elif label.name == "score":
-                self.END_SCORE = self.START_SCORE - (self.time * 15)
+                self.END_SCORE = self.START_SCORE - (self.time * 10)
                 if self.END_SCORE <= 0:
                     game_over(self, True)
 

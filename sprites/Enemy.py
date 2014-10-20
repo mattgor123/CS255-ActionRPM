@@ -55,7 +55,7 @@ class Enemy(game.sprite.Sprite):
         self.move(interval)
 
     def get_strength(self):
-        return 50
+        return 40
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
     Note : We wrote this function interpreting 'look' to mean the direction
@@ -64,7 +64,6 @@ class Enemy(game.sprite.Sprite):
     code...not currently being used.
     '''
     def move(self, interval):
-
 
         if self.direction == "right":
             self.x += self.speed*interval
@@ -89,7 +88,6 @@ class Enemy(game.sprite.Sprite):
             if self.x <= 39:
                 self.direction = "up"
                 self.set_direction("up")
-
 
     #method to set the direction
     def set_direction(self, direction):
