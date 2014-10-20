@@ -31,7 +31,8 @@ class Play(State.State):
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
-        global players, labels, background, map, key, garage, score_label
+        global players, labels, background, map, key, garage, score_label,\
+            enemies
         self.NUM_KEYS = 3
         self.KEY_LOC = [(15, 6), (20, 30), (30, 17)]
         self.GAR_LOC = (42, 4)
@@ -41,6 +42,7 @@ class Play(State.State):
         # read map file
         map = Map.Map()
         players = pygame.sprite.Group()
+        enemies = pygame.sprite.Group()
         Play.tiles = pygame.sprite.Group()
         key = pygame.sprite.Group()
         score_label = pygame.sprite.Group()
@@ -54,6 +56,9 @@ class Play(State.State):
         labels.add(h_label)
         labels.add(s_label)
         map = Map.Map()
+        enemy = Enemy.Enemy([6, 9], [
+            Constants.WIDTH, Constants.HEIGHT], map, 1, "down")
+        enemies.add(enemy)
         player1 = Player.Player([6, 6], [
             Constants.WIDTH, Constants.HEIGHT], map)
         players.add(player1)
@@ -69,6 +74,7 @@ class Play(State.State):
     def draw(self):
         #Clear the sprite groups from the screen
         players.clear(Constants.SCREEN, background)
+        enemies.clear(Constants.SCREEN, background)
         Play.tiles.clear(Constants.SCREEN, background)
         # enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
@@ -100,6 +106,7 @@ class Play(State.State):
             key.draw(Constants.SCREEN)
             garage.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
+            enemies.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
@@ -172,6 +179,9 @@ class Play(State.State):
                 score_label.remove(s)
             else:
                 s.set_score_pos((126, 38 - (delta * 4)))
+
+        for enemy in enemies:
+            enemy.update()
 
 
 # Function to determine if the current score was a high score

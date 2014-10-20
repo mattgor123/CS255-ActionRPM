@@ -1,0 +1,314 @@
+import pygame as game
+from states.Constants import Constants
+import util.SpriteSheet as SS
+import map.Map as Map
+import Tile
+import math
+
+
+class Enemy(game.sprite.Sprite):
+    # These are the images
+    # full_health = None
+    # half_health = None
+    # quarter_health = None
+    stopped = None
+    accelerating = None
+    full_speed = None
+    crash = None
+    current = None
+    max_speed = Constants.PLAYER_MAX_SPEED
+    wall_rects = None
+    FRAME_SLOW = 10
+    CAN_END = False
+
+    # Constructor for our Enemy takes an initial location, the dimensions of
+    # the screen, and the speed
+
+    def __init__(self, location, screensize, tempMap):
+
+        game.sprite.Sprite.__init__(self)
+        global map
+        map = tempMap
+        Enemy.screen_width = screensize[0]
+        Enemy.screen_height = screensize[1]
+        self.direction = "right"
+        # set the images to the appropriate ones based on the direction of the
+        # character
+        # if Enemy.full_health is None:
+        # Enemy.full_health = game.image.load(
+        #         "images/sprites/playerfullhealth.png").convert_alpha()
+        if Enemy.crash is None:
+            Enemy.crash = game.mixer.Sound("audio/car_screech.wav")
+        # if Enemy.half_health is None:
+        #     Enemy.half_health = game.image.load(
+        #         "images/sprites/playerhalfhealth.png").convert_alpha()
+        # if Enemy.quarter_health is None:
+        #     Enemy.quarter_health = game.image.load(
+        #         "images/sprites/playerquarterhealth.png").convert_alpha()
+
+        if Enemy.stopped is None:
+            tmp = SS.loadSheet("images/sprites/enemyfullhealthlights.png",
+                               52, 26, [3, 1])
+            tmp = tmp[0]
+            Enemy.stopped = []
+            Enemy.stopped.append(tmp[0])
+        if Enemy.accelerating is None:
+            tmp = SS.loadSheet("images/sprites/enemyfullhealthlights.png",
+                               52, 26, [3, 1])
+            tmp = tmp[0]
+            Enemy.accelerating = []
+            for i in range(1, 3):
+                Enemy.accelerating.append(tmp[i])
+        if Enemy.full_speed is None:
+            tmp = SS.loadSheet("images/sprites/enemyfullhealthlights.png",
+                               52, 26, [3, 1])
+            tmp = tmp[0]
+            Enemy.full_speed = []
+            for i in range(1, len(tmp)):
+                Enemy.full_speed.append(tmp[i])
+        # initialize
+        self.imageArray = Enemy.stopped
+        Enemy.right = self.imageArray
+        self.image = self.imageArray[0]
+        self.rect = self.image.get_rect()
+        self.x = location[0]
+        self.y = location[1]
+
+        self.accelerationState = "stopped"
+        self.set_rotations()
+        self.frame = 0
+        self.frameCalls = 0
+        self.set_image()
+        self.crash = Enemy.crash
+        self.damage = 0
+        self.difficulty = Constants.DIFFICULTY
+        self.health = Constants.PLAYER_STARTING_HEALTH
+        # self.set_image_rotations(self.health)
+        self.speed = Constants.PLAYER_MIN_SPEED
+        self.is_accelerating = False
+
+        self.rect.center = location
+        self.x = location[0]
+        self.y = location[1]
+        self.screen_width = Enemy.screen_width
+        self.screen_height = Enemy.screen_height
+        self.dir_changed = False
+        #self.has_initialized = True
+
+    # update method moves the sprite & possibly changes its image based on the
+    # keypress
+    def update(self, interval):
+        self.dir_changed = False
+
+    def move(self, interval):
+        #if self.should_move(Enemy.wall_rects, [], interval):
+        #Do something
+
+        collisionFixed = False
+        for r in Enemy.wall_rects:
+            if r.isCollidable():
+                if (r.rect.collidepoint(self.rect.midbottom)):
+                    self.rect.bottom = r.rect.top
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.y -= .01
+                if (r.rect.collidepoint(self.rect.midleft)):
+                    self.rect.left = r.rect.right
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x += .01
+                if (r.rect.collidepoint(self.rect.midright)):
+                    self.rect.right = r.rect.left
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x -= .01
+                if (r.rect.collidepoint(self.rect.midtop)):
+                    self.rect.top = r.rect.bottom
+                    collisionFixed = True
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.y += .01
+                    #These collisions are to fix hitting any corners
+                    #Only happens if there wasnt a collision with one of the
+                    #centers of the car
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.topright)):
+                    collisionFixed = True
+                    self.rect.right = r.rect.left
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x -= .01
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.bottomright)):
+                    collisionFixed = True
+                    self.rect.right = r.rect.left
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x -= .01
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.topleft)):
+                    collisionFixed = True
+                    self.rect.left = r.rect.right
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x += .01
+                if (not collisionFixed and r.rect.collidepoint(
+                        self.rect.bottomleft)):
+                    collisionFixed = True
+                    self.rect.left = r.rect.right
+                    self.speed = Constants.PLAYER_MIN_SPEED
+                    self.x += .01
+
+        if collisionFixed:
+            self.damage += 10
+            self.crash.play()
+
+        if self.direction == "upleft":
+            self.x -= self.speed * interval
+            self.y -= self.speed * interval
+        if self.direction == "downleft":
+            self.x -= self.speed * interval
+            self.y += self.speed * interval
+        if self.direction == "left":
+            self.x -= self.speed * interval
+        if self.direction == "upright":
+            self.x += self.speed * interval
+            self.y -= self.speed * interval
+        if self.direction == "downright":
+            self.x += self.speed * interval
+            self.y += self.speed * interval
+        if self.direction == "right":
+            self.x += self.speed * interval
+        if self.direction == "up":
+            self.y -= self.speed * interval
+        if self.direction == "down":
+            self.y += self.speed * interval
+
+        return collisionFixed
+
+    def should_move(self, tempRect, walls):
+        real_walls = game.sprite.Group()
+        for r in walls:
+            if r.isCollidable():
+                real_walls.add(r)
+        hit_list = game.sprite.spritecollide(self, real_walls, False)
+        if len(hit_list) > 1:
+            print ((hit_list[0].x, hit_list[0].y))
+            print "Total collisions = " + str(len(hit_list))
+            return False
+        return True
+
+    def is_point_in_rect(self, rect, p_x, p_y):
+        min_x = rect[0]
+        min_y = rect[1]
+        max_x = rect[2]
+        max_y = rect[3]
+        return (min_x < p_x and min_y < p_y and
+                max_x > p_x and max_y > p_y)
+
+    def check_player_wall_collision(self, wall, tempRect):
+        player_rect = tempRect
+        x_offset = player_rect.width / (Tile.Tile.WIDTH * 1.0)
+        y_offset = player_rect.height / (Tile.Tile.HEIGHT * 1.0)
+        player_min_x = math.floor(self.x)
+        player_min_y = math.floor(self.y)
+        player_max_x = math.floor(self.x + x_offset)
+        player_max_y = math.floor(self.y + y_offset)
+        coords = (player_min_x, player_min_y, player_max_x, player_max_y)
+        return self.is_point_in_rect(coords, wall.x, wall.y)
+
+    def check_acceleration_state(self, accel):
+        if self.accelerationState == "stopped":
+            if self.speed != Constants.PLAYER_MIN_SPEED:
+                self.accelerationState = "accelerating"
+                self.set_image_array()
+        elif self.accelerationState == "accelerating":
+            if self.speed == Constants.PLAYER_MAX_SPEED:
+                self.accelerationState = "maxed"
+                self.set_image_array()
+            elif accel < 0:
+                self.accelerationState = "slowing"
+                self.set_image_array()
+        elif self.accelerationState == "slowing":
+            if self.speed == Constants.PLAYER_MIN_SPEED:
+                self.accelerationState = "stopped"
+                self.set_image_array()
+            elif accel > 0:
+                self.accelerationState = "accelerating"
+                self.set_image_array()
+        elif self.accelerationState == "maxed":
+            if self.speed < Constants.PLAYER_MAX_SPEED:
+                self.accelerationState = "slowing"
+                self.set_image_array()
+
+    def set_image_array(self):
+        if self.accelerationState == "stopped":
+            Enemy.right = Enemy.stopped
+        elif self.accelerationState == "accelerating":
+            Enemy.right = Enemy.accelerating
+        elif self.accelerationState == "maxed":
+            Enemy.right = Enemy.full_speed
+        elif self.accelerationState == "slowing":
+            Enemy.right = Enemy.stopped
+        self.set_rotations()
+
+    def set_rotations(self):
+        Enemy.left = SS.rotateSprites(Enemy.right, 180)
+        Enemy.up = SS.rotateSprites(Enemy.right, 90)
+        Enemy.down = SS.rotateSprites(Enemy.right, -90)
+        Enemy.upright = SS.rotateSprites(Enemy.right, 45)
+        Enemy.upleft = SS.rotateSprites(Enemy.right, 135)
+        Enemy.downright = SS.rotateSprites(Enemy.right, -45)
+        Enemy.downleft = SS.rotateSprites(Enemy.right, -135)
+        self.set_direction(self.direction)
+        self.frame = 0
+
+    def set_direction(self, direction):
+        self.direction = direction
+        # set the image based on the direction
+        if direction == "right":
+            self.imageArray = Enemy.right
+        elif direction == "downright":
+            self.imageArray = Enemy.downright
+            # self.rect = self.image.get_rect(center=self.rect.center)
+        elif direction == "down":
+            self.imageArray = Enemy.down
+            # self.rect = self.image.get_rect(center=self.rect.center)
+        elif direction == "downleft":
+            self.imageArray = Enemy.downleft
+            # self.rect = self.image.get_rect(center=self.rect.center)
+        elif direction == "left":
+            self.imageArray = Enemy.left
+            # self.rect = self.image.get_rect(center=self.rect.center)
+        elif direction == "upleft":
+            self.imageArray = Enemy.upleft
+            # self.rect = self.image.get_rect(center=self.rect.center)
+        elif direction == "up":
+            self.imageArray = Enemy.up
+            # self.rect = self.image.get_rect(center=self.rect.center)
+        elif direction == "upright":
+            self.imageArray = Enemy.upright
+            # self.rect = self.image.get_rect(center=self.rect.center)
+
+    def set_image_rotations(self, healthlevel):
+        if healthlevel == "half":
+            Enemy.image = Enemy.half_health
+        elif healthlevel == "quarter":
+            Enemy.image = Enemy.quarter_health
+        else:
+            Enemy.image = Enemy.full_health
+        Enemy.rect = Enemy.image.get_rect()
+        Enemy.right = Enemy.image
+        Enemy.left = game.transform.rotate(Enemy.right, 180)
+        Enemy.up = game.transform.rotate(Enemy.right, 90)
+        Enemy.down = game.transform.rotate(Enemy.right, -90)
+        Enemy.upright = game.transform.rotate(Enemy.right, 45)
+        Enemy.upleft = game.transform.rotate(Enemy.right, 135)
+        Enemy.downright = game.transform.rotate(Enemy.right, -45)
+        Enemy.downleft = game.transform.rotate(Enemy.right, -135)
+        self.set_direction(self.direction)
+
+    def set_image(self):
+        self.image = self.imageArray[self.frame]
+        self.rect = self.image.get_rect(center=self.rect.center)
+        self.frameCalls += 1
+        if self.frameCalls % Enemy.FRAME_SLOW == 0:
+            self.frame += 1
+        if self.frame >= len(self.imageArray):
+            self.frame = 0
