@@ -56,11 +56,11 @@ class Play(State.State):
         labels.add(h_label)
         labels.add(s_label)
         map = Map.Map()
-        enemy = Enemy.Enemy([6, 9], [
-            Constants.WIDTH, Constants.HEIGHT], map, 1, "down")
+        enemy = Enemy.Enemy([39, 3.1], [
+            Constants.WIDTH, Constants.HEIGHT], 2, "down")
         enemies.add(enemy)
         player1 = Player.Player([6, 6], [
-            Constants.WIDTH, Constants.HEIGHT], map)
+            Constants.WIDTH, Constants.HEIGHT], map, enemy)
         players.add(player1)
         for i in range(self.NUM_KEYS):
             k_tl = map.get_topleft(self.KEY_LOC[i][0], self.KEY_LOC[i][1])
@@ -116,6 +116,8 @@ class Play(State.State):
         for player in players.sprites():
             Play.tiles = map.render(player.x, player.y)
             player.rect.topleft = map.get_topleft(player.x, player.y)
+        for enemy in enemies.sprites():
+            enemy.rect.topleft = map.get_topleft(enemy.x, enemy.y)
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -181,7 +183,7 @@ class Play(State.State):
                 s.set_score_pos((126, 38 - (delta * 4)))
 
         for enemy in enemies:
-            enemy.update()
+            enemy.update(Constants.INTERVAL)
 
 
 # Function to determine if the current score was a high score

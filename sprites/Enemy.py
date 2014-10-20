@@ -13,7 +13,7 @@ class Enemy(game.sprite.Sprite):
     # a speed, and a starting direction
     def __init__(self, location, screensize, speed, direction):
         game.sprite.Sprite.__init__(self)
-        self.direction = direction
+
         Enemy.screen_width = screensize[0]
         Enemy.screen_height = screensize[1]
         self.frame = 0
@@ -33,8 +33,12 @@ class Enemy(game.sprite.Sprite):
             Enemy.downright = SP.rotateSprites(Enemy.right, -45)
             Enemy.downleft = SP.rotateSprites(Enemy.right, -135)
 
+        self.direction = direction
+        self.set_direction(direction)
+
         self.set_image()
         #set the speed & get the rectangle
+
         self.speed = speed
         self.rect = self.image.get_rect()
         #make sure it is in the appropriate location
@@ -42,12 +46,16 @@ class Enemy(game.sprite.Sprite):
         #get the width & height of screen
         self.width = screensize[0]
         self.height = screensize[1]
+        self.x = location[0]
+        self.y = location[1]
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing opposite dir of the Player then updates
-    def update(self, dir_changed, direction, interval):
-        self.move(interval, Enemy.should_change_motion_direction)
+    def update(self, interval):
+        self.move(interval)
 
+    def isCollidable(self):
+        return True
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
     Note : We wrote this function interpreting 'look' to mean the direction
@@ -55,115 +63,55 @@ class Enemy(game.sprite.Sprite):
     Please have pity on our souls for the duplicated/relatively ugly
     code...not currently being used.
     '''
-    def move(self, interval, should_move_in_dir_facing):
-        if should_move_in_dir_facing:
-            if self.direction == "upleft":
-                self.rect = self.rect.move(-self.speed * interval,
-                                           -self.speed * interval)
-                #Two possible collisions are top & left (or corner)
-                if self.rect.top < 0 and self.rect.left < 0:
-                    self.set_direction("downright")
-                elif self.rect.top < 0:
-                    self.set_direction("downleft")
-                elif self.rect.left < 0:
-                    self.set_direction("upright")
+    def move(self, interval):
 
-            elif self.direction == "downleft":
-                self.rect = self.rect.move(-self.speed * interval,
-                                           +self.speed * interval)
-                #Two possible collisions are bottom & left (or corner)
-                if self.rect.bottom > self.screen_height and self.rect.left \
-                        < 0:
-                    self.set_direction("upright")
-                elif self.rect.bottom > self.screen_height:
-                    self.set_direction("upleft")
-                elif self.rect.left < 0:
-                    self.set_direction("downright")
 
-            elif self.direction == "upright":
-                self.rect = self.rect.move(self.speed * interval,
-                                           -self.speed * interval)
-                #Two possible collisions are top & right (or corner)
-                if self.rect.top < 0 and self.rect.right > self.screen_width:
-                    self.set_direction("downleft")
-                elif self.rect.top < 0:
-                    self.set_direction("downright")
-                elif self.rect.right > self.screen_width:
-                    self.set_direction("upleft")
+        if self.direction == "right":
+            self.x += self.speed*interval
+            if self.x > 42.9:
+                self.direction = "left"
+                self.set_direction("left")
 
-            elif self.direction == "downright":
-                self.rect = self.rect.move(self.speed * interval,
-                                           self.speed * interval)
-                #Two possible collisions are bottom & right (or corner)
-                if self.rect.bottom > self.screen_height and self.rect.right \
-                        > self.screen_width:
-                    self.set_direction("upleft")
-                elif self.rect.bottom > self.screen_height:
-                    self.set_direction("upright")
-                elif self.rect.right > self.screen_width:
-                    self.set_direction("downleft")
+        elif self.direction == "up":
+            self.y -= self.speed*interval
+            if self.y <= 3.1:
+                self.direction = "down"
+                self.set_direction("down")
 
-            elif self.direction == "right":
-                self.rect = self.rect.move(self.speed * interval, 0)
-                #Only possible collision is to the right
-                if self.rect.right > self.screen_width:
-                    self.set_direction("left")
+        elif self.direction == "down":
+            self.y += self.speed*interval
+            if self.y > 7:
+                self.direction = "right"
+                self.set_direction("right")
 
-            elif self.direction == "up":
-                self.rect = self.rect.move(0, -self.speed * interval)
-                #Only possible collision is top
-                if self.rect.top < 0:
-                    self.set_direction("down")
+        elif self.direction == "left":
+            self.x -= self.speed*interval
+            if self.x <= 39:
+                self.direction = "up"
+                self.set_direction("up")
 
-            elif self.direction == "down":
-                self.rect = self.rect.move(0, self.speed * interval)
-                #Only possible collision is bottom
-                if self.rect.bottom > self.screen_height:
-                    self.set_direction("up")
-
-            elif self.direction == "left":
-                self.rect = self.rect.move(-self.speed * interval, 0)
-                #Only possible collision is left
-                if self.rect.left < 0:
-                    self.set_direction("right")
-        else:
-            self.move_based_on_initial_dir(interval)
 
     #method to set the direction
     def set_direction(self, direction):
         #set the image based on the direction
         if direction == "right":
             self.IMAGES = Enemy.right
-            if Enemy.should_change_motion_direction:
-                self.direction = "right"
         elif direction == "downright":
             self.IMAGES = Enemy.downright
-            if Enemy.should_change_motion_direction:
-                self.direction = "downright"
         elif direction == "down":
             self.IMAGES = Enemy.down
-            if Enemy.should_change_motion_direction:
-                self.direction = "down"
         elif direction == "downleft":
             self.IMAGES = Enemy.downleft
-            if Enemy.should_change_motion_direction:
-                self.direction = "downleft"
         elif direction == "left":
             self.IMAGES = Enemy.left
-            if Enemy.should_change_motion_direction:
-                self.direction = "left"
         elif direction == "upleft":
             self.IMAGES = Enemy.upleft
-            if Enemy.should_change_motion_direction:
-                self.direction = "upleft"
         elif direction == "up":
             self.IMAGES = Enemy.up
-            if Enemy.should_change_motion_direction:
-                self.direction = "up"
         elif direction == "upright":
             self.IMAGES = Enemy.upright
-            if Enemy.should_change_motion_direction:
-                self.direction = "upright"
+
+        self.set_image()
 
     def set_image(self):
         self.image = self.IMAGES[self.frame]

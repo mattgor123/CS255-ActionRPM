@@ -24,7 +24,7 @@ class Player(game.sprite.Sprite):
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
 
-    def __init__(self, location, screensize, tempMap):
+    def __init__(self, location, screensize, tempMap, enemy):
 
         game.sprite.Sprite.__init__(self)
         global map
@@ -32,6 +32,7 @@ class Player(game.sprite.Sprite):
         Player.screen_width = screensize[0]
         Player.screen_height = screensize[1]
         self.direction = "right"
+        self.enemy = enemy
         # set the images to the appropriate ones based on the direction of the
         # character
         # if Player.full_health is None:
@@ -88,8 +89,6 @@ class Player(game.sprite.Sprite):
         self.is_accelerating = False
 
         self.rect.center = location
-        self.x = location[0]
-        self.y = location[1]
         self.screen_width = Player.screen_width
         self.screen_height = Player.screen_height
         self.dir_changed = False
@@ -177,6 +176,7 @@ class Player(game.sprite.Sprite):
         self.check_acceleration_state(acceleration)
         self.set_image()
         Player.wall_rects = map.get_tiles(self.x, self.y)
+        Player.wall_rects.append(self.enemy)
         if self.garage is not None:
             Player.wall_rects.append(self.garage)
         return self.move(interval)
