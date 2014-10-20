@@ -260,9 +260,7 @@ class Player(game.sprite.Sprite):
                     self.x += .01
 
         if collisionFixed:
-            print(damage_to_do)
             self.damage += damage_to_do
-            print(self.damage)
             self.crash.play()
 
         if self.direction == "upleft":
