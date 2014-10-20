@@ -7,7 +7,19 @@ Joshua You - jyou8@jhu.edu
 
 To run our game, go into the directory actionrpm/ and run the command "python game.py"
 
-Current Assignment Notes:
+Current Assignment Notes
+Problem 1: Enemies
+
+We have one main enemy, guarding the garage. He moves in a 4-step cycle around the garage and hitting him does significant damage to your car & severely hurts your score. This is akin to how most of our enemies will act; they will move cyclically around our map & doing damage upon contact.
+
+Problem 2: Damage, Win, Lose
+
+We have a system in place for damage & a system in place for score; the two are now separate. Health starts at 100% and as your player collides with walls/the enemy, his health declines. As the health drops below 75%, the label turns orange, and when it hits 25%, it turns red indicating that you are getting close to dying. Once you hit 0%, your game ends.
+
+The other system is the score. The player's score starts at 1000 and decreases every 
+
+
+Previous Assignment Notes
 Problem 1: Level Zero
 
 We have built our level using 9 screens (1.txt through 9.txt in the map/ directory). The overlay is something like:

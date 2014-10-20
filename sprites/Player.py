@@ -93,6 +93,7 @@ class Player(game.sprite.Sprite):
         self.screen_width = Player.screen_width
         self.screen_height = Player.screen_height
         self.dir_changed = False
+        self.garage = None
         #self.has_initialized = True
 
     # update method moves the sprite & possibly changes its image based on the
@@ -176,6 +177,8 @@ class Player(game.sprite.Sprite):
         self.check_acceleration_state(acceleration)
         self.set_image()
         Player.wall_rects = map.get_tiles(self.x, self.y)
+        if self.garage is not None:
+            Player.wall_rects.append(self.garage)
         return self.move(interval)
 
     def check_key(self, key):
@@ -188,6 +191,7 @@ class Player(game.sprite.Sprite):
 
     def check_garage(self, garage):
         for g in garage:
+            self.garage = g
             if g.isOpened() and self.rect.colliderect(g.rect):
                 return True
         return False
@@ -252,19 +256,19 @@ class Player(game.sprite.Sprite):
             self.crash.play()
 
         if self.direction == "upleft":
-            self.x -= self.speed * interval
-            self.y -= self.speed * interval
+            self.x -= self.speed * interval * .7071 # 1/Sqrt 2
+            self.y -= self.speed * interval * .7071
         if self.direction == "downleft":
-            self.x -= self.speed * interval
-            self.y += self.speed * interval
+            self.x -= self.speed * interval * .7071
+            self.y += self.speed * interval * .7071
         if self.direction == "left":
             self.x -= self.speed * interval
         if self.direction == "upright":
-            self.x += self.speed * interval
-            self.y -= self.speed * interval
+            self.x += self.speed * interval * .7071
+            self.y -= self.speed * interval * .7071
         if self.direction == "downright":
-            self.x += self.speed * interval
-            self.y += self.speed * interval
+            self.x += self.speed * interval * .7071
+            self.y += self.speed * interval * .7071
         if self.direction == "right":
             self.x += self.speed * interval
         if self.direction == "up":
