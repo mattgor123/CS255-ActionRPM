@@ -199,10 +199,11 @@ class Player(game.sprite.Sprite):
     def move(self, interval):
         #if self.should_move(Player.wall_rects, [], interval):
         #Do something
-
+        damage_to_do = 0
         collisionFixed = False
         for r in Player.wall_rects:
-            if r.isCollidable():
+            if r.get_strength() > 0:
+                damage_to_do = r.get_strength()
                 if (r.rect.collidepoint(self.rect.midbottom)):
                     self.rect.bottom = r.rect.top
                     collisionFixed = True
@@ -252,7 +253,7 @@ class Player(game.sprite.Sprite):
                     self.x += .01
 
         if collisionFixed:
-            self.damage += 10
+            self.damage += damage_to_do
             self.crash.play()
 
         if self.direction == "upleft":

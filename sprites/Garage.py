@@ -24,8 +24,11 @@ class Garage(pygame.sprite.Sprite):
     def isOpened(self):
         return self.is_opened
 
-    def isCollidable(self):
-        return not self.is_opened
+    def get_strength(self):
+        if self.is_opened:
+            return 0
+        else:
+            return 1
 
     def open_door(self):
         self.image = Garage.g_img_opened

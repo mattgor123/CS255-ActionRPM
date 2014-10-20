@@ -6,7 +6,7 @@ class Street(Tile.Tile):
     street_img = None
 
     def __init__(self, x, y):
-        Tile.Tile.__init__(self, False)
+        Tile.Tile.__init__(self, 0)
 
         # initialize street image
         if Street.street_img is None:

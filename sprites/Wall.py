@@ -6,7 +6,7 @@ class Wall(Tile.Tile):
     wall_img = None
 
     def __init__(self, x, y):
-        Tile.Tile.__init__(self, True)
+        Tile.Tile.__init__(self, 10)
 
         # initialize wall image
         if Wall.wall_img is None:

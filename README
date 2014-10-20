@@ -16,7 +16,7 @@ Problem 2: Damage, Win, Lose
 
 We have a system in place for damage & a system in place for score; the two are now separate. Health starts at 100% and as your player collides with walls/the enemy, his health declines. As the health drops below 75%, the label turns orange, and when it hits 25%, it turns red indicating that you are getting close to dying. Once you hit 0%, your game ends.
 
-The other system is the score. The player's score starts at 1000 and decreases every update cycle. It can be increased by getting keys. It also decreases when you collide with a wall. Your score is the score you have when you are done collecting the keys & entering the garage.
+The other system is the score. The player's score starts at 1000 and decreases every update cycle. It can be increased by getting keys. It also decreases when you collide with a wall. Your score is the score you have when you are done collecting the keys & entering the garage. If your score goes to 0, you also lose.
 
 Problem 3: Scores High & Low
 

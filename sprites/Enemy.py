@@ -54,8 +54,8 @@ class Enemy(game.sprite.Sprite):
     def update(self, interval):
         self.move(interval)
 
-    def isCollidable(self):
-        return True
+    def get_strength(self):
+        return 50
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
     Note : We wrote this function interpreting 'look' to mean the direction
