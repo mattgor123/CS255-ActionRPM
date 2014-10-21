@@ -95,6 +95,9 @@ class Player(game.sprite.Sprite):
         self.garage = None
         #self.has_initialized = True
 
+    def get_strengths(self):
+        return 1
+
     # update method moves the sprite & possibly changes its image based on the
     # keypress
     def update(self, interval):

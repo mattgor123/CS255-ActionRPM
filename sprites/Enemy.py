@@ -1,5 +1,6 @@
 import pygame as game
 import util.SpriteSheet as SP
+from math import fabs
 
 
 class Enemy(game.sprite.Sprite):
@@ -11,7 +12,10 @@ class Enemy(game.sprite.Sprite):
 
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
-    def __init__(self, location, screensize, speed, direction):
+    def __init__(self, location, screensize, temp_map, speed, direction, move_array):
+        global map
+        map = temp_map
+
         game.sprite.Sprite.__init__(self)
 
         Enemy.screen_width = screensize[0]
@@ -35,7 +39,6 @@ class Enemy(game.sprite.Sprite):
 
         self.direction = direction
         self.set_direction(direction)
-
         self.set_image()
         #set the speed & get the rectangle
 
@@ -48,6 +51,10 @@ class Enemy(game.sprite.Sprite):
         self.height = screensize[1]
         self.x = location[0]
         self.y = location[1]
+        self.movements = move_array
+        self.current_move = 0
+        self.old_pos_x = location[0]
+        self.old_pos_y = location[1]
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing opposite dir of the Player then updates
@@ -65,6 +72,60 @@ class Enemy(game.sprite.Sprite):
     '''
     def move(self, interval):
 
+        curr_action = self.movements[self.current_move]
+        distance_moved_x = fabs(self.old_pos_x - self.x)
+        distance_moved_y = fabs(self.old_pos_y - self.y)
+
+        if(curr_action[0:1] == "d"):
+            self.y += self.speed*interval
+            self.direction = "down"
+            self.set_direction("down")
+            if distance_moved_y > float(curr_action[1:]):
+                if(self.current_move == len(self.movements)-1):
+                    self.current_move = 0
+                else:
+                    self.current_move += 1
+                self.old_pos_y = self.y
+
+
+        elif(curr_action[0:1] == "r"):
+            self.x += self.speed*interval
+            self.direction = "right"
+            self.set_direction("right")
+            if distance_moved_x > float(curr_action[1:]):
+                if(self.current_move == len(self.movements)-1):
+                    self.current_move = 0
+                else:
+                    self.current_move += 1
+                self.old_pos_x = self.x
+
+
+        elif(curr_action[0:1] == "u"):
+            self.y -= self.speed*interval
+            self.direction = "up"
+            self.set_direction("up")
+            if distance_moved_y > float(curr_action[1:]):
+                if(self.current_move == len(self.movements)-1):
+                    self.current_move = 0
+                else:
+                    self.current_move += 1
+                self.old_pos_y = self.y
+
+
+        elif(curr_action[0:1] == "l"):
+            self.direction = "left"
+            self.set_direction("left")
+            self.x -= self.speed*interval
+            if distance_moved_x > float(curr_action[1:]):
+                if(self.current_move == len(self.movements)-1):
+                    self.current_move = 0
+                else:
+                    self.current_move += 1
+                self.old_pos_x = self.x
+
+
+
+    """
         if self.direction == "right":
             self.x += self.speed*interval
             if self.x > 42.9:
@@ -87,7 +148,7 @@ class Enemy(game.sprite.Sprite):
             self.x -= self.speed*interval
             if self.x <= 39:
                 self.direction = "up"
-                self.set_direction("up")
+                self.set_direction("up") """
 
     #method to set the direction
     def set_direction(self, direction):
