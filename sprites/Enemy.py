@@ -12,7 +12,8 @@ class Enemy(game.sprite.Sprite):
 
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
-    def __init__(self, location, screensize, temp_map, speed, direction, move_array):
+    def __init__(self, location, screensize, temp_map,
+                 speed, direction, move_array):
         global map
         map = temp_map
 
@@ -87,7 +88,6 @@ class Enemy(game.sprite.Sprite):
                     self.current_move += 1
                 self.old_pos_y = self.y
 
-
         elif(curr_action[0:1] == "r"):
             self.x += self.speed*interval
             self.direction = "right"
@@ -98,7 +98,6 @@ class Enemy(game.sprite.Sprite):
                 else:
                     self.current_move += 1
                 self.old_pos_x = self.x
-
 
         elif(curr_action[0:1] == "u"):
             self.y -= self.speed*interval
@@ -111,7 +110,6 @@ class Enemy(game.sprite.Sprite):
                     self.current_move += 1
                 self.old_pos_y = self.y
 
-
         elif(curr_action[0:1] == "l"):
             self.direction = "left"
             self.set_direction("left")
@@ -122,8 +120,6 @@ class Enemy(game.sprite.Sprite):
                 else:
                     self.current_move += 1
                 self.old_pos_x = self.x
-
-
 
     """
         if self.direction == "right":

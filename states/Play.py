@@ -63,7 +63,8 @@ class Play(State.State):
         labels.add(s_label)
         map = Map.Map()
         enemy = Enemy.Enemy([39, 3.1], [
-            Constants.WIDTH, Constants.HEIGHT], map, 2, "down", ["d4","r3.9","l3.9","u4"])
+            Constants.WIDTH, Constants.HEIGHT], map, 2, "down",
+            ["d4", "r3.9", "l3.9", "u4"])
         enemies.add(enemy)
         player1 = Player.Player([6, 6], [
             Constants.WIDTH, Constants.HEIGHT], map, enemy)
