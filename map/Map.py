@@ -61,7 +61,19 @@ class Map():
         if char == 'w':
             return sprites.Wall.Wall(map_x, map_y)
         elif char == 's':
-            return sprites.Street.Street(map_x, map_y)
+            return sprites.Street.Street(map_x, map_y, "empty")
+        elif char == 'h':
+            return sprites.Street.Street(map_x, map_y, "horizontal")
+        elif char == 'v':
+            return sprites.Street.Street(map_x, map_y, "vertical")
+        elif char == 'o':
+            return sprites.Street.Street(map_x, map_y, "o")
+        elif char == 'p':
+            return sprites.Street.Street(map_x, map_y, "p")
+        elif char == 'l':
+            return sprites.Street.Street(map_x, map_y, "l")
+        elif char == ';':
+            return sprites.Street.Street(map_x, map_y, ";")
         else:
             return None
 

@@ -32,8 +32,8 @@ class Player(game.sprite.Sprite):
         self.direction = "right"
         #Set the map for the player to use to get tiles
         self.map = temp_map
-        #Enemy being passed to car, very bad right now
-        self.enemy = enemy
+        #Enemies being passed to car, very bad right now
+        self.enemies = enemy
 
         #Set our starting health
         self.health = Constants.PLAYER_STARTING_HEALTH
@@ -217,10 +217,8 @@ class Player(game.sprite.Sprite):
         #Get the rectangles from the map around the x,y position of the car
         wall_rects = self.map.get_tiles(self.x, self.y)
         #Add the enemy rectangle to our array
-        wall_rects.append(self.enemy)
-        #Does checking for the garage, but this needs to be changed for sure
-        if self.garage is not None:
-            wall_rects.append(self.garage)
+        for enemy in self.enemies:
+            wall_rects.append(enemy)
 
         #Go through all of the collidable rects around the player
         for r in wall_rects:

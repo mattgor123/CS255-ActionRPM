@@ -1,0 +1,11 @@
+Seven types of streets for sprites:
+
+Horizontal (h in map)
+Vertical (v in map)
+|_ turn (l in map)
+_| turn (; in map)
+__
+|  turn (o in map)
+__
+  | turn (p in map)
+Empty street (s in map)

@@ -6,9 +6,6 @@ import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
-import sprites.Key as Key
-import sprites.Garage as Garage
-import sprites.Health as Health
 import map.Map as Map
 import NewHigh
 import GameEnded
@@ -22,26 +19,15 @@ class Play(State.State):
     health = Constants.PLAYER_STARTING_HEALTH
     time = 0
     tiles = None
-    NUM_KEYS = 0
-    NUM_PACK = 0
-    KEY_LOC = None
-    HEL_LOC = None
-    GAR_LOC = None
     START_SCORE = None
     SCORE_TIME = 0
     END_SCORE = 0
 
-
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
-        global players, labels, background, map, key, garage, score_label,\
+        global players, labels, background, map, key, score_label,\
             enemies, hp
-        self.NUM_KEYS = 3
-        self.NUM_PACK = 3
-        self.KEY_LOC = [(15, 6), (20, 30), (30, 17)]
-        self.HEL_LOC = [(15, 30), (28, 30), (23, 17)]
-        self.GAR_LOC = (42, 4)
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
 
@@ -53,7 +39,6 @@ class Play(State.State):
         Play.tiles = pygame.sprite.Group()
         key = pygame.sprite.Group()
         score_label = pygame.sprite.Group()
-        garage = pygame.sprite.Group()
         hp = pygame.sprite.Group()
 
         background = pygame.Surface(Constants.SCREEN.get_size())
@@ -66,20 +51,14 @@ class Play(State.State):
         map = Map.Map()
         enemy = Enemy.Enemy([39, 3.1], [
             Constants.WIDTH, Constants.HEIGHT], map, 2, "down",
-            ["d4", "r3.9", "l3.9", "u4"])
+            ["d4", "r2.9", "l2.9", "u4"])
+        enemy2 = Enemy.Enemy([40.4, 17.5], [Constants.WIDTH, Constants.HEIGHT],
+                             map, 8, "down", ["d12.5", "l16", "u12.5", "r16"])
         enemies.add(enemy)
+        enemies.add(enemy2)
         player1 = Player.Player([6, 6], [
-            Constants.WIDTH, Constants.HEIGHT], map, enemy)
+            Constants.WIDTH, Constants.HEIGHT], map, enemies)
         players.add(player1)
-        for i in range(self.NUM_KEYS):
-            k_tl = map.get_topleft(self.KEY_LOC[i][0], self.KEY_LOC[i][1])
-            key.add(Key.Key(k_tl))
-        for i in range(self.NUM_PACK):
-            p_tl = map.get_topleft(self.HEL_LOC[i][0], self.HEL_LOC[i][1])
-            hp.add(Health.Health(p_tl))
-        g_tl = map.get_topleft(self.GAR_LOC[0], self.GAR_LOC[1])
-        garage.add(Garage.Garage(g_tl))
-
         self.time = 0.00
 
     #Function to draw the sprite groups
@@ -90,8 +69,6 @@ class Play(State.State):
         Play.tiles.clear(Constants.SCREEN, background)
         # enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
-        key.clear(Constants.SCREEN, background)
-        garage.clear(Constants.SCREEN, background)
         score_label.clear(Constants.SCREEN, background)
         hp.clear(Constants.SCREEN, background)
         # walls.clear(Constants.SCREEN, background)
@@ -108,7 +85,6 @@ class Play(State.State):
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             score_label.draw(Constants.SCREEN)
-            g_tl = map.get_topleft(self.GAR_LOC[0], self.GAR_LOC[1])
             ind = 0
             for h in hp:
                 p_tl = map.get_topleft(
@@ -116,21 +92,12 @@ class Play(State.State):
                 h.update(p_tl)
                 ind += 1
             ind = 0
-            for k in key:
-                k_tl = map.get_topleft(
-                    self.KEY_LOC[ind][0], self.KEY_LOC[ind][1])
-                k.update(k_tl)
-                ind += 1
-            garage.update(g_tl)
             key.draw(Constants.SCREEN)
             hp.draw(Constants.SCREEN)
-            garage.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
-
-    #Only specific key event we will handle for now is 'q' or 'r' to restart
 
     def set_tiles(self):
         for player in players.sprites():
@@ -163,39 +130,6 @@ class Play(State.State):
                 self.START_SCORE -= 1
                 self.SCORE_TIME = self.time
                 score_label.add(sl)
-            h = player.check_health(hp)
-            if h is not None:
-                hp.remove(h[0])
-                player.heal()
-                self.HEL_LOC.remove(self.HEL_LOC[h[1]])
-                self.NUM_PACK -= 1
-                if len(score_label) != 0:
-                    for s in score_label:
-                        score_label.remove(s)
-                sl = Label.Label("sl", "+10", (126, 38))
-                sl.set_green(True)
-                self.START_SCORE += 10
-                self.SCORE_TIME = self.time
-                score_label.add(sl)
-            k = player.check_key(key)
-            if k is not None:
-                key.remove(k[0])
-                self.KEY_LOC.remove(self.KEY_LOC[k[1]])
-                self.START_SCORE += 200
-                if len(score_label) != 0:
-                    for s in score_label:
-                        score_label.remove(s)
-                sl = Label.Label("sl", "+200", (126, 38))
-                self.SCORE_TIME = self.time
-                score_label.add(sl)
-                self.NUM_KEYS -= 1
-                if self.NUM_KEYS is 0:
-                    for g in garage:
-                        g.open_door()
-            if player.check_garage(garage):
-                labels.draw(Constants.SCREEN)
-                display.update()
-                game_over(self, False)
 
         #Determine current health status & update Label
         for player in players.sprites():
