@@ -31,6 +31,7 @@ class Play(State.State):
     SCORE_TIME = 0
     END_SCORE = 0
 
+
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
@@ -44,7 +45,8 @@ class Play(State.State):
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
 
-        # read map file
+        #Create global map for players to use
+        global map
         map = Map.Map()
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()

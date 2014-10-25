@@ -1,52 +1,87 @@
 import pygame as game
 from states.Constants import Constants
 import util.SpriteSheet as SS
-import map.Map as Map
 import Tile
 import math
 
 
 class Player(game.sprite.Sprite):
-    # These are the images
-    # full_health = None
-    # half_health = None
-    # quarter_health = None
+    #Variables for the images
     stopped = None
     accelerating = None
     full_speed = None
     crash = None
-    current = None
-    max_speed = Constants.PLAYER_MAX_SPEED
-    wall_rects = None
+
+    #Used in setting the image
     FRAME_SLOW = 10
-    CAN_END = False
 
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
 
-    def __init__(self, location, screensize, tempMap, enemy):
+    def __init__(self, location, screensize, temp_map, enemy):
 
         game.sprite.Sprite.__init__(self)
-        global map
-        map = tempMap
+
+        #set intitial location to passed parameter
+        self.x = location[0]
+        self.y = location[1]
+        #Get the screensize from the parameter
         Player.screen_width = screensize[0]
         Player.screen_height = screensize[1]
+        #Set initial direction of the car
         self.direction = "right"
+        #Set the map for the player to use to get tiles
+        self.map = temp_map
+        #Enemy being passed to car, very bad right now
         self.enemy = enemy
-        # set the images to the appropriate ones based on the direction of the
-        # character
-        # if Player.full_health is None:
-        # Player.full_health = game.image.load(
-        #         "images/sprites/playerfullhealth.png").convert_alpha()
-        if Player.crash is None:
-            Player.crash = game.mixer.Sound("audio/car_screech.wav")
-        # if Player.half_health is None:
-        #     Player.half_health = game.image.load(
-        #         "images/sprites/playerhalfhealth.png").convert_alpha()
-        # if Player.quarter_health is None:
-        #     Player.quarter_health = game.image.load(
-        #         "images/sprites/playerquarterhealth.png").convert_alpha()
 
+        #Set our starting health
+        self.health = Constants.PLAYER_STARTING_HEALTH
+        #create health variable for knowing where our health is e.g. wuarter/half/etc?
+        self.current_health = None
+        self.damage = 0
+        #Create array that holds wall rectangles for collision
+        self.wall_rects = None
+
+        #set the sounds and images for our car
+        self.set_sounds()
+        self.set_images()
+
+
+        # initialize image array shit, can Tuvia make this a little cleaner?
+        self.imageArray = Player.stopped
+        Player.right = self.imageArray
+        self.image = self.imageArray[0]
+        self.rect = self.image.get_rect()
+        #Set rect center to be at the passed coordinates
+        self.rect.center = location
+        #We can only run set rotations after we set our first image
+        self.set_rotations()
+
+        #Set our acceleration states
+        self.accelerationState = "stopped"
+
+        #Not sure what these frame variables are for are for
+        self.frame = 0
+        self.frameCalls = 0
+        self.set_image()
+
+        #Set difficulty variable which makes dying easier?
+        self.difficulty = Constants.DIFFICULTY
+
+
+        #Set starting speed and acceleration
+        self.speed = Constants.PLAYER_MIN_SPEED
+        self.is_accelerating = False
+
+        #Used to see if our direction has changed
+        self.dir_changed = False
+
+        #Create garage variable
+        self.garage = None
+
+    #Method to set the images for the player if they have not been set
+    def set_images(self):
         if Player.stopped is None:
             tmp = SS.loadSheet("images/sprites/player_animations.png",
                                52, 26, [8, 1])
@@ -67,33 +102,11 @@ class Player(game.sprite.Sprite):
             Player.full_speed = []
             for i in range(5, len(tmp)):
                 Player.full_speed.append(tmp[i])
-        # initialize
-        self.imageArray = Player.stopped
-        Player.right = self.imageArray
-        self.image = self.imageArray[0]
-        self.rect = self.image.get_rect()
-        self.x = location[0]
-        self.y = location[1]
 
-        self.accelerationState = "stopped"
-        self.set_rotations()
-        self.frame = 0
-        self.frameCalls = 0
-        self.set_image()
-        self.crash = Player.crash
-        self.damage = 0
-        self.difficulty = Constants.DIFFICULTY
-        self.health = Constants.PLAYER_STARTING_HEALTH
-        # self.set_image_rotations(self.health)
-        self.speed = Constants.PLAYER_MIN_SPEED
-        self.is_accelerating = False
-
-        self.rect.center = location
-        self.screen_width = Player.screen_width
-        self.screen_height = Player.screen_height
-        self.dir_changed = False
-        self.garage = None
-        #self.has_initialized = True
+    #Method to set the sounds if they have not been set
+    def set_sounds(self):
+        if Player.crash is None:
+            Player.crash = game.mixer.Sound("audio/car_screech.wav")
 
     def get_strengths(self):
         return 1
@@ -109,7 +122,7 @@ class Player(game.sprite.Sprite):
             if self.direction != "upleft":
                 self.dir_changed = True
                 self.set_direction("upleft")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
             # check for collision with top or left
 
@@ -117,49 +130,49 @@ class Player(game.sprite.Sprite):
             if self.direction != "downleft":
                 self.dir_changed = True
                 self.set_direction("downleft")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         elif keys_pressed[game.K_LEFT]:
             if self.direction != "left":
                 self.dir_changed = True
                 self.set_direction("left")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_UP]:
             if self.direction != "upright":
                 self.dir_changed = True
                 self.set_direction("upright")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_DOWN]:
             if self.direction != "downright":
                 self.dir_changed = True
                 self.set_direction("downright")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         elif keys_pressed[game.K_RIGHT]:
             if self.direction != "right":
                 self.dir_changed = True
                 self.set_direction("right")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         elif keys_pressed[game.K_UP]:
             if self.direction != "up":
                 self.dir_changed = True
                 self.set_direction("up")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         elif keys_pressed[game.K_DOWN]:
             if self.direction != "down":
                 self.dir_changed = True
                 self.set_direction("down")
-                self.crash.stop()
+                Player.crash.stop()
             self.is_accelerating = True
 
         else:
@@ -172,16 +185,16 @@ class Player(game.sprite.Sprite):
 
         self.speed += acceleration * interval
 
-        if self.speed > Player.max_speed:
-            self.speed = Player.max_speed
+        if self.speed > Constants.PLAYER_MAX_SPEED:
+            self.speed = Constants.PLAYER_MAX_SPEED
         if self.speed < Constants.PLAYER_MIN_SPEED:
             self.speed = Constants.PLAYER_MIN_SPEED
         self.check_acceleration_state(acceleration)
         self.set_image()
-        Player.wall_rects = map.get_tiles(self.x, self.y)
-        Player.wall_rects.append(self.enemy)
+        self.wall_rects = self.map.get_tiles(self.x, self.y)
+        self.wall_rects.append(self.enemy)
         if self.garage is not None:
-            Player.wall_rects.append(self.garage)
+            self.wall_rects.append(self.garage)
         return self.move(interval)
 
     def check_key(self, key):
@@ -204,7 +217,7 @@ class Player(game.sprite.Sprite):
         #Do something
         damage_to_do = 0
         collisionFixed = False
-        for r in Player.wall_rects:
+        for r in self.wall_rects:
             if r.get_strength() > 0:
                 if (r.rect.collidepoint(self.rect.midbottom)):
                     damage_to_do = r.get_strength()
@@ -264,7 +277,7 @@ class Player(game.sprite.Sprite):
 
         if collisionFixed:
             self.damage += damage_to_do
-            self.crash.play()
+            Player.crash.play()
 
         if self.direction == "upleft":
             self.x -= self.speed * interval * .7071  # 1/Sqrt 2
@@ -396,13 +409,13 @@ class Player(game.sprite.Sprite):
     def calculate_health(self):
         self.health = Constants.PLAYER_STARTING_HEALTH - (
             self.damage / (10 * (11 - self.difficulty)))
-        if self.health < 25 and not self.current == "quarter":
-            self.current = "quarter"
-        elif 25 < self.health < 75 and not self.current == \
+        if self.health < 25 and not self.current_health == "quarter":
+            self.current_health = "quarter"
+        elif 25 < self.health < 75 and not self.current_health == \
                 "half":
-            self.current = "half"
-        elif self.health > 75 and not self.current == "full":
-            self.current = "full"
+            self.current_health = "half"
+        elif self.health > 75 and not self.current_health == "full":
+            self.current_health = "full"
         return self.health
 
     def heal(self):
