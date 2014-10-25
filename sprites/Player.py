@@ -37,16 +37,13 @@ class Player(game.sprite.Sprite):
 
         #Set our starting health
         self.health = Constants.PLAYER_STARTING_HEALTH
-        #create health variable for knowing where our health is e.g. wuarter/half/etc?
+        #create health variable for knowing where our health is e.g quarter
         self.current_health = None
         self.damage = 0
-        #Create array that holds wall rectangles for collision
-        self.wall_rects = None
 
         #set the sounds and images for our car
         self.set_sounds()
         self.set_images()
-
 
         # initialize image array shit, can Tuvia make this a little cleaner?
         self.imageArray = Player.stopped
@@ -68,7 +65,6 @@ class Player(game.sprite.Sprite):
 
         #Set difficulty variable which makes dying easier?
         self.difficulty = Constants.DIFFICULTY
-
 
         #Set starting speed and acceleration
         self.speed = Constants.PLAYER_MIN_SPEED
@@ -108,14 +104,18 @@ class Player(game.sprite.Sprite):
         if Player.crash is None:
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
 
+    #Returns strength of this car for collision detection purposes
     def get_strengths(self):
         return 1
 
-    # update method moves the sprite & possibly changes its image based on the
-    # keypress
+    # Update method
     def update(self, interval):
+        #Initially the direction has not changed
         self.dir_changed = False
-        tmp = self.direction
+
+        #Initially assume we are slowing down
+        acceleration = -Constants.PLAYER_ACCELERATION
+        #Get the keys pressed
         keys_pressed = game.key.get_pressed()
         if keys_pressed[game.K_LEFT] and keys_pressed[game.K_UP]:
             # change of direction, stop playing crash sound & set the direction
@@ -123,79 +123,74 @@ class Player(game.sprite.Sprite):
                 self.dir_changed = True
                 self.set_direction("upleft")
                 Player.crash.stop()
-            self.is_accelerating = True
-            # check for collision with top or left
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_LEFT] and keys_pressed[game.K_DOWN]:
             if self.direction != "downleft":
                 self.dir_changed = True
                 self.set_direction("downleft")
                 Player.crash.stop()
-            self.is_accelerating = True
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_LEFT]:
             if self.direction != "left":
                 self.dir_changed = True
                 self.set_direction("left")
                 Player.crash.stop()
-            self.is_accelerating = True
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_UP]:
             if self.direction != "upright":
                 self.dir_changed = True
                 self.set_direction("upright")
                 Player.crash.stop()
-            self.is_accelerating = True
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_DOWN]:
             if self.direction != "downright":
                 self.dir_changed = True
                 self.set_direction("downright")
                 Player.crash.stop()
-            self.is_accelerating = True
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_RIGHT]:
             if self.direction != "right":
                 self.dir_changed = True
                 self.set_direction("right")
                 Player.crash.stop()
-            self.is_accelerating = True
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_UP]:
             if self.direction != "up":
                 self.dir_changed = True
                 self.set_direction("up")
                 Player.crash.stop()
-            self.is_accelerating = True
+            acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_DOWN]:
             if self.direction != "down":
                 self.dir_changed = True
                 self.set_direction("down")
                 Player.crash.stop()
-            self.is_accelerating = True
-
-        else:
-            self.is_accelerating = False
-
-        if self.is_accelerating is True:
             acceleration = Constants.PLAYER_ACCELERATION
-        else:
-            acceleration = -Constants.PLAYER_ACCELERATION
 
-        self.speed += acceleration * interval
-
-        if self.speed > Constants.PLAYER_MAX_SPEED:
+        #Check if the new speed will put us over or under our max/min
+        #Before we set the speed
+        if self.speed + acceleration * interval >\
+                Constants.PLAYER_MAX_SPEED:
             self.speed = Constants.PLAYER_MAX_SPEED
-        if self.speed < Constants.PLAYER_MIN_SPEED:
+        elif self.speed + acceleration * interval <\
+                Constants.PLAYER_MIN_SPEED:
             self.speed = Constants.PLAYER_MIN_SPEED
-        self.check_acceleration_state(acceleration)
-        self.set_image()
-        self.wall_rects = self.map.get_tiles(self.x, self.y)
-        self.wall_rects.append(self.enemy)
-        if self.garage is not None:
-            self.wall_rects.append(self.garage)
-        return self.move(interval)
+        else:
+            self.speed += acceleration * interval
+
+        #Set our car image based on whether it is
+        #stopped, accelerating, or decelerating
+        self.set_acceleration_image(acceleration)
+
+        #Call our move function
+        self.move(interval)
 
     def check_key(self, key):
         index = 0
@@ -212,128 +207,114 @@ class Player(game.sprite.Sprite):
                 return True
         return False
 
+    #Moves player depending on whether or not he has collided with an object
     def move(self, interval):
-        #if self.should_move(Player.wall_rects, [], interval):
-        #Do something
+        #Create variable to calculate damage to be done
         damage_to_do = 0
-        collisionFixed = False
-        for r in self.wall_rects:
+        #Set flag to indicate whether or not we have fixed the collision yet
+        collision_fixed = False
+
+        #Get the rectangles from the map around the x,y position of the car
+        wall_rects = self.map.get_tiles(self.x, self.y)
+        #Add the enemy rectangle to our array
+        wall_rects.append(self.enemy)
+        #Does checking for the garage, but this needs to be changed for sure
+        if self.garage is not None:
+            wall_rects.append(self.garage)
+
+        #Go through all of the collidable rects around the player
+        for r in wall_rects:
+            #A strength > 0 indicates a collidable object
             if r.get_strength() > 0:
+                #This same if statement is repeated for all midpoints
+                #Checking if the midpoint of the car is in the other rect
+                #This midpoint check tells us how to fix the car's position
                 if (r.rect.collidepoint(self.rect.midbottom)):
                     damage_to_do = r.get_strength()
                     self.rect.bottom = r.rect.top
-                    collisionFixed = True
+                    collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.y -= .01
                 if (r.rect.collidepoint(self.rect.midleft)):
                     damage_to_do = r.get_strength()
                     self.rect.left = r.rect.right
-                    collisionFixed = True
+                    collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
                 if (r.rect.collidepoint(self.rect.midright)):
                     damage_to_do = r.get_strength()
                     self.rect.right = r.rect.left
-                    collisionFixed = True
+                    collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
                 if (r.rect.collidepoint(self.rect.midtop)):
                     damage_to_do = r.get_strength()
                     self.rect.top = r.rect.bottom
-                    collisionFixed = True
+                    collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.y += .01
-                    #These collisions are to fix hitting any corners
-                    #Only happens if there wasnt a collision with one of the
-                    #centers of the car
-                if (not collisionFixed and r.rect.collidepoint(
+
+                #These collision if statements are to fix hitting any corners
+                #Only happens if there wasnt a collision with one of the
+                #centers of the car
+                if (not collision_fixed and r.rect.collidepoint(
                         self.rect.topright)):
                     damage_to_do = r.get_strength()
-                    collisionFixed = True
+                    collision_fixed = True
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
-                if (not collisionFixed and r.rect.collidepoint(
+                if (not collision_fixed and r.rect.collidepoint(
                         self.rect.bottomright)):
                     damage_to_do = r.get_strength()
-                    collisionFixed = True
+                    collision_fixed = True
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
-                if (not collisionFixed and r.rect.collidepoint(
+                if (not collision_fixed and r.rect.collidepoint(
                         self.rect.topleft)):
                     damage_to_do = r.get_strength()
-                    collisionFixed = True
+                    collision_fixed = True
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
-                if (not collisionFixed and r.rect.collidepoint(
+                if (not collision_fixed and r.rect.collidepoint(
                         self.rect.bottomleft)):
                     damage_to_do = r.get_strength()
-                    collisionFixed = True
+                    collision_fixed = True
                     self.rect.left = r.rect.right
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
 
-        if collisionFixed:
+        if collision_fixed:
             self.damage += damage_to_do
             Player.crash.play()
+        #If the collision wasnt fixed then allow the player to move
+        else:
+            if self.direction == "upleft":
+                self.x -= self.speed * interval * .7071  # 1/Sqrt 2
+                self.y -= self.speed * interval * .7071
+            if self.direction == "downleft":
+                self.x -= self.speed * interval * .7071
+                self.y += self.speed * interval * .7071
+            if self.direction == "left":
+                self.x -= self.speed * interval
+            if self.direction == "upright":
+                self.x += self.speed * interval * .7071
+                self.y -= self.speed * interval * .7071
+            if self.direction == "downright":
+                self.x += self.speed * interval * .7071
+                self.y += self.speed * interval * .7071
+            if self.direction == "right":
+                self.x += self.speed * interval
+            if self.direction == "up":
+                self.y -= self.speed * interval
+            if self.direction == "down":
+                self.y += self.speed * interval
 
-        if self.direction == "upleft":
-            self.x -= self.speed * interval * .7071  # 1/Sqrt 2
-            self.y -= self.speed * interval * .7071
-        if self.direction == "downleft":
-            self.x -= self.speed * interval * .7071
-            self.y += self.speed * interval * .7071
-        if self.direction == "left":
-            self.x -= self.speed * interval
-        if self.direction == "upright":
-            self.x += self.speed * interval * .7071
-            self.y -= self.speed * interval * .7071
-        if self.direction == "downright":
-            self.x += self.speed * interval * .7071
-            self.y += self.speed * interval * .7071
-        if self.direction == "right":
-            self.x += self.speed * interval
-        if self.direction == "up":
-            self.y -= self.speed * interval
-        if self.direction == "down":
-            self.y += self.speed * interval
-
-        return collisionFixed
-
-    def should_move(self, tempRect, walls):
-        real_walls = game.sprite.Group()
-        for r in walls:
-            if r.isCollidable():
-                real_walls.add(r)
-        hit_list = game.sprite.spritecollide(self, real_walls, False)
-        if len(hit_list) > 1:
-            print ((hit_list[0].x, hit_list[0].y))
-            print "Total collisions = " + str(len(hit_list))
-            return False
-        return True
-
-    def is_point_in_rect(self, rect, p_x, p_y):
-        min_x = rect[0]
-        min_y = rect[1]
-        max_x = rect[2]
-        max_y = rect[3]
-        return (min_x < p_x and min_y < p_y and
-                max_x > p_x and max_y > p_y)
-
-    def check_player_wall_collision(self, wall, tempRect):
-        player_rect = tempRect
-        x_offset = player_rect.width / (Tile.Tile.WIDTH * 1.0)
-        y_offset = player_rect.height / (Tile.Tile.HEIGHT * 1.0)
-        player_min_x = math.floor(self.x)
-        player_min_y = math.floor(self.y)
-        player_max_x = math.floor(self.x + x_offset)
-        player_max_y = math.floor(self.y + y_offset)
-        coords = (player_min_x, player_min_y, player_max_x, player_max_y)
-        return self.is_point_in_rect(coords, wall.x, wall.y)
-
-    def check_acceleration_state(self, accel):
+    #Based on the acceleration given and the current acceleration state
+    #Will set the next acceleration state and change the car's image
+    def set_acceleration_image(self, accel):
         if self.accelerationState == "stopped":
             if self.speed != Constants.PLAYER_MIN_SPEED:
                 self.accelerationState = "accelerating"
@@ -357,6 +338,9 @@ class Player(game.sprite.Sprite):
                 self.accelerationState = "slowing"
                 self.set_image_array()
 
+        self.set_image()
+
+    #Sets the image array based on the acceleration state
     def set_image_array(self):
         if self.accelerationState == "stopped":
             Player.right = Player.stopped
@@ -368,6 +352,7 @@ class Player(game.sprite.Sprite):
             Player.right = Player.stopped
         self.set_rotations()
 
+    #Sets all of the rotations for the player
     def set_rotations(self):
         Player.left = SS.rotateSprites(Player.right, 180)
         Player.up = SS.rotateSprites(Player.right, 90)
@@ -406,15 +391,15 @@ class Player(game.sprite.Sprite):
             self.imageArray = Player.upright
             # self.rect = self.image.get_rect(center=self.rect.center)
 
+    #Calculates our player's health
     def calculate_health(self):
         self.health = Constants.PLAYER_STARTING_HEALTH - (
             self.damage / (10 * (11 - self.difficulty)))
-        if self.health < 25 and not self.current_health == "quarter":
+        if not self.current_health == "quarter" and self.health < 25:
             self.current_health = "quarter"
-        elif 25 < self.health < 75 and not self.current_health == \
-                "half":
+        elif not self.current_health == "half" and 25 < self.health < 75:
             self.current_health = "half"
-        elif self.health > 75 and not self.current_health == "full":
+        elif not self.current_health == "half" and self.health > 75:
             self.current_health = "full"
         return self.health
 
