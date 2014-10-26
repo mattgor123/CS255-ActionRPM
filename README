@@ -11,13 +11,17 @@ To run our game, go into the directory actionrpm/ and run the command "python ga
 Current Assignment Notes
 10/26
 
-Changelog: 
--Heavily refactoring/restructuring code
--Adding music (hopefully)
--Making level 1
--Making it look like a city as opposed to a dystopian society
--Adding cutscenes/basic story
--Implementing interfaces for collectable (Item) and Openables which we apply to EZPass & TollBooth respectably
+Problem 1: Level One (70%)
+For this assignment, we didn't have to change too much in terms of our level design. We want level one to be a tutorial level in which the player can get familiarized with the mechanics. There are two enemies, one "protecting" the Toll Booth (discussed later) and one circling the EZ Pass.
+
+Our cutscenes are kind of lame, but we demonstrate that we know how to build them & animate them, which establishes a framework that we will confidently be able to follow as we continue our development. We explain the backstory (of why you're in a car doing random tasks), and give the player instructions on how to beat our tutorial level (and how to avoid losing).
+
+Problem 2: Technical, Artistic, and Game Play Progress (30%)
+We made some pretty heavy changes this week, mostly from a technical standpoint. While previously we didn't really have much discussion or collaboration, which led to people writing Spaghetti code that couldn't really be extendable for future development, this week we spent some time developing a plan of attack. We did some heavy refactoring, which makes our code easier to read & understand. We also developed interfaces for Item (something you can collect, IE the EZPass, which goes into an inventory) and Openable (the EZPass), which is a Tile that can be opened. We made improvements to our graphics by having different types of Street tiles and fixing bugs about player/enemy sprites having outlines.
+
+We discussed how we will continue to work with scrolling and concluded that we will use the Tile mechanics which we built. We also added a spedometer which will be part of the HUD Layer which we wanted to implement, but due to time constraints probably will not get to until next week. We also made it possible for our game to include Triggers by creating the Openable & collectable (Item) interfaces; we can have an invisible Item, and when it is present in a player's inventory, something Openable can open or an Enemy's AI can change.
+
+We also added some music, got rid of that horrible crash sound, and improved the visuals to make our game a more fun experience.
 
 
 Previous Assignment Notes

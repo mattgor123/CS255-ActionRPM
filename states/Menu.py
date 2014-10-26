@@ -1,7 +1,7 @@
 import pygame
 import pygame.display as display
 import State
-import Play
+import GameIntro
 import HighScore
 
 from Constants import Constants
@@ -128,7 +128,7 @@ class Menu(State.State):
 
 def change_event(selected):
     if (selected == 0):
-        Constants.STATE = Play.Play()
+        Constants.STATE = GameIntro.GameIntro()
     elif (selected == 3):
         Constants.STATE = HighScore.HighScore("", 0, False)
     elif (selected == 4):
