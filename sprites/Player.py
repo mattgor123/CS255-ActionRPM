@@ -291,6 +291,7 @@ class Player(game.sprite.Sprite):
         if collision_fixed:
             self.damage += damage_to_do
             Player.crash.play()
+            print((self.x, self.y))
 
         #If the collision wasnt fixed then allow the player to move
         else:
@@ -314,6 +315,17 @@ class Player(game.sprite.Sprite):
                 self.y -= self.speed * interval
             if self.direction == "down":
                 self.y += self.speed * interval
+
+    #Hacky method to determine if we should win...will rethink this, but for
+    # assignment it's fine I think
+    def has_beaten_level(self, level):
+        if level == 0:
+            if self.y <= 2:
+                return True
+            else:
+                return False
+        else:
+            return False
 
     #Based on the acceleration given and the current acceleration state
     #Will set the next acceleration state and change the car's image

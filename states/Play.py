@@ -53,13 +53,13 @@ class Play(State.State):
         labels.add(s_label)
         map = Map.Map()
         enemy = Enemy.Enemy([39, 3.1], [
-            Constants.WIDTH, Constants.HEIGHT], map, 2, "down",
-            ["d4", "r2.9", "l2.9", "u4"])
+            Constants.WIDTH, Constants.HEIGHT], map, 5, "down",
+            ["d4", "r2.9", "u4", "l2.9"])
         enemy2 = Enemy.Enemy([40.4, 17.5], [Constants.WIDTH, Constants.HEIGHT],
-                             map, 8, "down", ["d12.5", "l16", "u12.5", "r16"])
+                             map, 5, "down", ["d12.5", "l16", "u12.5", "r16"])
         enemies.add(enemy)
         enemies.add(enemy2)
-        ez_pass = EZPass.EZPass("ezpass",10, 6)
+        ez_pass = EZPass.EZPass("ezpass", 38, 19)
         ez_passes.add(ez_pass)
         player1 = Player.Player([6, 6], [
             Constants.WIDTH, Constants.HEIGHT], map, enemies, ez_passes)
@@ -122,26 +122,26 @@ class Play(State.State):
         self.set_tiles()
         #Update the player
         for player in players:
+            player.update(Constants.INTERVAL)
             #Check if player has EZPass, if so, open the TollBooth
             if not self.is_beatable:
                 if "ezpass" in player.inventory:
+                    #TODO
+                    #Very hackish way to do this; the score should be
+                    #  on the player, so when we collect collectables
+                    #  or collide, we can easily update the score.
+                    # But we have more pressing things to do now.
+                    self.START_SCORE += 50
                     self.is_beatable = True;
                     for openable in map.openables:
                         if openable.__str__() == "t":
                             openable.open()
-            if player.update(Constants.INTERVAL):
-                if len(score_label) != 0:
-                    for s in score_label:
-                        score_label.remove(s)
-                sl = Label.Label("sl", "-10", (126, 38))
-                sl.set_green(False)
-                self.START_SCORE -= 1
-                self.SCORE_TIME = self.time
-                score_label.add(sl)
 
-        #Determine current health status & update Label
-        for player in players.sprites():
+
+            if player.has_beaten_level(0):
+                    game_over(self,False)
             self.health = player.calculate_health()
+
         for label in labels.sprites():
             if label.name == "health":
                 label.update(self.health)
@@ -149,7 +149,6 @@ class Play(State.State):
                 self.END_SCORE = self.START_SCORE - (self.time * 10)
                 if self.END_SCORE <= 0:
                     game_over(self, True)
-
                 label.update(self.END_SCORE)
         for s in score_label.sprites():
             delta = self.time - self.SCORE_TIME

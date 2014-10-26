@@ -2,11 +2,12 @@ import pygame
 
 
 class Item(pygame.sprite.Sprite):
-    def __init__(self, name, strength):
+    def __init__(self, name, strength, points):
         pygame.sprite.Sprite.__init__(self)
         self.name = name
         self.is_collected = False
         self.strength = strength
+        self.points = points
 
     def collect(self):
         self.is_collected = True

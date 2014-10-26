@@ -6,7 +6,7 @@ class EZPass(Item.Item):
     pass_img = None
 
     def __init__(self, name, x, y):
-        Item.Item.__init__(self, name, 0)
+        Item.Item.__init__(self, name, 0, 200)
         if EZPass.pass_img is None:
             EZPass.pass_img = pygame.image.load(
                 "images/sprites/ez_pass.png").convert_alpha()
