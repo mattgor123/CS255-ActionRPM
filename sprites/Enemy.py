@@ -176,4 +176,3 @@ class Enemy(game.sprite.Sprite):
 
         if self.frame == len(self.IMAGES):
             self.frame = 0
-

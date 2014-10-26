@@ -32,7 +32,7 @@ class Play(State.State):
             enemies, ez_passes
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
-        self.is_beatable = False;
+        self.is_beatable = False
         #Create global map for players to use
         global map
         map = Map.Map()
@@ -132,14 +132,13 @@ class Play(State.State):
                     #  or collide, we can easily update the score.
                     # But we have more pressing things to do now.
                     self.START_SCORE += 50
-                    self.is_beatable = True;
+                    self.is_beatable = True
                     for openable in map.openables:
                         if openable.__str__() == "t":
                             openable.open()
 
-
             if player.has_beaten_level(0):
-                    game_over(self,False)
+                    game_over(self, False)
             self.health = player.calculate_health()
 
         for label in labels.sprites():
@@ -159,7 +158,6 @@ class Play(State.State):
 
         for enemy in enemies:
             enemy.update(Constants.INTERVAL)
-
 
 
 # Function to determine if the current score was a high score

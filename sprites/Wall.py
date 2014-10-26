@@ -18,6 +18,5 @@ class Wall(Tile.Tile):
         self.x = x
         self.y = y
 
-
     def __str__(self):
         return 'w'

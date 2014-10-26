@@ -92,13 +92,13 @@ class Player(game.sprite.Sprite):
 
     def _get_stopped(self, which):
         tmp = SS.loadSheet("images/sprites/player_total.png",
-                               52, 26, [8, 3])
+                           52, 26, [8, 3])
         tmp = tmp[which]
         return [tmp[0]]
 
     def _get_accelerating(self, which):
         tmp = SS.loadSheet("images/sprites/player_total.png",
-                               52, 26, [8, 3])
+                           52, 26, [8, 3])
         tmp = tmp[which]
         accelerating = []
         for i in range(1, 5):
@@ -107,7 +107,7 @@ class Player(game.sprite.Sprite):
 
     def _get_full(self, which):
         tmp = SS.loadSheet("images/sprites/player_total.png",
-                               52, 26, [8, 3])
+                           52, 26, [8, 3])
         tmp = tmp[which]
         full_speed = []
         for i in range(5, len(tmp)):
@@ -245,7 +245,6 @@ class Player(game.sprite.Sprite):
             if c.rect.colliderect(self.rect):
                 self.add_to_inventory(c)
                 c.collect()
-
 
         #Go through all of the collidable rects around the player
         for r in map_collidables:

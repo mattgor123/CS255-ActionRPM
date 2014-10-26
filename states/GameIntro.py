@@ -9,6 +9,7 @@ from Constants import Constants
 class GameIntro(State.State):
     images = None
     delay = 250
+
     # Code to initialize a new game instance
     def __init__(self):
         State.State.__init__(self)
@@ -23,7 +24,7 @@ class GameIntro(State.State):
                 "images/screens/instructions.png"))
         self.current_display = 0
         self.rect = GameIntro.images[0].get_rect()
-        Constants.SCREEN.blit(GameIntro.images[0],self.rect)
+        Constants.SCREEN.blit(GameIntro.images[0], self.rect)
         self.timer = 0
         display.update()
 

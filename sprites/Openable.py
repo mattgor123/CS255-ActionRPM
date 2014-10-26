@@ -11,7 +11,7 @@ class Openable(Tile.Tile):
 
     def open(self):
         self.opened = True
-        Tile.Tile.set_strength(self,-1)
+        Tile.Tile.set_strength(self, -1)
 
     def __str__(self):
         return 'o'
