@@ -2,6 +2,7 @@ import pygame as PG
 from sprites.Tile import Tile
 import sprites.Wall as Wall
 import sprites.Street as Street
+import sprites.TollBooth as EZPass
 import sprites
 from states.Constants import Constants
 import math
@@ -74,6 +75,8 @@ class Map():
             return sprites.Street.Street(map_x, map_y, "l")
         elif char == ';':
             return sprites.Street.Street(map_x, map_y, ";")
+        elif char == 'e':
+            return sprites.TollBooth.TollBooth(map_x, map_y)
         else:
             return None
 

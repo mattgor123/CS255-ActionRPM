@@ -12,3 +12,6 @@ class Tile(PG.sprite.Sprite):
 
     def get_strength(self):
         return self.strength
+
+    def set_strength(self, new_strength):
+        self.strength = new_strength

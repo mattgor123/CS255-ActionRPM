@@ -34,6 +34,8 @@ class Player(game.sprite.Sprite):
         self.map = temp_map
         #Enemies being passed to car, very bad right now
         self.enemies = enemy
+        #Inventory initialized as empty
+        self.inventory = []
 
         #Set our starting health
         self.health = Constants.PLAYER_STARTING_HEALTH
@@ -76,6 +78,10 @@ class Player(game.sprite.Sprite):
         #Create garage variable
         self.garage = None
 
+    #Method to add an item to a player's inventory
+    def add_to_inventory(self, item):
+        self.inventory.append(item)
+
     #Method to set the images for the player if they have not been set
     def set_images(self):
         if Player.stopped is None:
@@ -105,7 +111,7 @@ class Player(game.sprite.Sprite):
             Player.crash = game.mixer.Sound("audio/car_screech.wav")
 
     #Returns strength of this car for collision detection purposes
-    def get_strengths(self):
+    def get_strength(self):
         return 1
 
     # Update method
@@ -222,8 +228,8 @@ class Player(game.sprite.Sprite):
 
         #Go through all of the collidable rects around the player
         for r in wall_rects:
-            #A strength > 0 indicates a collidable object
-            if r.get_strength() > 0:
+            #A strength >= 0 indicates a collidable object, -1 isnt collidable
+            if r.get_strength() >= 0:
                 #This same if statement is repeated for all midpoints
                 #Checking if the midpoint of the car is in the other rect
                 #This midpoint check tells us how to fix the car's position
