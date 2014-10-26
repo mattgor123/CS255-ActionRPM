@@ -26,6 +26,7 @@ class Map():
     # Initializes the map, reads map.txt
     def __init__(self):
         self.map = []
+        self.openables = []
         self.init_map()
         self.x_min = 0
         self.x_max = 0
@@ -59,26 +60,27 @@ class Map():
 
     # Creates an object represented by the given char
     def resolve(self, char, x, y, map_x, map_y):
+        to_return = None
         if char == 'w':
-            return sprites.Wall.Wall(map_x, map_y)
+            to_return = sprites.Wall.Wall(map_x, map_y)
         elif char == 's':
-            return sprites.Street.Street(map_x, map_y, "empty")
+            to_return = sprites.Street.Street(map_x, map_y, "empty")
         elif char == 'h':
-            return sprites.Street.Street(map_x, map_y, "horizontal")
+            to_return = sprites.Street.Street(map_x, map_y, "horizontal")
         elif char == 'v':
-            return sprites.Street.Street(map_x, map_y, "vertical")
+            to_return = sprites.Street.Street(map_x, map_y, "vertical")
         elif char == 'o':
-            return sprites.Street.Street(map_x, map_y, "o")
+            to_return = sprites.Street.Street(map_x, map_y, "o")
         elif char == 'p':
-            return sprites.Street.Street(map_x, map_y, "p")
+            to_return = sprites.Street.Street(map_x, map_y, "p")
         elif char == 'l':
-            return sprites.Street.Street(map_x, map_y, "l")
+            to_return = sprites.Street.Street(map_x, map_y, "l")
         elif char == ';':
-            return sprites.Street.Street(map_x, map_y, ";")
-        elif char == 'e':
-            return sprites.TollBooth.TollBooth(map_x, map_y)
-        else:
-            return None
+            to_return = sprites.Street.Street(map_x, map_y, ";")
+        elif char == 't':
+            to_return = sprites.TollBooth.TollBooth(map_x, map_y)
+            self.openables.append(to_return)
+        return to_return
 
     # Appends a new chunk starting at x,y to the map.
     # Loads all Nones

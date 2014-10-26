@@ -32,7 +32,7 @@ class Play(State.State):
             enemies, ez_passes
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
-
+        self.is_beatable = False;
         #Create global map for players to use
         global map
         map = Map.Map()
@@ -122,6 +122,13 @@ class Play(State.State):
         self.set_tiles()
         #Update the player
         for player in players:
+            #Check if player has EZPass, if so, open the TollBooth
+            if not self.is_beatable:
+                if "ezpass" in player.inventory:
+                    self.is_beatable = True;
+                    for openable in map.openables:
+                        if openable.__str__() == "t":
+                            openable.open()
             if player.update(Constants.INTERVAL):
                 if len(score_label) != 0:
                     for s in score_label:
@@ -153,6 +160,7 @@ class Play(State.State):
 
         for enemy in enemies:
             enemy.update(Constants.INTERVAL)
+
 
 
 # Function to determine if the current score was a high score

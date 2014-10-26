@@ -82,7 +82,7 @@ class Player(game.sprite.Sprite):
 
     #Method to add an item to a player's inventory
     def add_to_inventory(self, item):
-        self.inventory.append(item)
+        self.inventory.append(item.name)
 
     #Method to set the images for the player if they have not been set
     def set_images(self):
@@ -290,8 +290,8 @@ class Player(game.sprite.Sprite):
 
         if collision_fixed:
             self.damage += damage_to_do
-            print("collision")
             Player.crash.play()
+
         #If the collision wasnt fixed then allow the player to move
         else:
             if self.direction == "upleft":

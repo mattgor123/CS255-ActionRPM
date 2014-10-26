@@ -16,6 +16,9 @@ Changelog:
 -Adding music (hopefully)
 -Making level 1
 -Making it look like a city as opposed to a dystopian society
+-Adding cutscenes/basic story
+-Implementing interfaces for collectable (Item) and Openables which we apply to EZPass & TollBooth respectably
+
 
 Previous Assignment Notes
 10/19

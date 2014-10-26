@@ -14,8 +14,6 @@ class EZPass(Item.Item):
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.collected = False
 
     def collect(self):
-        self.collected = True
         Item.Item.collect(self)
