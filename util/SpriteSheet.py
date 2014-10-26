@@ -15,10 +15,13 @@ def loadSheet(path, x, y, dimensions):
 
     for j in range(0, dimensions[1]):
         toReturn.append([])
+        currentX = 0
         for i in range(0, dimensions[0]):
-            surface = PG.Surface((x, y)).convert_alpha()
+            surface = PG.Surface((x, y)).convert()
+            surface.fill((158, 125, 186))
             surface.blit(sheet, (0, 0), (currentX, currentY, currentX + x,
                                          currentY + y))
+            surface.set_colorkey((158, 125, 186), PG.RLEACCEL)
             #surface = PG.transform.scale(surface, (128,64))
             toReturn[j].append(surface)
             currentX += x

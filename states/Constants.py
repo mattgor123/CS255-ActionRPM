@@ -5,7 +5,7 @@ class Constants(object):
     WIDTH = 800
     HEIGHT = 600
     INTERVAL = .01
-    PLAYER_MAX_SPEED = 15
+    PLAYER_MAX_SPEED = 13
     PLAYER_MIN_SPEED = 0
     PLAYER_ACCELERATION = 10
     # ENEMY_COUNT = 13

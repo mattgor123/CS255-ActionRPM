@@ -7,9 +7,15 @@ import math
 
 class Player(game.sprite.Sprite):
     #Variables for the images
-    stopped = None
-    accelerating = None
-    full_speed = None
+    full_stopped = None
+    full_accelerating = None
+    full_full_speed = None
+    half_stopped = None
+    half_accelerating = None
+    half_full_speed = None
+    quar_stopped = None
+    quar_accelerating = None
+    quar_full_speed = None
     crash = None
 
     #Used in setting the image
@@ -50,7 +56,7 @@ class Player(game.sprite.Sprite):
         self.set_images()
 
         # initialize image array shit, can Tuvia make this a little cleaner?
-        self.imageArray = Player.stopped
+        self.imageArray = Player.full_stopped
         Player.right = self.imageArray
         self.image = self.imageArray[0]
         self.rect = self.image.get_rect()
@@ -84,28 +90,50 @@ class Player(game.sprite.Sprite):
     def add_to_inventory(self, item):
         self.inventory.append(item.name)
 
+    def _get_stopped(self, which):
+        tmp = SS.loadSheet("images/sprites/player_total.png",
+                               52, 26, [8, 3])
+        tmp = tmp[which]
+        return [tmp[0]]
+
+    def _get_accelerating(self, which):
+        tmp = SS.loadSheet("images/sprites/player_total.png",
+                               52, 26, [8, 3])
+        tmp = tmp[which]
+        accelerating = []
+        for i in range(1, 5):
+            accelerating.append(tmp[i])
+        return accelerating
+
+    def _get_full(self, which):
+        tmp = SS.loadSheet("images/sprites/player_total.png",
+                               52, 26, [8, 3])
+        tmp = tmp[which]
+        full_speed = []
+        for i in range(5, len(tmp)):
+            full_speed.append(tmp[i])
+        return full_speed
+
     #Method to set the images for the player if they have not been set
     def set_images(self):
-        if Player.stopped is None:
-            tmp = SS.loadSheet("images/sprites/player_animations.png",
-                               52, 26, [8, 1])
-            tmp = tmp[0]
-            Player.stopped = []
-            Player.stopped.append(tmp[0])
-        if Player.accelerating is None:
-            tmp = SS.loadSheet("images/sprites/player_animations.png",
-                               52, 26, [8, 1])
-            tmp = tmp[0]
-            Player.accelerating = []
-            for i in range(1, 5):
-                Player.accelerating.append(tmp[i])
-        if Player.full_speed is None:
-            tmp = SS.loadSheet("images/sprites/player_animations.png",
-                               52, 26, [8, 1])
-            tmp = tmp[0]
-            Player.full_speed = []
-            for i in range(5, len(tmp)):
-                Player.full_speed.append(tmp[i])
+        if Player.full_stopped is None:
+            Player.full_stopped = self._get_stopped(0)
+        if Player.full_accelerating is None:
+            Player.full_accelerating = self._get_accelerating(0)
+        if Player.full_full_speed is None:
+            Player.full_full_speed = self._get_full(0)
+        if Player.half_stopped is None:
+            Player.half_stopped = self._get_stopped(1)
+        if Player.half_accelerating is None:
+            Player.half_accelerating = self._get_accelerating(1)
+        if Player.half_full_speed is None:
+            Player.half_full_speed = self._get_full(1)
+        if Player.quar_stopped is None:
+            Player.quar_stopped = self._get_stopped(2)
+        if Player.quar_accelerating is None:
+            Player.quar_accelerating = self._get_accelerating(2)
+        if Player.quar_full_speed is None:
+            Player.quar_full_speed = self._get_full(2)
 
     #Method to set the sounds if they have not been set
     def set_sounds(self):
@@ -357,14 +385,33 @@ class Player(game.sprite.Sprite):
 
     #Sets the image array based on the acceleration state
     def set_image_array(self):
-        if self.accelerationState == "stopped":
-            Player.right = Player.stopped
-        elif self.accelerationState == "accelerating":
-            Player.right = Player.accelerating
-        elif self.accelerationState == "maxed":
-            Player.right = Player.full_speed
-        elif self.accelerationState == "slowing":
-            Player.right = Player.stopped
+        if self.current_health == "full":
+            if self.accelerationState == "stopped":
+                Player.right = Player.full_stopped
+            elif self.accelerationState == "accelerating":
+                Player.right = Player.full_accelerating
+            elif self.accelerationState == "maxed":
+                Player.right = Player.full_full_speed
+            elif self.accelerationState == "slowing":
+                Player.right = Player.full_stopped
+        elif self.current_health == "half":
+            if self.accelerationState == "stopped":
+                Player.right = Player.half_stopped
+            elif self.accelerationState == "accelerating":
+                Player.right = Player.half_accelerating
+            elif self.accelerationState == "maxed":
+                Player.right = Player.half_full_speed
+            elif self.accelerationState == "slowing":
+                Player.right = Player.half_stopped
+        elif self.current_health == "quarter":
+            if self.accelerationState == "stopped":
+                Player.right = Player.quar_stopped
+            elif self.accelerationState == "accelerating":
+                Player.right = Player.quar_accelerating
+            elif self.accelerationState == "maxed":
+                Player.right = Player.quar_full_speed
+            elif self.accelerationState == "slowing":
+                Player.right = Player.quar_stopped
         self.set_rotations()
 
     #Sets all of the rotations for the player
