@@ -18,7 +18,8 @@ class Player(game.sprite.Sprite):
     # Constructor for our Player takes an initial location, the dimensions of
     # the screen, and the speed
 
-    def __init__(self, location, screensize, temp_map, enemy):
+    def __init__(self, location, screensize, temp_map, non_map_collidables,
+                 collectables):
 
         game.sprite.Sprite.__init__(self)
 
@@ -32,8 +33,9 @@ class Player(game.sprite.Sprite):
         self.direction = "right"
         #Set the map for the player to use to get tiles
         self.map = temp_map
-        #Enemies being passed to car, very bad right now
-        self.enemies = enemy
+        #Collidables & collectables being passed to car, very bad right now
+        self.collidables = non_map_collidables
+        self.collectables = collectables
         #Inventory initialized as empty
         self.inventory = []
 
@@ -198,21 +200,6 @@ class Player(game.sprite.Sprite):
         #Call our move function
         self.move(interval)
 
-    def check_key(self, key):
-        index = 0
-        for k in key:
-            if self.rect.colliderect(k.rect):
-                return (k, index)
-            index += 1
-        return None
-
-    def check_garage(self, garage):
-        for g in garage:
-            self.garage = g
-            if g.isOpened() and self.rect.colliderect(g.rect):
-                return True
-        return False
-
     #Moves player depending on whether or not he has collided with an object
     def move(self, interval):
         #Create variable to calculate damage to be done
@@ -221,13 +208,19 @@ class Player(game.sprite.Sprite):
         collision_fixed = False
 
         #Get the rectangles from the map around the x,y position of the car
-        wall_rects = self.map.get_tiles(self.x, self.y)
-        #Add the enemy rectangle to our array
-        for enemy in self.enemies:
-            wall_rects.append(enemy)
+        map_collidables = self.map.get_tiles(self.x, self.y)
+        #Add all collidables
+        for collidable in self.collidables:
+            map_collidables.append(collidable)
+
+        for c in self.collectables:
+            if c.rect.colliderect(self.rect):
+                self.add_to_inventory(c)
+                c.collect()
+
 
         #Go through all of the collidable rects around the player
-        for r in wall_rects:
+        for r in map_collidables:
             #A strength >= 0 indicates a collidable object, -1 isnt collidable
             if r.get_strength() >= 0:
                 #This same if statement is repeated for all midpoints
@@ -239,18 +232,21 @@ class Player(game.sprite.Sprite):
                     collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.y -= .01
+
                 if (r.rect.collidepoint(self.rect.midleft)):
                     damage_to_do = r.get_strength()
                     self.rect.left = r.rect.right
                     collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x += .01
+
                 if (r.rect.collidepoint(self.rect.midright)):
                     damage_to_do = r.get_strength()
                     self.rect.right = r.rect.left
                     collision_fixed = True
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
+
                 if (r.rect.collidepoint(self.rect.midtop)):
                     damage_to_do = r.get_strength()
                     self.rect.top = r.rect.bottom
@@ -268,6 +264,7 @@ class Player(game.sprite.Sprite):
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
+
                 if (not collision_fixed and r.rect.collidepoint(
                         self.rect.bottomright)):
                     damage_to_do = r.get_strength()
@@ -275,6 +272,7 @@ class Player(game.sprite.Sprite):
                     self.rect.right = r.rect.left
                     self.speed = Constants.PLAYER_MIN_SPEED
                     self.x -= .01
+
                 if (not collision_fixed and r.rect.collidepoint(
                         self.rect.topleft)):
                     damage_to_do = r.get_strength()
@@ -292,6 +290,7 @@ class Player(game.sprite.Sprite):
 
         if collision_fixed:
             self.damage += damage_to_do
+            print("collision")
             Player.crash.play()
         #If the collision wasnt fixed then allow the player to move
         else:

@@ -10,6 +10,8 @@ import map.Map as Map
 import NewHigh
 import GameEnded
 import Menu
+import sprites.EZPass as EZPass
+import sprites.TollBooth as TollBooth
 from Constants import Constants
 from map import Map
 
@@ -27,7 +29,7 @@ class Play(State.State):
     def __init__(self):
         super(Play, self).__init__()
         global players, labels, background, map, key, score_label,\
-            enemies, hp
+            enemies, ez_passes
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
 
@@ -39,6 +41,7 @@ class Play(State.State):
         Play.tiles = pygame.sprite.Group()
         key = pygame.sprite.Group()
         score_label = pygame.sprite.Group()
+        ez_passes = pygame.sprite.Group()
         hp = pygame.sprite.Group()
 
         background = pygame.Surface(Constants.SCREEN.get_size())
@@ -56,9 +59,12 @@ class Play(State.State):
                              map, 8, "down", ["d12.5", "l16", "u12.5", "r16"])
         enemies.add(enemy)
         enemies.add(enemy2)
+        ez_pass = EZPass.EZPass("ezpass",10, 6)
+        ez_passes.add(ez_pass)
         player1 = Player.Player([6, 6], [
-            Constants.WIDTH, Constants.HEIGHT], map, enemies)
+            Constants.WIDTH, Constants.HEIGHT], map, enemies, ez_passes)
         players.add(player1)
+
         self.time = 0.00
 
     #Function to draw the sprite groups
@@ -70,7 +76,7 @@ class Play(State.State):
         # enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
         score_label.clear(Constants.SCREEN, background)
-        hp.clear(Constants.SCREEN, background)
+        ez_passes.clear(Constants.SCREEN, background)
         # walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
@@ -85,17 +91,10 @@ class Play(State.State):
             Play.tiles.draw(Constants.SCREEN)
             labels.draw(Constants.SCREEN)
             score_label.draw(Constants.SCREEN)
-            ind = 0
-            for h in hp:
-                p_tl = map.get_topleft(
-                    self.HEL_LOC[ind][0], self.HEL_LOC[ind][1])
-                h.update(p_tl)
-                ind += 1
-            ind = 0
             key.draw(Constants.SCREEN)
-            hp.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
+            ez_passes.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
@@ -105,6 +104,8 @@ class Play(State.State):
             player.rect.topleft = map.get_topleft(player.x, player.y)
         for enemy in enemies.sprites():
             enemy.rect.topleft = map.get_topleft(enemy.x, enemy.y)
+        for ez_pass in ez_passes.sprites():
+            ez_pass.rect.topleft = map.get_topleft(ez_pass.x, ez_pass.y)
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:

@@ -10,7 +10,7 @@ class TollBooth(Openable.Openable):
         if TollBooth.booth_img is None:
             TollBooth.booth_img = pygame.image.load(
                 "images/sprites/wall/toll_booth.png").convert_alpha()
-        self.image = TollBooth.pass_img
+        self.image = TollBooth.booth_img
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
