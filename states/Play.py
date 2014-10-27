@@ -165,7 +165,7 @@ class Play(State.State):
             enemy.update(Constants.INTERVAL)
 
         for speed in speedometer:
-            speed.update(0)
+            speed.update(players.sprites()[0].speed)
 
 
 # Function to determine if the current score was a high score
