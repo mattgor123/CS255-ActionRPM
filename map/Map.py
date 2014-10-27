@@ -6,6 +6,7 @@ import sprites.TollBooth as EZPass
 import sprites
 from states.Constants import Constants
 import math
+import random
 
 
 class Map():
@@ -62,7 +63,7 @@ class Map():
     def resolve(self, char, x, y, map_x, map_y):
         to_return = None
         if char == 'w':
-            to_return = sprites.Wall.Wall(map_x, map_y)
+            to_return = sprites.Wall.Wall(map_x, map_y, random.randint(0, 9))
         elif char == 's':
             to_return = sprites.Street.Street(map_x, map_y, "empty")
         elif char == 'h':
