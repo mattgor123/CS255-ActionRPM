@@ -6,6 +6,7 @@ import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
+import sprites.Speedometer as Speedometer
 import map.Map as Map
 import NewHigh
 import GameEnded
@@ -29,7 +30,7 @@ class Play(State.State):
     def __init__(self):
         super(Play, self).__init__()
         global players, labels, background, map, key, score_label,\
-            enemies, ez_passes
+            enemies, ez_passes, speedometer
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
         self.is_beatable = False
@@ -42,6 +43,7 @@ class Play(State.State):
         key = pygame.sprite.Group()
         score_label = pygame.sprite.Group()
         ez_passes = pygame.sprite.Group()
+        speedometer = pygame.sprite.Group()
         hp = pygame.sprite.Group()
 
         background = pygame.Surface(Constants.SCREEN.get_size())
@@ -64,6 +66,7 @@ class Play(State.State):
         player1 = Player.Player([6, 6], [
             Constants.WIDTH, Constants.HEIGHT], map, enemies, ez_passes)
         players.add(player1)
+        speedometer.add(Speedometer.Speedometer())
 
         self.time = 0.00
 
@@ -77,6 +80,7 @@ class Play(State.State):
         labels.clear(Constants.SCREEN, background)
         score_label.clear(Constants.SCREEN, background)
         ez_passes.clear(Constants.SCREEN, background)
+        speedometer.clear(Constants.SCREEN, background)
         # walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
@@ -95,6 +99,7 @@ class Play(State.State):
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
             ez_passes.draw(Constants.SCREEN)
+            speedometer.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
@@ -158,6 +163,9 @@ class Play(State.State):
 
         for enemy in enemies:
             enemy.update(Constants.INTERVAL)
+
+        for speed in speedometer:
+            speed.update(0)
 
 
 # Function to determine if the current score was a high score
