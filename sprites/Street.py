@@ -44,7 +44,7 @@ class Street(Tile.Tile):
     @staticmethod
     def set_images():
         Street.h_img = pygame.image.load(
-                "images/sprites/street/horizontal_street.png").convert_alpha()
+            "images/sprites/street/horizontal_street.png").convert_alpha()
         Street.v_img = pygame.image.load(
             "images/sprites/street/vertical_street.png").convert_alpha()
         Street.l_img = pygame.image.load(
