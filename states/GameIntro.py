@@ -8,7 +8,7 @@ from Constants import Constants
 # This is the state for playing the game
 class GameIntro(State.State):
     images = None
-    delay = 250
+    delay = 500
 
     # Code to initialize a new game instance
     def __init__(self):

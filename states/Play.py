@@ -29,42 +29,52 @@ class Play(State.State):
     #Code to initialize a new game instance
     def __init__(self):
         super(Play, self).__init__()
+        #making global sprite groups so we can call them from other methods
         global players, labels, background, map, key, score_label,\
-            enemies, ez_passes, speedometer
+            enemies, items, speedometer
+        #Set score variables
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
+        #Flags whether or not we already have the ezpass
         self.is_beatable = False
         #Create global map for players to use
         global map
         map = Map.Map()
+        #Create sprite groups to hold players and enemies
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
+        #Holds current map tiles to be rendered
         Play.tiles = pygame.sprite.Group()
+
+        #Sprite groups for miscellaneous
         key = pygame.sprite.Group()
         score_label = pygame.sprite.Group()
-        ez_passes = pygame.sprite.Group()
+        items = pygame.sprite.Group()
         speedometer = pygame.sprite.Group()
-        hp = pygame.sprite.Group()
 
+        #Background surface
         background = pygame.Surface(Constants.SCREEN.get_size())
+
+        #Fill screen with black
         Constants.SCREEN.fill((0, 0, 0))
+
+        #Make labels
         labels = pygame.sprite.Group()
-        h_label = Label.Label("health", "Health: 100%", (10, 10))
-        s_label = Label.Label("score", "Score: ", (10, 34))
-        labels.add(h_label)
-        labels.add(s_label)
-        map = Map.Map()
-        enemy = Enemy.Enemy([39, 3.1], [
+        labels.add(Label.Label("health", "Health: 100%", (10, 10)))
+        labels.add(Label.Label("score", "Score: ", (10, 34)))
+
+        #Create enemies and add them to our sprite group
+        enemies.add(Enemy.Enemy([39, 3.1], [
             Constants.WIDTH, Constants.HEIGHT], map, 5, "down",
-            ["d4", "r2.9", "u4", "l2.9"])
-        enemy2 = Enemy.Enemy([40.4, 17.5], [Constants.WIDTH, Constants.HEIGHT],
-                             map, 5, "down", ["d12.5", "l16", "u12.5", "r16"])
-        enemies.add(enemy)
-        enemies.add(enemy2)
-        ez_pass = EZPass.EZPass("ezpass", 38, 19)
-        ez_passes.add(ez_pass)
+            ["d4", "r2.9", "u4", "l2.9"]))
+        enemies.add(Enemy.Enemy([40.4, 17.5], [Constants.WIDTH, Constants.HEIGHT],
+                             map, 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
+
+        #Create miscellaneous shit
+        items.add(EZPass.EZPass("ezpass", 38, 19))
+
         player1 = Player.Player([6, 6], [
-            Constants.WIDTH, Constants.HEIGHT], map, enemies, ez_passes)
+            Constants.WIDTH, Constants.HEIGHT])
         players.add(player1)
         speedometer.add(Speedometer.Speedometer())
 
@@ -79,7 +89,7 @@ class Play(State.State):
         # enemies.clear(Constants.SCREEN, background)
         labels.clear(Constants.SCREEN, background)
         score_label.clear(Constants.SCREEN, background)
-        ez_passes.clear(Constants.SCREEN, background)
+        items.clear(Constants.SCREEN, background)
         speedometer.clear(Constants.SCREEN, background)
         # walls.clear(Constants.SCREEN, background)
 
@@ -98,7 +108,7 @@ class Play(State.State):
             key.draw(Constants.SCREEN)
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
-            ez_passes.draw(Constants.SCREEN)
+            items.draw(Constants.SCREEN)
             #speedometer.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
@@ -109,8 +119,8 @@ class Play(State.State):
             player.rect.topleft = map.get_topleft(player.x, player.y)
         for enemy in enemies.sprites():
             enemy.rect.topleft = map.get_topleft(enemy.x, enemy.y)
-        for ez_pass in ez_passes.sprites():
-            ez_pass.rect.topleft = map.get_topleft(ez_pass.x, ez_pass.y)
+        for item in items.sprites():
+            item.rect.topleft = map.get_topleft(item.x, item.y)
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -145,6 +155,100 @@ class Play(State.State):
             if player.has_beaten_level(0):
                     game_over(self, False)
             self.health = player.calculate_health()
+
+            #Iterate through items and check if they are colliding
+            #With the player
+            for c in items.sprites():
+                if c.rect.colliderect(player.rect):
+                    player.add_to_inventory(c)
+                    c.collect()
+
+            collidables_on_screen = map.get_tiles(player.x, player.y)
+            for enemy in enemies:
+                collidables_on_screen.append(enemy)
+
+            #Here goes collision
+            collision_fixed = False
+            #Go through all of the collidable rects around the player
+            for r in collidables_on_screen:
+                #A strength >= 0 indicates a collidable object, -1 isnt collidable
+                if r.get_strength() >= 0:
+                    #This same if statement is repeated for all midpoints
+                    #Checking if the midpoint of the car is in the other rect
+                    #This midpoint check tells us how to fix the car's position
+                    if (r.rect.collidepoint(player.rect.midbottom)):
+                        damage_to_do = r.get_strength()
+                        player.rect.bottom = r.rect.top
+                        collision_fixed = True
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.y -= .01
+
+                    if (r.rect.collidepoint(player.rect.midleft)):
+                        damage_to_do = r.get_strength()
+                        player.rect.left = r.rect.right
+                        collision_fixed = True
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.x += .01
+
+                    if (r.rect.collidepoint(player.rect.midright)):
+                        damage_to_do = r.get_strength()
+                        player.rect.right = r.rect.left
+                        collision_fixed = True
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.x -= .01
+
+                    if (r.rect.collidepoint(player.rect.midtop)):
+                        damage_to_do = r.get_strength()
+                        player.rect.top = r.rect.bottom
+                        collision_fixed = True
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.y += .01
+
+                    #These collision if statements are to fix hitting any corners
+                    #Only happens if there wasnt a collision with one of the
+                    #centers of the car
+                    if (not collision_fixed and r.rect.collidepoint(
+                            player.rect.topright)):
+                        damage_to_do = r.get_strength()
+                        collision_fixed = True
+                        player.rect.right = r.rect.left
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.x -= .01
+
+                    if (not collision_fixed and r.rect.collidepoint(
+                            player.rect.bottomright)):
+                        damage_to_do = r.get_strength()
+                        collision_fixed = True
+                        player.rect.right = r.rect.left
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.x -= .01
+
+                    if (not collision_fixed and r.rect.collidepoint(
+                            player.rect.topleft)):
+                        damage_to_do = r.get_strength()
+                        collision_fixed = True
+                        player.rect.left = r.rect.right
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.x += .01
+                    if (not collision_fixed and r.rect.collidepoint(
+                            player.rect.bottomleft)):
+                        damage_to_do = r.get_strength()
+                        collision_fixed = True
+                        player.rect.left = r.rect.right
+                        player.speed = Constants.PLAYER_MIN_SPEED
+                        player.x += .01
+
+                if collision_fixed:
+                    player.damage += damage_to_do
+                    player.crash.play()
+                    if type(r) is Enemy.Enemy:
+                        r.stop()
+                    break
+                else:
+                    if type(r) is Enemy.Enemy:
+                        r.start()
+
+
 
         for label in labels.sprites():
             if label.name == "health":

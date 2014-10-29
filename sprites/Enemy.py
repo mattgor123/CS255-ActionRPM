@@ -56,6 +56,7 @@ class Enemy(game.sprite.Sprite):
         self.current_move = 0
         self.old_pos_x = location[0]
         self.old_pos_y = location[1]
+        self.stopped = False
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing opposite dir of the Player then updates
@@ -63,7 +64,7 @@ class Enemy(game.sprite.Sprite):
         self.move(interval)
 
     def get_strength(self):
-        return 10
+        return 3
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
     Note : We wrote this function interpreting 'look' to mean the direction
@@ -73,78 +74,54 @@ class Enemy(game.sprite.Sprite):
     '''
     def move(self, interval):
 
-        curr_action = self.movements[self.current_move]
-        distance_moved_x = fabs(self.old_pos_x - self.x)
-        distance_moved_y = fabs(self.old_pos_y - self.y)
+        if not self.stopped:
+            curr_action = self.movements[self.current_move]
+            distance_moved_x = fabs(self.old_pos_x - self.x)
+            distance_moved_y = fabs(self.old_pos_y - self.y)
 
-        if(curr_action[0:1] == "d"):
-            self.y += self.speed * interval
-            self.direction = "down"
-            self.set_direction("down")
-            if distance_moved_y > float(curr_action[1:]):
-                if(self.current_move == len(self.movements) - 1):
-                    self.current_move = 0
-                else:
-                    self.current_move += 1
-                self.old_pos_y = self.y
-
-        elif(curr_action[0:1] == "r"):
-            self.x += self.speed * interval
-            self.direction = "right"
-            self.set_direction("right")
-            if distance_moved_x > float(curr_action[1:]):
-                if(self.current_move == len(self.movements) - 1):
-                    self.current_move = 0
-                else:
-                    self.current_move += 1
-                self.old_pos_x = self.x
-
-        elif(curr_action[0:1] == "u"):
-            self.y -= self.speed * interval
-            self.direction = "up"
-            self.set_direction("up")
-            if distance_moved_y > float(curr_action[1:]):
-                if(self.current_move == len(self.movements) - 1):
-                    self.current_move = 0
-                else:
-                    self.current_move += 1
-                self.old_pos_y = self.y
-
-        elif(curr_action[0:1] == "l"):
-            self.direction = "left"
-            self.set_direction("left")
-            self.x -= self.speed * interval
-            if distance_moved_x > float(curr_action[1:]):
-                if(self.current_move == len(self.movements) - 1):
-                    self.current_move = 0
-                else:
-                    self.current_move += 1
-                self.old_pos_x = self.x
-
-    """
-        if self.direction == "right":
-            self.x += self.speed * interval
-            if self.x > 42.9:
-                self.direction = "left"
-                self.set_direction("left")
-
-        elif self.direction == "up":
-            self.y -= self.speed * interval
-            if self.y <= 3.1:
+            if(curr_action[0:1] == "d"):
+                self.y += self.speed * interval
                 self.direction = "down"
                 self.set_direction("down")
+                if distance_moved_y > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_y = self.y
 
-        elif self.direction == "down":
-            self.y += self.speed * interval
-            if self.y > 7:
+            elif(curr_action[0:1] == "r"):
+                self.x += self.speed * interval
                 self.direction = "right"
                 self.set_direction("right")
+                if distance_moved_x > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_x = self.x
 
-        elif self.direction == "left":
-            self.x -= self.speed * interval
-            if self.x <= 39:
+            elif(curr_action[0:1] == "u"):
+                self.y -= self.speed * interval
                 self.direction = "up"
-                self.set_direction("up") """
+                self.set_direction("up")
+                if distance_moved_y > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_y = self.y
+
+            elif(curr_action[0:1] == "l"):
+                self.direction = "left"
+                self.set_direction("left")
+                self.x -= self.speed * interval
+                if distance_moved_x > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_x = self.x
 
     #method to set the direction
     def set_direction(self, direction):
@@ -176,3 +153,9 @@ class Enemy(game.sprite.Sprite):
 
         if self.frame == len(self.IMAGES):
             self.frame = 0
+
+    def stop(self):
+        self.stopped = True
+
+    def start(self):
+        self.stopped = False

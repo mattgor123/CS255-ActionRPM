@@ -16,7 +16,7 @@ class Wall(Tile.Tile):
     has_images = False
 
     def __init__(self, x, y, num):
-        Tile.Tile.__init__(self, 7)
+        Tile.Tile.__init__(self, 3)
 
         # initialize wall image
         if not Wall.has_images:

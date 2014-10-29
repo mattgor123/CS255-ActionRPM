@@ -63,7 +63,8 @@ class Map():
     def resolve(self, char, x, y, map_x, map_y):
         to_return = None
         if char == 'w':
-            to_return = sprites.Wall.Wall(map_x, map_y, random.randint(0, 9))
+            #to_return = sprites.Wall.Wall(map_x, map_y, random.randint(0, 9))
+            to_return = sprites.Wall.Wall(map_x, map_y, 7)
         elif char == 's':
             to_return = sprites.Street.Street(map_x, map_y, "empty")
         elif char == 'h':
