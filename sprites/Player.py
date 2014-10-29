@@ -318,7 +318,6 @@ class Player(game.sprite.Sprite):
         if collision_fixed:
             self.damage += damage_to_do
             Player.crash.play()
-            print((self.x, self.y))
 
         #If the collision wasnt fixed then allow the player to move
         else:

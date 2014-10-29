@@ -99,7 +99,7 @@ class Play(State.State):
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
             ez_passes.draw(Constants.SCREEN)
-            #speedometer.draw(Constants.SCREEN)
+            speedometer.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
