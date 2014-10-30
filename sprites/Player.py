@@ -225,118 +225,26 @@ class Player(game.sprite.Sprite):
 
     #Moves player depending on whether or not he has collided with an object
     def move(self, interval):
-        #Create variable to calculate damage to be done
-        damage_to_do = 0
-        #Set flag to indicate whether or not we have fixed the collision yet
-        collision_fixed = False
-
-        #Get the rectangles from the map around the x,y position of the car
-        map_collidables = self.map.get_tiles(self.x, self.y)
-        #Add all collidables
-        for collidable in self.collidables:
-            map_collidables.append(collidable)
-
-        for c in self.collectables:
-            if c.rect.colliderect(self.rect):
-                self.add_to_inventory(c)
-                c.collect()
-
-        #Go through all of the collidable rects around the player
-        for r in map_collidables:
-            #A strength >= 0 indicates a collidable object, -1 isnt collidable
-            if r.get_strength() >= 0:
-                #This same if statement is repeated for all midpoints
-                #Checking if the midpoint of the car is in the other rect
-                #This midpoint check tells us how to fix the car's position
-                if (r.rect.collidepoint(self.rect.midbottom)):
-                    damage_to_do = r.get_strength()
-                    self.rect.bottom = r.rect.top
-                    collision_fixed = True
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.y -= .01
-
-                if (r.rect.collidepoint(self.rect.midleft)):
-                    damage_to_do = r.get_strength()
-                    self.rect.left = r.rect.right
-                    collision_fixed = True
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.x += .01
-
-                if (r.rect.collidepoint(self.rect.midright)):
-                    damage_to_do = r.get_strength()
-                    self.rect.right = r.rect.left
-                    collision_fixed = True
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.x -= .01
-
-                if (r.rect.collidepoint(self.rect.midtop)):
-                    damage_to_do = r.get_strength()
-                    self.rect.top = r.rect.bottom
-                    collision_fixed = True
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.y += .01
-
-                #These collision if statements are to fix hitting any corners
-                #Only happens if there wasnt a collision with one of the
-                #centers of the car
-                if (not collision_fixed and r.rect.collidepoint(
-                        self.rect.topright)):
-                    damage_to_do = r.get_strength()
-                    collision_fixed = True
-                    self.rect.right = r.rect.left
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.x -= .01
-
-                if (not collision_fixed and r.rect.collidepoint(
-                        self.rect.bottomright)):
-                    damage_to_do = r.get_strength()
-                    collision_fixed = True
-                    self.rect.right = r.rect.left
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.x -= .01
-
-                if (not collision_fixed and r.rect.collidepoint(
-                        self.rect.topleft)):
-                    damage_to_do = r.get_strength()
-                    collision_fixed = True
-                    self.rect.left = r.rect.right
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.x += .01
-                if (not collision_fixed and r.rect.collidepoint(
-                        self.rect.bottomleft)):
-                    damage_to_do = r.get_strength()
-                    collision_fixed = True
-                    self.rect.left = r.rect.right
-                    self.speed = Constants.PLAYER_MIN_SPEED
-                    self.x += .01
-
-        if collision_fixed:
-            self.damage += damage_to_do
-            Player.crash.play()
-            print((self.x, self.y))
-
-        #If the collision wasnt fixed then allow the player to move
-        else:
-            if self.direction == "upleft":
-                self.x -= self.speed * interval * .7071  # 1/Sqrt 2
-                self.y -= self.speed * interval * .7071
-            if self.direction == "downleft":
-                self.x -= self.speed * interval * .7071
-                self.y += self.speed * interval * .7071
-            if self.direction == "left":
-                self.x -= self.speed * interval
-            if self.direction == "upright":
-                self.x += self.speed * interval * .7071
-                self.y -= self.speed * interval * .7071
-            if self.direction == "downright":
-                self.x += self.speed * interval * .7071
-                self.y += self.speed * interval * .7071
-            if self.direction == "right":
-                self.x += self.speed * interval
-            if self.direction == "up":
-                self.y -= self.speed * interval
-            if self.direction == "down":
-                self.y += self.speed * interval
+        if self.direction == "upleft":
+            self.x -= self.speed * interval * .7071  # 1/Sqrt 2
+            self.y -= self.speed * interval * .7071
+        if self.direction == "downleft":
+            self.x -= self.speed * interval * .7071
+            self.y += self.speed * interval * .7071
+        if self.direction == "left":
+            self.x -= self.speed * interval
+        if self.direction == "upright":
+            self.x += self.speed * interval * .7071
+            self.y -= self.speed * interval * .7071
+        if self.direction == "downright":
+            self.x += self.speed * interval * .7071
+            self.y += self.speed * interval * .7071
+        if self.direction == "right":
+            self.x += self.speed * interval
+        if self.direction == "up":
+            self.y -= self.speed * interval
+        if self.direction == "down":
+            self.y += self.speed * interval
 
     #Hacky method to determine if we should win...will rethink this, but for
     # assignment it's fine I think
