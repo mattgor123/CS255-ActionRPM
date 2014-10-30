@@ -67,8 +67,9 @@ class Play(State.State):
         enemies.add(Enemy.Enemy([39, 3.1], [
             Constants.WIDTH, Constants.HEIGHT], map, 5, "down",
             ["d4", "r2.9", "u4", "l2.9"]))
-        enemies.add(Enemy.Enemy([40.4, 17.5], [Constants.WIDTH, Constants.HEIGHT],
-                             map, 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
+        enemies.add(Enemy.Enemy([40.4, 17.5],
+                                [Constants.WIDTH, Constants.HEIGHT],
+            map, 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
 
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 38, 19))
@@ -109,7 +110,7 @@ class Play(State.State):
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
             items.draw(Constants.SCREEN)
-            #speedometer.draw(Constants.SCREEN)
+            speedometer.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
@@ -171,7 +172,8 @@ class Play(State.State):
             collision_fixed = False
             #Go through all of the collidable rects around the player
             for r in collidables_on_screen:
-                #A strength >= 0 indicates a collidable object, -1 isnt collidable
+                #A strength >= 0 indicates a collidable object
+                #  -1 isnt collidable
                 if r.get_strength() >= 0:
                     #This same if statement is repeated for all midpoints
                     #Checking if the midpoint of the car is in the other rect
@@ -204,9 +206,9 @@ class Play(State.State):
                         player.speed = Constants.PLAYER_MIN_SPEED
                         player.y += .01
 
-                    #These collision if statements are to fix hitting any corners
-                    #Only happens if there wasnt a collision with one of the
-                    #centers of the car
+                    #These collision if statements are to fix hitting corners
+                    #Only happens if there wasnt a collision with a
+                    #center of the car
                     if (not collision_fixed and r.rect.collidepoint(
                             player.rect.topright)):
                         damage_to_do = r.get_strength()
@@ -239,16 +241,15 @@ class Play(State.State):
                         player.x += .01
 
                 if collision_fixed:
+                    #Do the damage as prescribed by the collided box
                     player.damage += damage_to_do
+                    #Play that terrible crash sound
                     player.crash.play()
+                    #If we hit an enemy, make the enemy stop
                     if type(r) is Enemy.Enemy:
                         r.stop()
+                    #Only do one collision per cycle
                     break
-                else:
-                    if type(r) is Enemy.Enemy:
-                        r.start()
-
-
 
         for label in labels.sprites():
             if label.name == "health":

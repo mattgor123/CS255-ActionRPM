@@ -9,6 +9,8 @@ class Enemy(game.sprite.Sprite):
     screen_height = 0
     should_change_motion_direction = False
     FRAME_SLOW = 10
+    #Number of cycles the enemy will stop for after hitting an enemy
+    max_stop_time = 100
 
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
@@ -45,6 +47,7 @@ class Enemy(game.sprite.Sprite):
 
         self.speed = speed
         self.rect = self.image.get_rect()
+
         #make sure it is in the appropriate location
         self.rect.topleft = location
         #get the width & height of screen
@@ -56,7 +59,11 @@ class Enemy(game.sprite.Sprite):
         self.current_move = 0
         self.old_pos_x = location[0]
         self.old_pos_y = location[1]
-        self.stopped = False
+        #This variable keeps track of the number of cycles
+        #the enemy has waited before restarting
+        #If 0, enemy continues as normal
+        #Enemy will stay stopped until stop_time == max_stop_time
+        self.stop_time = 0
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing opposite dir of the Player then updates
@@ -73,8 +80,13 @@ class Enemy(game.sprite.Sprite):
     code...not currently being used.
     '''
     def move(self, interval):
+        #If the stop_time is max_stop_time, then the enemy waited long enough
+        #and can restart moving
+        #If the stop_time is 0, it indicates that the car can continue moving
+        if self.stop_time == self.max_stop_time or self.stop_time == 0:
+            #Make sure stop time is back at 0 once we are moving again
+            self.stop_time = 0
 
-        if not self.stopped:
             curr_action = self.movements[self.current_move]
             distance_moved_x = fabs(self.old_pos_x - self.x)
             distance_moved_y = fabs(self.old_pos_y - self.y)
@@ -83,6 +95,8 @@ class Enemy(game.sprite.Sprite):
                 self.y += self.speed * interval
                 self.direction = "down"
                 self.set_direction("down")
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_y > float(curr_action[1:]):
                     if(self.current_move == len(self.movements) - 1):
                         self.current_move = 0
@@ -94,6 +108,8 @@ class Enemy(game.sprite.Sprite):
                 self.x += self.speed * interval
                 self.direction = "right"
                 self.set_direction("right")
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_x > float(curr_action[1:]):
                     if(self.current_move == len(self.movements) - 1):
                         self.current_move = 0
@@ -105,6 +121,8 @@ class Enemy(game.sprite.Sprite):
                 self.y -= self.speed * interval
                 self.direction = "up"
                 self.set_direction("up")
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_y > float(curr_action[1:]):
                     if(self.current_move == len(self.movements) - 1):
                         self.current_move = 0
@@ -116,12 +134,18 @@ class Enemy(game.sprite.Sprite):
                 self.direction = "left"
                 self.set_direction("left")
                 self.x -= self.speed * interval
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_x > float(curr_action[1:]):
                     if(self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_x = self.x
+
+        else:
+            #add one to the number of cycles the enemy has waited
+            self.stop_time += 1
 
     #method to set the direction
     def set_direction(self, direction):
@@ -148,6 +172,7 @@ class Enemy(game.sprite.Sprite):
     def set_image(self):
         self.image = self.IMAGES[self.frame]
         self.frameCalls += 1
+
         if self.frameCalls % Enemy.FRAME_SLOW == 0:
             self.frame += 1
 
@@ -155,7 +180,8 @@ class Enemy(game.sprite.Sprite):
             self.frame = 0
 
     def stop(self):
-        self.stopped = True
-
-    def start(self):
-        self.stopped = False
+        #Once stop_time is > 0, the enemy will stop
+        #Enemy will continue to be stopped until
+        #The cycle count reaches our max_stop_time
+        #Move function takes care of restarting enemy
+        self.stop_time = 1
