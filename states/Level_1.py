@@ -296,6 +296,8 @@ def game_over(self, died):
     if died:
         Constants.STATE = GameEnded.GameEnded("GAME OVER")
     else:
-        Constants.STATE = Level_2.Level_2()
-        #Level_1.map = None
+        #Constants.STATE = Level_2.Level_2()
+        Constants.Levels.append(Level_2.Level_2())
+        Constants.STATE = Constants.Levels[1]
+        Level_1.map = None
 

@@ -33,7 +33,8 @@ class GameIntro(State.State):
         if self.timer >= GameIntro.delay:
             self.timer = 0
             if self.current_display == 2:
-                Constants.STATE = Level_1.Level_1()
+                Constants.Levels.append(Level_1.Level_1())
+                Constants.STATE = Constants.Levels[0]
             else:
                 self.current_display += 1
                 Constants.SCREEN.fill(pygame.Color("black"))
