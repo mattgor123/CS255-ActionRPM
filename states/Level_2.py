@@ -7,7 +7,8 @@ import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
 import sprites.Speedometer as Speedometer
-import map.Map as Map
+#import map.Map as Map
+import Level_2
 import NewHigh
 import GameEnded
 import Menu
@@ -116,6 +117,7 @@ class Level_2(State.State):
 
     def set_tiles(self):
         for player in players.sprites():
+            Level_2.tiles = map.render(player.x, player.y)
             player.rect.topleft = map.get_topleft(player.x, player.y)
         for enemy in enemies.sprites():
             enemy.rect.topleft = map.get_topleft(enemy.x, enemy.y)
@@ -287,8 +289,6 @@ def is_new_high_score(self):
         if self.time > min_high_score:
             return True
     return False
-
-
 # Define function to allow a user to restart if their health reaches 0%
 def game_over(self, died):
     if died:

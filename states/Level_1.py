@@ -7,7 +7,7 @@ import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
 import sprites.Speedometer as Speedometer
-import map.Map as Map
+#import map.Map as Map
 import Level_2
 import NewHigh
 import GameEnded
@@ -297,5 +297,5 @@ def game_over(self, died):
         Constants.STATE = GameEnded.GameEnded("GAME OVER")
     else:
         Constants.STATE = Level_2.Level_2()
-        Level_1.map = None
+        #Level_1.map = None
 
