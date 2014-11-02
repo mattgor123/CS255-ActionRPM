@@ -25,10 +25,13 @@ class Map():
     TILE_RANGE = 5
 
     # Initializes the map, reads map.txt
-    def __init__(self):
+    def __init__(self, filename, size):
         self.map = []
         self.openables = []
-        self.init_map()
+        Map.MAX_LETTERS = size
+        Map.MAX_HEIGHT = Map.MAX_LETTERS * Map.LETTER_HEIGHT
+        Map.MAX_WIDTH = Map.MAX_LETTERS * Map.LETTER_WIDTH
+        self.init_map(filename)
         self.x_min = 0
         self.x_max = 0
         self.y_min = 0
@@ -36,8 +39,8 @@ class Map():
 
     # Reads up to max letters from map.txt and loads
     # them into RAM
-    def init_map(self):
-        map_file = open("map/map.txt", "r")
+    def init_map(self, filename):
+        map_file = open("map/" + filename, "r")
         for i in range(0, Map.MAX_LETTERS):
             line = map_file.readline()
             for j in range(0, Map.MAX_LETTERS):

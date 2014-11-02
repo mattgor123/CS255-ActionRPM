@@ -40,7 +40,7 @@ class Level_1(State.State):
         self.is_beatable = False
         #Create global map for players to use
         global map
-        map = Map.Map()
+        map = Map.Map("map.txt", 3)
         #Create sprite groups to hold players and enemies
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()

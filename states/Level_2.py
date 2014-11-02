@@ -40,7 +40,7 @@ class Level_2(State.State):
         self.is_beatable = False
         #Create global map for players to use
         global map
-        map = Map.Map()
+        map = Map.Map("level2.txt", 5)
         #Create sprite groups to hold players and enemies
         players = pygame.sprite.Group()
         enemies = pygame.sprite.Group()
@@ -75,7 +75,7 @@ class Level_2(State.State):
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 38, 19))
 
-        player1 = Player.Player([6, 6], [
+        player1 = Player.Player([72, 56], [
             Constants.WIDTH, Constants.HEIGHT])
         players.add(player1)
         speedometer.add(Speedometer.Speedometer())
