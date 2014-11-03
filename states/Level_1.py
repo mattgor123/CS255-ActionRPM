@@ -75,7 +75,7 @@ class Level_1(State.State):
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 38, 19))
 
-        player1 = Player.Player([6, 6], [
+        player1 = Player.Player([8, 6], [
             Constants.WIDTH, Constants.HEIGHT])
         players.add(player1)
         speedometer.add(Speedometer.Speedometer())

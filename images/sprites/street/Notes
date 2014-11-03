@@ -1,11 +1,32 @@
-Seven types of streets for sprites:
+s - empty street
+h - horizontal street
+v - vertical street
+o - top left street
+p - top right street
+l - bottom left street
+; - bottom right street
+t - tollbooth
 
-Horizontal (h in map)
-Vertical (v in map)
-|_ turn (l in map)
-_| turn (; in map)
-__
-|  turn (o in map)
-__
-  | turn (p in map)
-Empty street (s in map)
+// building 0
+ab
+cd
+ef or gi
+
+// building 1
+jkmn
+qruw or xyz1
+
+// building 2
+23
+45 or 67
+
+// sidwalk
+890
+!@#
+$%^
+
+// building 3
+&*(
+)_+
+{}:
+<>? or ,.`

@@ -65,10 +65,7 @@ class Map():
     # Creates an object represented by the given char
     def resolve(self, char, x, y, map_x, map_y):
         to_return = None
-        if char == 'w':
-            #to_return = sprites.Wall.Wall(map_x, map_y, random.randint(0, 9))
-            to_return = sprites.Wall.Wall(map_x, map_y, 7)
-        elif char == 's':
+        if char == 's':
             to_return = sprites.Street.Street(map_x, map_y, "empty")
         elif char == 'h':
             to_return = sprites.Street.Street(map_x, map_y, "horizontal")
@@ -85,6 +82,8 @@ class Map():
         elif char == 't':
             to_return = sprites.TollBooth.TollBooth(map_x, map_y)
             self.openables.append(to_return)
+        else:
+            to_return = sprites.Wall.Wall(map_x, map_y, char)
         return to_return
 
     # Appends a new chunk starting at x,y to the map.
