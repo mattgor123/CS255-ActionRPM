@@ -246,7 +246,14 @@ class Level_1(State.State):
                         player.speed = Constants.PLAYER_MIN_SPEED
                         player.x += .01
 
+
+
                 if collision_fixed:
+                    #This if statement tells us that the player hit the
+                    #Boss and it should inflict damage on the boss
+                    if(damage_to_do == 0 and type(r) is Enemy.Boss_1):
+                        r.hurt(3)
+
                     #Do the damage as prescribed by the collided box
                     player.damage += damage_to_do
                     #Play that terrible crash sound
@@ -274,7 +281,7 @@ class Level_1(State.State):
 
         for enemy in enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
-            collidables_on_screen = map.get_tiles(player.x, player.y)
+            collidables_on_screen = map.get_tiles(enemy.x, enemy.y)
 
             #Here goes collision
             collision_fixed = False
@@ -344,6 +351,8 @@ class Level_1(State.State):
                         enemy.rect.left = r.rect.right
                         enemy.speed = 0
                         enemy.x += .01
+
+
 
         for speed in speedometer:
             speed.update(players.sprites()[0].speed)

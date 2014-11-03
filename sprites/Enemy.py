@@ -191,7 +191,7 @@ class Boss_1(game.sprite.Sprite):
     should_change_motion_direction = False
     FRAME_SLOW = 10
     #Number of cycles the enemy will stop for before moving again
-    max_wait_time = 50
+    max_wait_time = 65
 
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
@@ -241,13 +241,27 @@ class Boss_1(game.sprite.Sprite):
         self.moved_time = 0
         self.speed = 5
 
+        #Initial strength for car
+        self.strength = 0
+
+
+        self.health = 100;
+
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
     def update(self, interval, player_coordinates):
+        if(self.health == 0):
+            print "dead"
         self.turn(interval, player_coordinates)
 
+    def hurt(self, damage):
+        if self.health - damage < 0:
+            self.health = 0
+        else:
+            self.health -= damage
+
     def get_strength(self):
-        return 3
+        return self.strength
     #this moves the Enemy to where he is supposed to be based on the direction
     def turn(self, interval, player_coordinates):
 
@@ -257,11 +271,15 @@ class Boss_1(game.sprite.Sprite):
 
         #This means our boss has waited long enough to move
         if(self.waited_time >= Boss_1.max_wait_time and self.waited_time < 2*Boss_1.max_wait_time):
+            #If our guy is gonna move, then he should be hurting the player
+            self.strength = 3
             self.move(interval)
             self.waited_time += 1
         #This if statement checks if the player is within 3 blocks of the boss
         elif abs(self.x - player_coordinates[0]) <= 5 and abs(self.y - player_coordinates[1]) <= 5:
             self.waited_time += 1
+            #Negative strength indicates that our enemy can be hurt
+            self.strength = 0
             if self.x < player_coordinates[0] and abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "right"
                 self.set_direction("right")
