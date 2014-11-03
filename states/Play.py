@@ -65,11 +65,11 @@ class Play(State.State):
 
         #Create enemies and add them to our sprite group
         enemies.add(Enemy.Enemy([39, 3.1], [
-            Constants.WIDTH, Constants.HEIGHT], map, 5, "down",
+            Constants.WIDTH, Constants.HEIGHT], 5, "down",
             ["d4", "r2.9", "u4", "l2.9"]))
         enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
-            map, 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
+            5, "down", ["d12.5", "l16", "u12.5", "r16"]))
 
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 38, 19))
@@ -137,8 +137,12 @@ class Play(State.State):
 
         self.set_tiles()
         #Update the player
+        #Initially we assume the player coordinates are 0,0
+        #Until it is updated
+        player_coordinates = [0,0]
         for player in players:
             player.update(Constants.INTERVAL)
+            player_coordinates = player.get_coordinates()
             #Check if player has EZPass, if so, open the TollBooth
             if not self.is_beatable:
                 if "ezpass" in player.inventory:
@@ -267,7 +271,7 @@ class Play(State.State):
                 s.set_score_pos((126, 38 - (delta * 4)))
 
         for enemy in enemies:
-            enemy.update(Constants.INTERVAL)
+            enemy.update(Constants.INTERVAL, player_coordinates)
 
         for speed in speedometer:
             speed.update(players.sprites()[0].speed)

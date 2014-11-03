@@ -406,3 +406,6 @@ class Player(game.sprite.Sprite):
             self.frame += 1
         if self.frame >= len(self.imageArray):
             self.frame = 0
+
+    def get_coordinates(self):
+        return [self.x, self.y]
