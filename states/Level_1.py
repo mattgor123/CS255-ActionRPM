@@ -244,8 +244,6 @@ class Level_1(State.State):
                         player.speed = Constants.PLAYER_MIN_SPEED
                         player.x += .01
 
-
-
                 if collision_fixed:
                     #This if statement tells us that the player hit the
                     #Boss and it should inflict damage on the boss
@@ -279,8 +277,6 @@ class Level_1(State.State):
 
         for enemy in enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
-
-
 
         for speed in speedometer:
             speed.update(players.sprites()[0].speed)

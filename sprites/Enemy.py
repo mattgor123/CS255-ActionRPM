@@ -244,8 +244,8 @@ class Boss_1(game.sprite.Sprite):
         #Initial strength for car
         self.strength = 0
 
-
-        self.health = 100;
+        #Set as 500 to give him a little more strength
+        self.health = 500;
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
@@ -370,4 +370,8 @@ class Boss_1(game.sprite.Sprite):
 
         if self.frame == len(self.IMAGES):
             self.frame = 0
+
+    def get_health(self):
+        #Divide by 5 to get the ratio out of 100
+        return self.health/5
 

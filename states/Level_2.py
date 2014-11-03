@@ -63,6 +63,7 @@ class Level_2(State.State):
         labels = pygame.sprite.Group()
         labels.add(Label.Label("health", "Health: 100%", (10, 10)))
         labels.add(Label.Label("score", "Score: ", (10, 34)))
+        labels.add(Label.Label("boss_health", "Enemy Health: ", (550, 10)))
 
         #Create enemies and add them to our sprite group
         enemies.add(Enemy.Enemy([39, 3.1], [
@@ -83,6 +84,9 @@ class Level_2(State.State):
         speedometer.add(Speedometer.Speedometer())
 
         self.time = 0.00
+
+        #Set boss' health to full
+        self.boss_health = 100
 
     #Function to draw the sprite groups
     def draw(self):
@@ -157,8 +161,8 @@ class Level_2(State.State):
                         if openable.__str__() == "t":
                             openable.open()
 
-            if player.has_beaten_level(0):
-                    game_over(self, False)
+            #if player.has_beaten_level(0):
+            #        game_over(self, False)
             self.health = player.calculate_health()
 
             #Iterate through items and check if they are colliding
@@ -245,6 +249,16 @@ class Level_2(State.State):
                         player.x += .01
 
                 if collision_fixed:
+                    #This if statement tells us that the player hit the
+                    #Boss and it should inflict damage on the boss
+                    if(damage_to_do == 0 and type(r) is Enemy.Boss_1):
+                        #Hurt the boss and decrease his health var
+                        #That is held in this controller
+                        r.hurt(3)
+                        self.boss_health = r.get_health()
+                        #If the boss health is <= 0, then we won
+                        if self.boss_health <= 0:
+                            game_over(self, False)
                     #Do the damage as prescribed by the collided box
                     player.damage += damage_to_do
                     #Play that terrible crash sound
@@ -263,6 +277,8 @@ class Level_2(State.State):
                 if self.END_SCORE <= 0:
                     game_over(self, True)
                 label.update(self.END_SCORE)
+            elif label.name == "boss_health":
+                label.update(self.boss_health)
         for s in score_label.sprites():
             delta = self.time - self.SCORE_TIME
             if delta > 1.2:
@@ -275,7 +291,7 @@ class Level_2(State.State):
 
             if type(enemy) == Enemy.Boss_1:
                 collidables_on_screen = map.get_tiles(enemy.x, enemy.y)
-
+                collidables_on_screen.append(player)
                 #Here goes collision
                 collision_fixed = False
                 #Go through all of the collidable rects around the player
@@ -331,7 +347,7 @@ class Level_2(State.State):
                             enemy.x -= .01
 
                         if (not collision_fixed and r.rect.collidepoint(
-                                player.rect.topleft)):
+                                enemy.rect.topleft)):
 
                             collision_fixed = True
                             enemy.rect.left = r.rect.right
