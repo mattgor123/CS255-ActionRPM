@@ -71,8 +71,6 @@ class Level_1(State.State):
         enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
             5, "down", ["d12.5", "l16", "u12.5", "r16"]))
-        enemies.add(Enemy.Boss_1([8, 10],
-                                [Constants.WIDTH, Constants.HEIGHT]))
 
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 38, 19))
@@ -281,76 +279,6 @@ class Level_1(State.State):
 
         for enemy in enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
-            collidables_on_screen = map.get_tiles(enemy.x, enemy.y)
-
-            #Here goes collision
-            collision_fixed = False
-            #Go through all of the collidable rects around the player
-            for r in collidables_on_screen:
-                #A strength >= 0 indicates a collidable object
-                #  -1 isnt collidable
-                if r.get_strength() >= 0:
-                    #This same if statement is repeated for all midpoints
-                    #Checking if the midpoint of the car is in the other rect
-                    #This midpoint check tells us how to fix the car's position
-                    if (r.rect.collidepoint(enemy.rect.midbottom)):
-                        enemy.rect.bottom = r.rect.top
-                        collision_fixed = True
-                        enemy.speed = 0
-                        enemy.y -= .01
-
-                    if (r.rect.collidepoint(enemy.rect.midleft)):
-                        enemy.rect.left = r.rect.right
-                        collision_fixed = True
-                        enemy.speed = 0
-                        enemy.x += .01
-
-                    if (r.rect.collidepoint(enemy.rect.midright)):
-                        enemy.rect.right = r.rect.left
-                        collision_fixed = True
-                        enemy.speed = 0
-                        player.x -= .01
-
-                    if (r.rect.collidepoint(enemy.rect.midtop)):
-
-                        enemy.rect.top = r.rect.bottom
-                        collision_fixed = True
-                        enemy.speed = 0
-                        enemy.y += .01
-
-                    #These collision if statements are to fix hitting corners
-                    #Only happens if there wasnt a collision with a
-                    #center of the car
-                    if (not collision_fixed and r.rect.collidepoint(
-                            enemy.rect.topright)):
-
-                        collision_fixed = True
-                        enemy.rect.right = r.rect.left
-                        enemy.speed = 0
-                        enemy.x -= .01
-
-                    if (not collision_fixed and r.rect.collidepoint(
-                            enemy.rect.bottomright)):
-
-                        collision_fixed = True
-                        enemy.rect.right = r.rect.left
-                        enemy.speed = 0
-                        enemy.x -= .01
-
-                    if (not collision_fixed and r.rect.collidepoint(
-                            player.rect.topleft)):
-
-                        collision_fixed = True
-                        enemy.rect.left = r.rect.right
-                        enemy.speed = 0
-                        enemy.x += .01
-                    if (not collision_fixed and r.rect.collidepoint(
-                            enemy.rect.bottomleft)):
-
-                        collision_fixed = True
-                        enemy.rect.left = r.rect.right
-                        enemy.speed = 0
-                        enemy.x += .01
 
 
 

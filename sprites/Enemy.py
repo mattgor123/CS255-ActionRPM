@@ -371,9 +371,3 @@ class Boss_1(game.sprite.Sprite):
         if self.frame == len(self.IMAGES):
             self.frame = 0
 
-    def stop(self):
-        #Once stop_time is > 0, the enemy will stop
-        #Enemy will continue to be stopped until
-        #The cycle count reaches our max_stop_time
-        #Move function takes care of restarting enemy
-        self.stop_time = 1
