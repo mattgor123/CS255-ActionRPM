@@ -138,8 +138,10 @@ class Level_2(State.State):
 
         self.set_tiles()
         #Update the player
+        player_coordinates = [0,0]
         for player in players:
             player.update(Constants.INTERVAL)
+            player_coordinates = player.get_coordinates()
             #Check if player has EZPass, if so, open the TollBooth
             if not self.is_beatable:
                 if "ezpass" in player.inventory:
@@ -267,7 +269,7 @@ class Level_2(State.State):
                 s.set_score_pos((126, 38 - (delta * 4)))
 
         for enemy in enemies:
-            enemy.update(Constants.INTERVAL)
+            enemy.update(Constants.INTERVAL, player_coordinates)
 
         for speed in speedometer:
             speed.update(players.sprites()[0].speed)
