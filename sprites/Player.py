@@ -145,10 +145,10 @@ class Player(game.sprite.Sprite):
         self.dir_changed = False
 
         #Initially assume we are slowing down
-        acceleration = -Constants.PLAYER_ACCELERATION
+        acceleration = -2*Constants.PLAYER_ACCELERATION
         #Get the keys pressed
         keys_pressed = game.key.get_pressed()
-        if keys_pressed[game.K_LEFT] and keys_pressed[game.K_UP]:
+        if keys_pressed[game.K_a] and keys_pressed[game.K_w]:
             # change of direction, stop playing crash sound & set the direction
             if self.direction != "upleft":
                 self.dir_changed = True
@@ -156,55 +156,58 @@ class Player(game.sprite.Sprite):
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_LEFT] and keys_pressed[game.K_DOWN]:
+        elif keys_pressed[game.K_a] and keys_pressed[game.K_s]:
             if self.direction != "downleft":
                 self.dir_changed = True
                 self.set_direction("downleft")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_LEFT]:
+        elif keys_pressed[game.K_a]:
             if self.direction != "left":
                 self.dir_changed = True
                 self.set_direction("left")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_UP]:
+        elif keys_pressed[game.K_d] and keys_pressed[game.K_w]:
             if self.direction != "upright":
                 self.dir_changed = True
                 self.set_direction("upright")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_RIGHT] and keys_pressed[game.K_DOWN]:
+        elif keys_pressed[game.K_d] and keys_pressed[game.K_s]:
             if self.direction != "downright":
                 self.dir_changed = True
                 self.set_direction("downright")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_RIGHT]:
+        elif keys_pressed[game.K_d]:
             if self.direction != "right":
                 self.dir_changed = True
                 self.set_direction("right")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_UP]:
+        elif keys_pressed[game.K_w]:
             if self.direction != "up":
                 self.dir_changed = True
                 self.set_direction("up")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_DOWN]:
+        elif keys_pressed[game.K_s]:
             if self.direction != "down":
                 self.dir_changed = True
                 self.set_direction("down")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
+        if keys_pressed[game.K_SPACE]:
+            self.breaking = True
+            acceleration = -4*Constants.PLAYER_ACCELERATION
         #Check if the new speed will put us over or under our max/min
         #Before we set the speed
         if self.speed + acceleration * interval >\
