@@ -5,46 +5,108 @@ Tuvia Lerea - tlerea1@jhu.edu
 Carlo Olcese - colcese1@jhu.edu
 Joshua You - jyou8@jhu.edu
 
-To run our game, go into the directory actionrpm/ and run the command "python game.py"
-
+To run our game, go into the directory actionrpm/ and run the command "python 
+game.py"
 
 Current Assignment Notes
+11/2
+
+Problem 1: Level Two (60%)
+For this assignment we added a second level to our game. The second level is
+only reachable through the ezpass booths on the top right of the level 1 map.
+When the player collects the ezpass and goes through the booth, level 2 begins.
+Right now there is no way of returning to level 1 but that will be implemented
+soon. The idea for level 2 is there is a boss that must be defeated. This boss 
+follows and tries to attack you. If he succeeds and hits you, you get dealt 
+damage. Every couple of seconds the boss will stop moving and flash. During that 
+time you can attack the boss, if you do, you will damage him. When you kill the 
+boss, you beat the level, and since there are only two levels, the game. 
+
+Problem 2: Technical, Artistic, and Game Play Progress (40%)
+For this part of the assignment several different things were added/changed.
+First off, a lot of the graphics have changed. The roads now look nicer, and the
+buildings are still in a working progress, but they are getting there.
+Additionally, a HUD was added. Right now the only element of the HUD is the
+speedometer, but we plan to have a radio station added, and there will be
+information about that in the HUD as well as your inventory, and maybe even
+weapons available. The HUD is on the bottom of the screen and besides for the
+speedometer is black. Additionaly, the controls for moving the player have been
+moved to a standard awsd as well as a break implemented with the space bar. 
+
+
+Previous Assignment Notes
 10/26
 
 Problem 1: Level One (70%)
-For this assignment, we didn't have to change too much in terms of our level design. We want level one to be a tutorial level in which the player can get familiarized with the mechanics. There are two enemies, one "protecting" the Toll Booth (discussed later) and one circling the EZ Pass.
+For this assignment, we didn't have to change too much in terms of our level 
+design. We want level one to be a tutorial level in which the player can get 
+familiarized with the mechanics. There are two enemies, one "protecting" the 
+Toll Booth (discussed later) and one circling the EZ Pass.
 
-Our cutscenes are kind of lame, but we demonstrate that we know how to build them & animate them, which establishes a framework that we will confidently be able to follow as we continue our development. We explain the backstory (of why you're in a car doing random tasks), and give the player instructions on how to beat our tutorial level (and how to avoid losing).
+Our cutscenes are kind of lame, but we demonstrate that we know how to build 
+them & animate them, which establishes a framework that we will confidently be 
+able to follow as we continue our development. We explain the backstory (of why 
+you're in a car doing random tasks), and give the player instructions on how to 
+beat our tutorial level (and how to avoid losing).
 
 Problem 2: Technical, Artistic, and Game Play Progress (30%)
-We made some pretty heavy changes this week, mostly from a technical standpoint. While previously we didn't really have much discussion or collaboration, which led to people writing Spaghetti code that couldn't really be extendable for future development, this week we spent some time developing a plan of attack. We did some heavy refactoring, which makes our code easier to read & understand. We also developed interfaces for Item (something you can collect, IE the EZPass, which goes into an inventory) and Openable (the EZPass), which is a Tile that can be opened. We made improvements to our graphics by having different types of Street tiles and fixing bugs about player/enemy sprites having outlines.
+We made some pretty heavy changes this week, mostly from a technical 
+standpoint. While previously we didn't really have much discussion or 
+collaboration, which led to people writing Spaghetti code that couldn't really 
+be extendable for future development, this week we spent some time developing a 
+plan of attack. We did some heavy refactoring, which makes our code easier to 
+read & understand. We also developed interfaces for Item (something you can 
+collect, IE the EZPass, which goes into an inventory) and Openable (the 
+EZPass), which is a Tile that can be opened. We made improvements to our 
+graphics by having different types of Street tiles and fixing bugs about 
+player/enemy sprites having outlines.
 
-We discussed how we will continue to work with scrolling and concluded that we will use the Tile mechanics which we built. We also added a spedometer which will be part of the HUD Layer which we wanted to implement, but due to time constraints probably will not get to until next week. We also made it possible for our game to include Triggers by creating the Openable & collectable (Item) interfaces; we can have an invisible Item, and when it is present in a player's inventory, something Openable can open or an Enemy's AI can change.
+We discussed how we will continue to work with scrolling and concluded that we 
+will use the Tile mechanics which we built. We also added a spedometer which 
+will be part of the HUD Layer which we wanted to implement, but due to time 
+constraints probably will not get to until next week. We also made it possible 
+for our game to include Triggers by creating the Openable & collectable (Item) 
+interfaces; we can have an invisible Item, and when it is present in a player's 
+inventory, something Openable can open or an Enemy's AI can change.
 
-We also added some music, got rid of that horrible crash sound, and improved the visuals to make our game a more fun experience.
+We also added some music, got rid of that horrible crash sound, and improved 
+the visuals to make our game a more fun experience.
 
 
 Previous Assignment Notes
 10/19
 Problem 1: Enemies
 
-We have one main enemy, guarding the garage. He moves in a 4-step cycle around the garage and hitting him does significant damage to your car & severely hurts your score. This is akin to how most of our enemies will act; they will move cyclically around our map & doing damage upon contact.
+We have one main enemy, guarding the garage. He moves in a 4-step cycle around 
+the garage and hitting him does significant damage to your car & severely hurts 
+your score. This is akin to how most of our enemies will act; they will move 
+cyclically around our map & doing damage upon contact.
 
 Problem 2: Damage, Win, Lose
 
-We have a system in place for damage & a system in place for score; the two are now separate. Health starts at 100% and as your player collides with walls/the enemy, his health declines. As the health drops below 75%, the label turns orange, and when it hits 25%, it turns red indicating that you are getting close to dying. Once you hit 0%, your game ends.
+We have a system in place for damage & a system in place for score; the two are 
+now separate. Health starts at 100% and as your player collides with walls/the 
+enemy, his health declines. As the health drops below 75%, the label turns 
+orange, and when it hits 25%, it turns red indicating that you are getting 
+close to dying. Once you hit 0%, your game ends.
 
-The other system is the score. The player's score starts at 1000 and decreases every update cycle. It can be increased by getting keys. It also decreases when you collide with a wall. Your score is the score you have when you are done collecting the keys & entering the garage. If your score goes to 0, you also lose.
+The other system is the score. The player's score starts at 1000 and decreases 
+every update cycle. It can be increased by getting keys. It also decreases when 
+you collide with a wall. Your score is the score you have when you are done 
+collecting the keys & entering the garage. If your score goes to 0, you also 
+lose.
 
 Problem 3: Scores High & Low
 
-High score system has been implemented. You get points & if you win with a high score, you get to enter your name and enter a high score. Cool!
+High score system has been implemented. You get points & if you win with a high 
+score, you get to enter your name and enter a high score. Cool!
 
 
 
 Problem 1: Level Zero
 
-We have built our level using 9 screens (1.txt through 9.txt in the map/ directory). The overlay is something like:
+We have built our level using 9 screens (1.txt through 9.txt in the map/ 
+directory). The overlay is something like:
 
 ______________________
 |                     |
@@ -60,10 +122,19 @@ ______________________
 |  SSSSSSSSSSSSSSSS   |
 |_____________________|
 
-The Key is the key, and the Garage is the G. Feel free to drive around the map and explore. You have to grab the key before you go into the garage. When you enter the garage, if you did it faster than the 10 previous fastest times, you will be given the high score screen.
+The Key is the key, and the Garage is the G. Feel free to drive around the map 
+and explore. You have to grab the key before you go into the garage. When you 
+enter the garage, if you did it faster than the 10 previous fastest times, you 
+will be given the high score screen.
 
 Problem 2: Camera and Scrolling
-We do scrolling by keeping the player's position constant unless the map cannot scroll anymore, in which case he moves around the screen. This introduced a minor bug which we are looking to work out where the player is slightly "in" the wall when he collides. However, we took care to ensure that he never gets stuck in the wall and can always move in the opposite direction. To avoid needing thousands of collision checks, our Map class has a function to return the set of tiles within 5 tiles of the player's top left corner.
+We do scrolling by keeping the player's position constant unless the map cannot 
+scroll anymore, in which case he moves around the screen. This introduced a 
+minor bug which we are looking to work out where the player is slightly "in" 
+the wall when he collides. However, we took care to ensure that he never gets 
+stuck in the wall and can always move in the opposite direction. To avoid 
+needing thousands of collision checks, our Map class has a function to return 
+the set of tiles within 5 tiles of the player's top left corner.
 
 
 
@@ -71,39 +142,80 @@ We do scrolling by keeping the player's position constant unless the map cannot 
 
 
 Notes from assignment 4:
-For this assignment we believe we completed everything. For the animations, we have that our car continues to get more
-and more damaged as he loses health. You will notice that when he gets to a lower health (~20%), he will look as though
-he is all banged up. In order to lose health, try to move the player outside of the game screen. For the other animation,
+For this assignment we believe we completed everything. For the animations, we 
+have that our car continues to get more
+and more damaged as he loses health. You will notice that when he gets to a 
+lower health (~20%), he will look as though
+he is all banged up. In order to lose health, try to move the player outside of 
+the game screen. For the other animation,
 we have our enemies headlights flashing on and off.
 
-For part 2, we used the states model to create our screens. We believe we followed all of Oeter's instructions.
+For part 2, we used the states model to create our screens. We believe we 
+followed all of Oeter's instructions.
 
-NOTE: Our high score does actually work! For now, your points keep moving upwards as time goes on. When you run out of health,
-our game will check if your score is higher than any of the saved scores, and if so, you can enter in a name for the high score.
+NOTE: Our high score does actually work! For now, your points keep moving 
+upwards as time goes on. When you run out of health,
+our game will check if your score is higher than any of the saved scores, and 
+if so, you can enter in a name for the high score.
 
 
 The code is organized into directories/packages:
--audio: contains audio files for the game (will probably be organized into subfolders later)
+-audio: contains audio files for the game (will probably be organized into 
+subfolders later)
 
--images: contains image files for the game (organized into sprites and other images)
+-images: contains image files for the game (organized into sprites and other 
+images)
 
--sprites: contains python code for any of our custom implementations of Pygame's Sprite class (currently, Enemy, Label, and Player) 
+-sprites: contains python code for any of our custom implementations of 
+Pygame's Sprite class (currently, Enemy, Label, and Player) 
 
--states: contains python code for all of our state-model logic. Play.py is our gameplay state. All of these classes are named intuitively and should be simple to find out how they interact. One note is the Menu state can always be accessed from any State by hitting 'Control + M'. The Play state can be exited at any time by hitting the 'q' key, which ends the game (even if you don't have 0% health).
+-states: contains python code for all of our state-model logic. Play.py is our 
+gameplay state. All of these classes are named intuitively and should be simple 
+to find out how they interact. One note is the Menu state can always be 
+accessed from any State by hitting 'Control + M'. The Play state can be exited 
+at any time by hitting the 'q' key, which ends the game (even if you don't have 
+0% health).
 
--util: contains the code to parse a SpriteSheet, which is currently being used to animate an enemy.
+-util: contains the code to parse a SpriteSheet, which is currently being used 
+to animate an enemy.
 
 
 Notes from assignment 3:
--Our animations are: the car (player) is 'animated' in the sense that as it gains damage, it progressively gets more and more banged up. The three 'stages' of health are full health (100-75%), moderately damaged (75-25%), and severely damaged (25-0%), and these are represented by the color changing label and also the more damaged-looking sprite. The player's sprite also changes based on the direction in which the player is moving. The enemy sprite responds to the player's keypresses and instantly faces the opposite direction (NOTE: his motion can reflect the direction he's moving by modifying the should_change_motion_direction flag in Enemy.py). Also, the enemy's motion involves a headlights cycle in which his headlights toggle from off to half-on to on to half-off to off again, and this repeats indefinitely.
+-Our animations are: the car (player) is 'animated' in the sense that as it 
+gains damage, it progressively gets more and more banged up. The three 'stages' 
+of health are full health (100-75%), moderately damaged (75-25%), and severely 
+damaged (25-0%), and these are represented by the color changing label and also 
+the more damaged-looking sprite. The player's sprite also changes based on the 
+direction in which the player is moving. The enemy sprite responds to the 
+player's keypresses and instantly faces the opposite direction (NOTE: his 
+motion can reflect the direction he's moving by modifying the 
+should_change_motion_direction flag in Enemy.py). Also, the enemy's motion 
+involves a headlights cycle in which his headlights toggle from off to half-on 
+to on to half-off to off again, and this repeats indefinitely.
 
--Our high score system is based solely on the duration a player has been able to survive. Since our interval is 0.01, every update cycle raises the user's score by .01. When a game ends (either by the player reaching 0% health by colliding with the walls, or by hitting 'q' from the Play screen), the game checks if this score is a high score (top 10), and if it is it prompts you to input your name, then showing your position on the high score chart by coloring your text green. Otherwise, it displays the game over screen and shows you all the previous high scores.
+-Our high score system is based solely on the duration a player has been able 
+to survive. Since our interval is 0.01, every update cycle raises the user's 
+score by .01. When a game ends (either by the player reaching 0% health by 
+colliding with the walls, or by hitting 'q' from the Play screen), the game 
+checks if this score is a high score (top 10), and if it is it prompts you to 
+input your name, then showing your position on the high score chart by coloring 
+your text green. Otherwise, it displays the game over screen and shows you all 
+the previous high scores.
 
 Notes from assignment 2:
--We chose to follow the leftover-interval based approach so our gameplay should not change depending on the hardware. 
+-We chose to follow the leftover-interval based approach so our gameplay should 
+not change depending on the hardware. 
 
--Note that game.py has a few constants at the top (BEEN MOVED TO states/Constants.py). These can be changed, but the game has not been extensively tested with settings other than the ones we are submitting (800 x 600, with PLAYER_SPEED = 500, ENEMY_COUNT = 13, and ENEMY_SPEEDS = 6), with a difficulty of 10 and interval of 0.01.
+-Note that game.py has a few constants at the top (BEEN MOVED TO 
+states/Constants.py). These can be changed, but the game has not been 
+extensively tested with settings other than the ones we are submitting (800 x 
+600, with PLAYER_SPEED = 500, ENEMY_COUNT = 13, and ENEMY_SPEEDS = 6), with a 
+difficulty of 10 and interval of 0.01.
 
--Also, if you want to see how our game worked before (with enemies moving away from the player), feel free to change should_change_motion_direction = True in Enemy.py (line 8).
+-Also, if you want to see how our game worked before (with enemies moving away 
+from the player), feel free to change should_change_motion_direction = True in 
+Enemy.py (line 8).
 
--The original red & yellow car sprites were found on openclipart.org, and the policies can be found here: https://openclipart.org/policies . The 'damage' art was added by our team after the fact.
+-The original red & yellow car sprites were found on openclipart.org, and the 
+policies can be found here: https://openclipart.org/policies . The 'damage' art 
+was added by our team after the fact.
