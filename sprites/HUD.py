@@ -3,6 +3,7 @@ import pygame as PG
 from states import Constants
 import sprites.Speedometer as Speedometer
 
+
 class HUD():
 
     def __init__(self):

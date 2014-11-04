@@ -36,7 +36,7 @@ class Player(game.sprite.Sprite):
         Player.screen_height = screensize[1]
         #Set initial direction of the car
         self.direction = "right"
-        
+
         #Inventory initialized as empty
         self.inventory = []
 

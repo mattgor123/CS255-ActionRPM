@@ -69,7 +69,7 @@ class Play(State.State):
             ["d4", "r2.9", "u4", "l2.9"]))
         enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
-            5, "down", ["d12.5", "l16", "u12.5", "r16"]))
+                                5, "down", ["d12.5", "l16", "u12.5", "r16"]))
 
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 38, 19))
@@ -139,7 +139,7 @@ class Play(State.State):
         #Update the player
         #Initially we assume the player coordinates are 0,0
         #Until it is updated
-        player_coordinates = [0,0]
+        player_coordinates = [0, 0]
         for player in players:
             player.update(Constants.INTERVAL)
             player_coordinates = player.get_coordinates()

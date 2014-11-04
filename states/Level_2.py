@@ -72,9 +72,9 @@ class Level_2(State.State):
             ["d4", "r2.9", "u4", "l2.9"]))
         enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
-            5, "down", ["d12.5", "l16", "u12.5", "r16"]))
+                                5, "down", ["d12.5", "l16", "u12.5", "r16"]))
         enemies.add(Enemy.Boss_1([70, 40],
-                                [Constants.WIDTH, Constants.HEIGHT]))
+                                 [Constants.WIDTH, Constants.HEIGHT]))
 
         #Create miscellaneous shit
         items.add(EZPass.EZPass("ezpass", 71, 57))
@@ -146,7 +146,7 @@ class Level_2(State.State):
 
         self.set_tiles()
         #Update the player
-        player_coordinates = [0,0]
+        player_coordinates = [0, 0]
         for player in players:
             player.update(Constants.INTERVAL)
             player_coordinates = player.get_coordinates()
@@ -301,9 +301,9 @@ class Level_2(State.State):
                     #A strength >= 0 indicates a collidable object
                     #  -1 isnt collidable
                     if r.get_strength() >= 0:
-                        #This same if statement is repeated for all midpoints
-                        #Checking if the midpoint of the car is in the other rect
-                        #This midpoint check tells us how to fix the car's position
+                    #This same if statement is repeated for all midpoints
+                    #Checking if the midpoint of the car is in the other rect
+                    #This midpoint check tells us how to fix the car's position
                         if (r.rect.collidepoint(enemy.rect.midbottom)):
                             enemy.rect.bottom = r.rect.top
                             collision_fixed = True
@@ -329,9 +329,9 @@ class Level_2(State.State):
                             enemy.speed = 0
                             enemy.y += .01
 
-                        #These collision if statements are to fix hitting corners
-                        #Only happens if there wasnt a collision with a
-                        #center of the car
+                    #These collision if statements are to fix hitting corners
+                    #Only happens if there wasnt a collision with a
+                    #center of the car
                         if (not collision_fixed and r.rect.collidepoint(
                                 enemy.rect.topright)):
 
@@ -382,6 +382,8 @@ def is_new_high_score(self):
         if self.time > min_high_score:
             return True
     return False
+
+
 # Define function to allow a user to restart if their health reaches 0%
 def game_over(self, died):
     if died:

@@ -176,14 +176,13 @@ class Enemy(game.sprite.Sprite):
         if self.frameCalls % Enemy.FRAME_SLOW == 0:
             self.frame += 1
 
-
-
     def stop(self):
         #Once stop_time is > 0, the enemy will stop
         #Enemy will continue to be stopped until
         #The cycle count reaches our max_stop_time
         #Move function takes care of restarting enemy
         self.stop_time = 1
+
 
 class Boss_1(game.sprite.Sprite):
     image = None
@@ -253,7 +252,7 @@ class Boss_1(game.sprite.Sprite):
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
     def update(self, interval, player_coordinates):
-        if(self.health == 0):
+        if self.health == 0:
             print "dead"
         self.turn(interval, player_coordinates)
 
@@ -265,17 +264,19 @@ class Boss_1(game.sprite.Sprite):
 
     def get_strength(self):
         return self.strength
+
     #this moves the Enemy to where he is supposed to be based on the direction
     def turn(self, interval, player_coordinates):
 
-        if(self.waited_time >= 2*Boss_1.max_wait_time):
+        if self.waited_time >= 2*Boss_1.max_wait_time:
             self.waited_time = 0
             self.speed = 5
             self.waiting = False
             self.set_direction(self.direction)
 
         #This means our boss has waited long enough to move
-        if(self.waited_time >= Boss_1.max_wait_time and self.waited_time < 2*Boss_1.max_wait_time):
+        if self.waited_time >= Boss_1.max_wait_time and \
+                self.waited_time < 2*Boss_1.max_wait_time:
             #If our guy is gonna move, then he should be hurting the player
             self.strength = 3
             self.waiting = False
@@ -283,50 +284,56 @@ class Boss_1(game.sprite.Sprite):
             self.set_direction(self.direction)
             self.waited_time += 1
         #This if statement checks if the player is within 3 blocks of the boss
-        elif abs(self.x - player_coordinates[0]) <= self.active_distance and abs(self.y -
-                player_coordinates[1]) <= self.active_distance:
+        elif abs(self.x - player_coordinates[0]) <= self.active_distance and \
+                abs(self.y - player_coordinates[1]) <= self.active_distance:
             self.waited_time += 1
             #Negative strength indicates that our enemy can be hurt
             self.strength = 0
             self.waiting = True
-            if self.x < player_coordinates[0] and abs(self.y - player_coordinates[1]) <= 1:
+            if self.x < player_coordinates[0] and \
+                    abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "right"
                 self.set_direction("right")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            elif self.x > player_coordinates[0] and abs(self.y - player_coordinates[1]) <= 1:
+            elif self.x > player_coordinates[0] and \
+                    abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "left"
                 self.set_direction("left")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            if self.y < player_coordinates[1] and abs(self.x - player_coordinates[0]) <= 1:
+            if self.y < player_coordinates[1] and \
+                    abs(self.x - player_coordinates[0]) <= 1:
                 self.direction = "down"
                 self.set_direction("down")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            elif self.y > player_coordinates[1] and abs(self.x - player_coordinates[0]) <= 1:
+            elif self.y > player_coordinates[1] and \
+                    abs(self.x - player_coordinates[0]) <= 1:
                 self.direction = "up"
                 self.set_direction("up")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            elif self.x < player_coordinates[0] and self.y - player_coordinates[1] >= 1:
+            elif self.x < player_coordinates[0] and \
+                    self.y - player_coordinates[1] >= 1:
                 self.direction = "upright"
                 self.set_direction("upright")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            elif self.x < player_coordinates[0] and self.y - player_coordinates[1] <= -1:
+            elif self.x < player_coordinates[0] and \
+                    self.y - player_coordinates[1] <= -1:
                 self.direction = "downright"
                 self.set_direction("downright")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            elif self.x > player_coordinates[0] and self.y - player_coordinates[1] >= 1:
+            elif self.x > player_coordinates[0] and self.y - \
+                    player_coordinates[1] >= 1:
                 self.direction = "upleft"
                 self.set_direction("upleft")
                 self.rect = self.image.get_rect(center=self.rect.center)
-            elif self.x > player_coordinates[0] and self.y - player_coordinates[1] <= -1:
+            elif self.x > player_coordinates[0] and \
+                    self.y - player_coordinates[1] <= -1:
                 self.direction = "downleft"
                 self.set_direction("downleft")
                 self.rect = self.image.get_rect(center=self.rect.center)
 
-
-
     def move(self, interval):
 
-        if(self.direction == "up"):
+        if self.direction == "up":
             self.y -= self.speed*interval
         elif(self.direction == "down"):
             self.y += self.speed*interval
@@ -346,7 +353,6 @@ class Boss_1(game.sprite.Sprite):
         elif(self.direction == "downleft"):
             self.x -= self.speed * interval * .7071
             self.y += self.speed * interval * .7071
-
 
     #method to set the direction
     def set_direction(self, direction):
@@ -387,4 +393,3 @@ class Boss_1(game.sprite.Sprite):
     def get_health(self):
         #Divide by 5 to get the ratio out of 100
         return self.health/5
-
