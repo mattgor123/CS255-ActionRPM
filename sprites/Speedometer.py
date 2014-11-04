@@ -23,7 +23,7 @@ class Speedometer(PG.sprite.Sprite):
 
         self.image = Speedometer.IMAGE
         self.rect = self.image.get_rect()
-        self.rect.bottomleft = (0, Constants.HEIGHT)
+        self.rect.topleft = (0, 0)
         PD.filled_circle(Speedometer.IMAGE, self.image.get_width() / 2,
                          self.image.get_height() / 2, 8, Speedometer.RED)
         self.speed = 0

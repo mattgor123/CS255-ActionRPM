@@ -6,6 +6,7 @@ import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
+import sprites.HUD as HUD
 import sprites.Speedometer as Speedometer
 #import map.Map as Map
 import Level_2
@@ -32,7 +33,7 @@ class Level_1(State.State):
         super(Level_1, self).__init__()
         #making global sprite groups so we can call them from other methods
         global players, labels, background, map, key, score_label,\
-            enemies, items, speedometer
+            enemies, items, hud
         #Set score variables
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
@@ -78,7 +79,7 @@ class Level_1(State.State):
         player1 = Player.Player([8, 6], [
             Constants.WIDTH, Constants.HEIGHT])
         players.add(player1)
-        speedometer.add(Speedometer.Speedometer())
+        hud = HUD.HUD()
 
         self.time = 0.00
 
@@ -92,7 +93,7 @@ class Level_1(State.State):
         labels.clear(Constants.SCREEN, background)
         score_label.clear(Constants.SCREEN, background)
         items.clear(Constants.SCREEN, background)
-        speedometer.clear(Constants.SCREEN, background)
+        hud.clear(Constants.SCREEN)
         # walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
@@ -111,7 +112,7 @@ class Level_1(State.State):
             players.draw(Constants.SCREEN)
             enemies.draw(Constants.SCREEN)
             items.draw(Constants.SCREEN)
-            speedometer.draw(Constants.SCREEN)
+            hud.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
@@ -278,8 +279,7 @@ class Level_1(State.State):
         for enemy in enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
 
-        for speed in speedometer:
-            speed.update(players.sprites()[0].speed)
+        hud.update(players.sprites()[0].speed)
 
 
 # Function to determine if the current score was a high score

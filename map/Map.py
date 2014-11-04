@@ -125,7 +125,7 @@ class Map():
             self.x_max = len(self.map) - 1
 
         self.y_min = player_y - (Map.LETTER_HEIGHT / 2)
-        self.y_max = player_y + (Map.LETTER_HEIGHT / 2)
+        self.y_max = player_y + (Map.LETTER_HEIGHT / 2) - 3
         if self.y_min < 0:
             self.y_max += math.fabs(self.y_min) - 1
             self.y_min = 0
