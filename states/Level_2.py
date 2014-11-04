@@ -76,7 +76,7 @@ class Level_2(State.State):
                                 [Constants.WIDTH, Constants.HEIGHT]))
 
         #Create miscellaneous shit
-        items.add(EZPass.EZPass("ezpass", 38, 19))
+        items.add(EZPass.EZPass("ezpass", 71, 57))
 
         player1 = Player.Player([72, 56], [
             Constants.WIDTH, Constants.HEIGHT])

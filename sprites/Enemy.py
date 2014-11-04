@@ -168,14 +168,15 @@ class Enemy(game.sprite.Sprite):
         self.set_image()
 
     def set_image(self):
+        if self.frame >= len(self.IMAGES):
+            self.frame = 0
         self.image = self.IMAGES[self.frame]
         self.frameCalls += 1
 
         if self.frameCalls % Enemy.FRAME_SLOW == 0:
             self.frame += 1
 
-        if self.frame == len(self.IMAGES):
-            self.frame = 0
+
 
     def stop(self):
         #Once stop_time is > 0, the enemy will stop
@@ -206,7 +207,7 @@ class Boss_1(game.sprite.Sprite):
             # on direction of travel
 
             sprites = SP.loadSheet(
-                "images/sprites/enemyfullhealthlights.png", 52, 26, [3, 1])
+                "images/sprites/boss_1.png", 52, 26, [2, 1])
             Enemy.right = sprites[0]
             Enemy.left = SP.rotateSprites(Enemy.right, 180)
             Enemy.up = SP.rotateSprites(Enemy.right, 90)
@@ -216,6 +217,7 @@ class Boss_1(game.sprite.Sprite):
             Enemy.downright = SP.rotateSprites(Enemy.right, -45)
             Enemy.downleft = SP.rotateSprites(Enemy.right, -135)
 
+        self.waiting = False
         self.direction = "right"
         self.set_direction(self.direction)
         self.set_image()
@@ -239,13 +241,14 @@ class Boss_1(game.sprite.Sprite):
         #Enemy will stay stopped until stop_time == max_stop_time
         self.waited_time = 0
         self.moved_time = 0
-        self.speed = 5
+        self.speed = 7
+        self.active_distance = 15
 
         #Initial strength for car
         self.strength = 0
 
         #Set as 500 to give him a little more strength
-        self.health = 500;
+        self.health = 500
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
@@ -268,18 +271,24 @@ class Boss_1(game.sprite.Sprite):
         if(self.waited_time >= 2*Boss_1.max_wait_time):
             self.waited_time = 0
             self.speed = 5
+            self.waiting = False
+            self.set_direction(self.direction)
 
         #This means our boss has waited long enough to move
         if(self.waited_time >= Boss_1.max_wait_time and self.waited_time < 2*Boss_1.max_wait_time):
             #If our guy is gonna move, then he should be hurting the player
             self.strength = 3
+            self.waiting = False
             self.move(interval)
+            self.set_direction(self.direction)
             self.waited_time += 1
         #This if statement checks if the player is within 3 blocks of the boss
-        elif abs(self.x - player_coordinates[0]) <= 5 and abs(self.y - player_coordinates[1]) <= 5:
+        elif abs(self.x - player_coordinates[0]) <= self.active_distance and abs(self.y -
+                player_coordinates[1]) <= self.active_distance:
             self.waited_time += 1
             #Negative strength indicates that our enemy can be hurt
             self.strength = 0
+            self.waiting = True
             if self.x < player_coordinates[0] and abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "right"
                 self.set_direction("right")
@@ -362,13 +371,17 @@ class Boss_1(game.sprite.Sprite):
         self.set_image()
 
     def set_image(self):
+        if not self.waiting:
+            self.frame = 0
+
         self.image = self.IMAGES[self.frame]
         self.frameCalls += 1
 
         if self.frameCalls % Enemy.FRAME_SLOW == 0:
             self.frame += 1
 
-        if self.frame == len(self.IMAGES):
+        if (self.frame == 1 and not self.waiting) or (self.frame == len(
+                self.IMAGES) and self.waiting):
             self.frame = 0
 
     def get_health(self):
