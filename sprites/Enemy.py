@@ -197,24 +197,24 @@ class Boss_1(game.sprite.Sprite):
     # a speed, and a starting direction
     def __init__(self, location, screensize):
         game.sprite.Sprite.__init__(self)
-        Enemy.screen_width = screensize[0]
-        Enemy.screen_height = screensize[1]
+        Boss_1.screen_width = screensize[0]
+        Boss_1.screen_height = screensize[1]
         self.frame = 0
         self.frameCalls = 0
-        if Enemy.image is None:
+        if Boss_1.image is None:
             # make all of the appropriate transformations of the image based
             # on direction of travel
 
             sprites = SP.loadSheet(
                 "images/sprites/boss_1.png", 52, 26, [2, 1])
-            Enemy.right = sprites[0]
-            Enemy.left = SP.rotateSprites(Enemy.right, 180)
-            Enemy.up = SP.rotateSprites(Enemy.right, 90)
-            Enemy.down = SP.rotateSprites(Enemy.right, -90)
-            Enemy.upright = SP.rotateSprites(Enemy.right, 45)
-            Enemy.upleft = SP.rotateSprites(Enemy.right, 135)
-            Enemy.downright = SP.rotateSprites(Enemy.right, -45)
-            Enemy.downleft = SP.rotateSprites(Enemy.right, -135)
+            Boss_1.right = sprites[0]
+            Boss_1.left = SP.rotateSprites(Boss_1.right, 180)
+            Boss_1.up = SP.rotateSprites(Boss_1.right, 90)
+            Boss_1.down = SP.rotateSprites(Boss_1.right, -90)
+            Boss_1.upright = SP.rotateSprites(Boss_1.right, 45)
+            Boss_1.upleft = SP.rotateSprites(Boss_1.right, 135)
+            Boss_1.downright = SP.rotateSprites(Boss_1.right, -45)
+            Boss_1.downleft = SP.rotateSprites(Boss_1.right, -135)
 
         self.waiting = False
         self.direction = "right"
@@ -358,21 +358,21 @@ class Boss_1(game.sprite.Sprite):
     def set_direction(self, direction):
         #set the image based on the direction
         if direction == "right":
-            self.IMAGES = Enemy.right
+            self.IMAGES = Boss_1.right
         elif direction == "downright":
-            self.IMAGES = Enemy.downright
+            self.IMAGES = Boss_1.downright
         elif direction == "down":
-            self.IMAGES = Enemy.down
+            self.IMAGES = Boss_1.down
         elif direction == "downleft":
-            self.IMAGES = Enemy.downleft
+            self.IMAGES = Boss_1.downleft
         elif direction == "left":
-            self.IMAGES = Enemy.left
+            self.IMAGES = Boss_1.left
         elif direction == "upleft":
-            self.IMAGES = Enemy.upleft
+            self.IMAGES = Boss_1.upleft
         elif direction == "up":
-            self.IMAGES = Enemy.up
+            self.IMAGES = Boss_1.up
         elif direction == "upright":
-            self.IMAGES = Enemy.upright
+            self.IMAGES = Boss_1.upright
 
         self.set_image()
 
@@ -383,7 +383,7 @@ class Boss_1(game.sprite.Sprite):
         self.image = self.IMAGES[self.frame]
         self.frameCalls += 1
 
-        if self.frameCalls % Enemy.FRAME_SLOW == 0:
+        if self.frameCalls % Boss_1.FRAME_SLOW == 0:
             self.frame += 1
 
         if (self.frame == 1 and not self.waiting) or (self.frame == len(
