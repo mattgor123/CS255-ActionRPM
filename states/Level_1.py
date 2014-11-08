@@ -96,32 +96,21 @@ class Level_1(State.State):
         self.players.clear(Constants.SCREEN, self.background)
         self.enemies.clear(Constants.SCREEN, self.background)
         Level_1.tiles.clear(Constants.SCREEN, self.background)
-        # enemies.clear(Constants.SCREEN, background)
         self.labels.clear(Constants.SCREEN, self.background)
         self.score_label.clear(Constants.SCREEN, self.background)
         self.items.clear(Constants.SCREEN, self.background)
         self.hud.clear(Constants.SCREEN)
-        # walls.clear(Constants.SCREEN, background)
 
-        if self.health <= 0:
-            #labels.clear(Constants.SCREEN,background)
-            self.labels.draw(Constants.SCREEN)
-            display.update()
-            game_over(self, True)
-
-        else:
-            # enemies.draw(Constants.SCREEN)
-            #self.set_tiles()
-            Level_1.tiles.draw(Constants.SCREEN)
-            self.labels.draw(Constants.SCREEN)
-            self.score_label.draw(Constants.SCREEN)
-            self.key.draw(Constants.SCREEN)
-            self.players.draw(Constants.SCREEN)
-            self.enemies.draw(Constants.SCREEN)
-            self.items.draw(Constants.SCREEN)
-            self.hud.draw(Constants.SCREEN)
-            # walls.draw(Constants.SCREEN)
-            display.update()
+        Level_1.tiles.draw(Constants.SCREEN)
+        self.labels.draw(Constants.SCREEN)
+        self.score_label.draw(Constants.SCREEN)
+        self.key.draw(Constants.SCREEN)
+        self.players.draw(Constants.SCREEN)
+        self.enemies.draw(Constants.SCREEN)
+        self.items.draw(Constants.SCREEN)
+        self.hud.draw(Constants.SCREEN)
+        # walls.draw(Constants.SCREEN)
+        display.update()
 
     def set_tiles(self):
         for player in self.players.sprites():
@@ -139,16 +128,7 @@ class Level_1(State.State):
             elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
 
-    #Code to update all of the sprite groups and clear them from the screen
-    def update(self, time):
-        #1 point per 1/Constants.INTERVAL cycles
-        self.time += time
-
-        self.set_tiles()
-        #Update the player
-        #Initially we assume the player coordinates are 0,0
-        #Until it is updated
-        player_coordinates = [0, 0]
+    def player_collision(self):
         for player in self.players:
             player.update(Constants.INTERVAL)
             player_coordinates = player.get_coordinates()
@@ -266,8 +246,36 @@ class Level_1(State.State):
                     if type(r) is Enemy.Enemy:
                         r.stop()
                     #Only do one collision per cycle
-                    break
+                    return player_coordinates
 
+    #Code to update all of the sprite groups and clear them from the screen
+    def update(self, time):
+        #Check the health to see if we are done
+        if self.health <= 0:
+            #labels.clear(Constants.SCREEN,background)
+            self.labels.draw(Constants.SCREEN)
+            display.update()
+            game_over(self, True)
+
+        #1 point per 1/Constants.INTERVAL cycles
+        self.time += time
+
+        #Set the tiles for what we need right now
+        self.set_tiles()
+
+        #This code does the player collision and returns the player coordinates
+        player_coordinates = self.player_collision()
+
+        #Update our stuff
+        self.update_labels()
+        self.update_enemies(player_coordinates)
+        self.hud.update(self.players.sprites()[0].speed)
+
+    def update_enemies(self, player_coordinates):
+        for enemy in self.enemies:
+            enemy.update(Constants.INTERVAL, player_coordinates)
+
+    def update_labels(self):
         for label in self.labels.sprites():
             if label.name == "health":
                 label.update(self.health)
@@ -276,18 +284,13 @@ class Level_1(State.State):
                 if self.END_SCORE <= 0:
                     game_over(self, True)
                 label.update(self.END_SCORE)
+
         for s in self.score_label.sprites():
             delta = self.time - self.SCORE_TIME
             if delta > 1.2:
                 self.score_label.remove(s)
             else:
                 s.set_score_pos((126, 38 - (delta * 4)))
-
-        for enemy in self.enemies:
-            enemy.update(Constants.INTERVAL, player_coordinates)
-
-        self.hud.update(self.players.sprites()[0].speed)
-
 
 # Function to determine if the current score was a high score
 def is_new_high_score(self):
