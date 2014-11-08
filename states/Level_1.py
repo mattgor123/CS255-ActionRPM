@@ -19,10 +19,8 @@ import Level_2
 
 #This is the state for playing the game
 class Level_1(State.State):
-    #These are level stats that are specific to that level
+    #This needs to be moved into the player
     health = Constants.PLAYER_STARTING_HEALTH
-    tiles = None
-    END_SCORE = 0
 
     #Code to initialize a new game instance
     def __init__(self):
@@ -31,21 +29,19 @@ class Level_1(State.State):
         #Set score variables
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
+
         #Flags whether or not we already have the ezpass
         self.is_beatable = False
+
         #Create global map for players to use
         self.map = Map.Map("map.txt", 3)
-        #Create sprite groups to hold players and enemies
-        self.players = pygame.sprite.Group()
-        self.enemies = pygame.sprite.Group()
+
         #Holds current map tiles to be rendered
         Level_1.tiles = pygame.sprite.Group()
 
         #Sprite groups for miscellaneous
         self.key = pygame.sprite.Group()
         self.score_label = pygame.sprite.Group()
-        self.items = pygame.sprite.Group()
-        speedometer = pygame.sprite.Group()
 
         #Background surface
         self.background = pygame.Surface(Constants.SCREEN.get_size())
@@ -53,29 +49,47 @@ class Level_1(State.State):
         #Fill screen with black
         Constants.SCREEN.fill((0, 0, 0))
 
+        #Initialize our sprite groups
+        self.init_player()
+        self.init_labels()
+        self.init_enemies()
+        self.init_items()
+
+        #Initialize our HUD
+        self.hud = HUD.HUD()
+
+        self.time = 0.00
+
+    def init_player(self):
+        #Create sprite groups to hold players and enemies
+        self.players = pygame.sprite.Group()
+        player1 = Player.Player([8, 6], [
+            Constants.WIDTH, Constants.HEIGHT])
+        self.players.add(player1)
+
+    def init_items(self):
+        self.items = pygame.sprite.Group()
+        #Create miscellaneous shit
+        self.items.add(EZPass.EZPass("ezpass", 38, 19))
+
+    def init_labels(self):
         #Make labels
         self.labels = pygame.sprite.Group()
         self.labels.add(Label.Label("health", "Health: 100%", (10, 10)))
         self.labels.add(Label.Label("score", "Score: ", (10, 34)))
 
-        #Create enemies and add them to our sprite group
+    def init_enemies(self):
+        #Create enemy sprite group
+        self.enemies = pygame.sprite.Group()
+        #Put in enemies
+        #This enemy is by the EZpass exit
         self.enemies.add(Enemy.Enemy([39, 3.1], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
             ["d4", "r2.9", "u4", "l2.9"]))
+        #This enemy is driving around the bottom of the screen
         self.enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
-
-        #Create miscellaneous shit
-        self.items.add(EZPass.EZPass("ezpass", 38, 19))
-
-        player1 = Player.Player([8, 6], [
-            Constants.WIDTH, Constants.HEIGHT])
-        self.players.add(player1)
-        self.hud = HUD.HUD()
-
-        self.time = 0.00
-
     #Function to draw the sprite groups
     def draw(self):
         #Clear the sprite groups from the screen
