@@ -60,6 +60,7 @@ def main_loop():
 def init():
     # Initialize Screen
     pygame.init()
+    pygame.display.set_caption("ActionRPM")
     # Create the high scores file
     try:
         f = open(Constants.HIGH_SCORE_FILE, 'rb')

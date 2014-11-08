@@ -1,8 +1,7 @@
-__author__ = 'tuvialerea'
 import pygame as PG
 from states import Constants
-import sprites.Speedometer as Speedometer
-
+import Speedometer
+import Radio
 
 class HUD():
 
@@ -11,8 +10,8 @@ class HUD():
         self.rect = self.image.get_rect()
         self.rect.bottomleft = (0, Constants.Constants.HEIGHT)
         self.image.fill((0, 0, 0,))
-        self.black = self.image.copy()
         self.speedometer = Speedometer.Speedometer()
+        self.radio = Radio.Radio()
 
     def draw(self, screen):
         self.image.blit(self.speedometer.image, self.speedometer.rect)
