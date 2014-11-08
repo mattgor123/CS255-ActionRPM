@@ -10,14 +10,14 @@ class Radio(PG.sprite.Sprite):
     Image = None
     song_locations = None
     song_names = None
-    num_songs = 0
+    max_index = 0
+
     def __init__(self):
         PG.init()
         PG.sprite.Sprite.__init__(self)
         #Initialize the array of songs
         if Radio.song_locations is None:
             Radio.song_locations = []
-            Radio.song_locations.append("audio/music/wakemeupavicii.mid")
             Radio.song_locations.append("audio/music/funkytown.mid")
             Radio.song_locations.append("audio/music/blue.mid")
             Radio.song_locations.append("audio/music/rebelyell.mid")
@@ -32,11 +32,17 @@ class Radio(PG.sprite.Sprite):
             Radio.song_locations.append("audio/music/hungrylikeawolf.mid")
             Radio.song_locations.append("audio/music/sandstorm.mid")
             Radio.song_locations.append("audio/music/takeonme.mid")
-            Radio.num_songs = len(Radio.song_locations)
+            Radio.max_index = len(Radio.song_locations) - 1
 
         PG.mixer.music.load(Radio.song_locations[0])
         PG.mixer.music.play()
 
 
+    def __del__(self):
+        PG.mixer.music.stop()
+        print "deleted"
 
+    def __get__(self, instance, owner):
+        if owner is None:
+            print "No owner"
 

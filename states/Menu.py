@@ -19,6 +19,9 @@ class Menu(State.State):
         self.text_font = pygame.font.Font(None, Constants.WIDTH / 30)
         self.selected = 0
         self.moved = True
+        #Quite a hackish way to stop the music, but whatever. Could be worse.
+        if pygame.mixer is not None:
+            pygame.mixer.music.stop()
         if Menu.image is None:
             Menu.image = pygame.image.load("images/action_rpm_title_car.png")
         self.image = Menu.image
