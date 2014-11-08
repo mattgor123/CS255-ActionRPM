@@ -1,104 +1,97 @@
 import pygame
 import pygame.display as display
-import random
 import pickle
 import states.State as State
 import sprites.Label as Label
 import sprites.Player as Player
 import sprites.Enemy as Enemy
 import sprites.HUD as HUD
-import sprites.Speedometer as Speedometer
-#import map.Map as Map
-import Level_2
-import NewHigh
 import GameEnded
 import Menu
 import sprites.EZPass as EZPass
-import sprites.TollBooth as TollBooth
 from Constants import Constants
 from map import Map
+
+#This shouldnt have to be imported once we
+#get the level changer
+import Level_2
 
 
 #This is the state for playing the game
 class Level_1(State.State):
+    #These are level stats that are specific to that level
     health = Constants.PLAYER_STARTING_HEALTH
-    time = 0
     tiles = None
-    START_SCORE = None
-    SCORE_TIME = 0
     END_SCORE = 0
 
     #Code to initialize a new game instance
     def __init__(self):
         super(Level_1, self).__init__()
         #making global sprite groups so we can call them from other methods
-        global players, labels, background, map, key, score_label,\
-            enemies, items, hud
         #Set score variables
         self.START_SCORE = 1000
         self.SCORE_TIME = 0
         #Flags whether or not we already have the ezpass
         self.is_beatable = False
         #Create global map for players to use
-        global map
-        map = Map.Map("map.txt", 3)
+        self.map = Map.Map("map.txt", 3)
         #Create sprite groups to hold players and enemies
-        players = pygame.sprite.Group()
-        enemies = pygame.sprite.Group()
+        self.players = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
         #Holds current map tiles to be rendered
         Level_1.tiles = pygame.sprite.Group()
 
         #Sprite groups for miscellaneous
-        key = pygame.sprite.Group()
-        score_label = pygame.sprite.Group()
-        items = pygame.sprite.Group()
+        self.key = pygame.sprite.Group()
+        self.score_label = pygame.sprite.Group()
+        self.items = pygame.sprite.Group()
         speedometer = pygame.sprite.Group()
 
         #Background surface
-        background = pygame.Surface(Constants.SCREEN.get_size())
+        self.background = pygame.Surface(Constants.SCREEN.get_size())
 
         #Fill screen with black
         Constants.SCREEN.fill((0, 0, 0))
 
         #Make labels
-        labels = pygame.sprite.Group()
-        labels.add(Label.Label("health", "Health: 100%", (10, 10)))
-        labels.add(Label.Label("score", "Score: ", (10, 34)))
+        self.labels = pygame.sprite.Group()
+        self.labels.add(Label.Label("health", "Health: 100%", (10, 10)))
+        self.labels.add(Label.Label("score", "Score: ", (10, 34)))
 
         #Create enemies and add them to our sprite group
-        enemies.add(Enemy.Enemy([39, 3.1], [
+        self.enemies.add(Enemy.Enemy([39, 3.1], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
             ["d4", "r2.9", "u4", "l2.9"]))
-        enemies.add(Enemy.Enemy([40.4, 17.5],
+        self.enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
 
         #Create miscellaneous shit
-        items.add(EZPass.EZPass("ezpass", 38, 19))
+        self.items.add(EZPass.EZPass("ezpass", 38, 19))
 
         player1 = Player.Player([8, 6], [
             Constants.WIDTH, Constants.HEIGHT])
-        players.add(player1)
-        hud = HUD.HUD()
+        self.players.add(player1)
+        self.hud = HUD.HUD()
 
         self.time = 0.00
 
     #Function to draw the sprite groups
     def draw(self):
         #Clear the sprite groups from the screen
-        players.clear(Constants.SCREEN, background)
-        enemies.clear(Constants.SCREEN, background)
-        Level_1.tiles.clear(Constants.SCREEN, background)
+        self.players.clear(Constants.SCREEN, self.background)
+        self.enemies.clear(Constants.SCREEN, self.background)
+        Level_1.tiles.clear(Constants.SCREEN, self.background)
         # enemies.clear(Constants.SCREEN, background)
-        labels.clear(Constants.SCREEN, background)
-        score_label.clear(Constants.SCREEN, background)
-        items.clear(Constants.SCREEN, background)
-        hud.clear(Constants.SCREEN)
+        self.labels.clear(Constants.SCREEN, self.background)
+        self.score_label.clear(Constants.SCREEN, self.background)
+        self.items.clear(Constants.SCREEN, self.background)
+        self.hud.clear(Constants.SCREEN)
         # walls.clear(Constants.SCREEN, background)
 
         if self.health <= 0:
             #labels.clear(Constants.SCREEN,background)
-            labels.draw(Constants.SCREEN)
+            self.labels.draw(Constants.SCREEN)
             display.update()
             game_over(self, True)
 
@@ -106,24 +99,24 @@ class Level_1(State.State):
             # enemies.draw(Constants.SCREEN)
             #self.set_tiles()
             Level_1.tiles.draw(Constants.SCREEN)
-            labels.draw(Constants.SCREEN)
-            score_label.draw(Constants.SCREEN)
-            key.draw(Constants.SCREEN)
-            players.draw(Constants.SCREEN)
-            enemies.draw(Constants.SCREEN)
-            items.draw(Constants.SCREEN)
-            hud.draw(Constants.SCREEN)
+            self.labels.draw(Constants.SCREEN)
+            self.score_label.draw(Constants.SCREEN)
+            self.key.draw(Constants.SCREEN)
+            self.players.draw(Constants.SCREEN)
+            self.enemies.draw(Constants.SCREEN)
+            self.items.draw(Constants.SCREEN)
+            self.hud.draw(Constants.SCREEN)
             # walls.draw(Constants.SCREEN)
             display.update()
 
     def set_tiles(self):
-        for player in players.sprites():
-            Level_1.tiles = map.render(player.x, player.y)
-            player.rect.topleft = map.get_topleft(player.x, player.y)
-        for enemy in enemies.sprites():
-            enemy.rect.topleft = map.get_topleft(enemy.x, enemy.y)
-        for item in items.sprites():
-            item.rect.topleft = map.get_topleft(item.x, item.y)
+        for player in self.players.sprites():
+            Level_1.tiles = self.map.render(player.x, player.y)
+            player.rect.topleft = self.map.get_topleft(player.x, player.y)
+        for enemy in self.enemies.sprites():
+            enemy.rect.topleft = self.map.get_topleft(enemy.x, enemy.y)
+        for item in self.items.sprites():
+            item.rect.topleft = self.map.get_topleft(item.x, item.y)
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
@@ -142,7 +135,7 @@ class Level_1(State.State):
         #Initially we assume the player coordinates are 0,0
         #Until it is updated
         player_coordinates = [0, 0]
-        for player in players:
+        for player in self.players:
             player.update(Constants.INTERVAL)
             player_coordinates = player.get_coordinates()
             #Check if player has EZPass, if so, open the TollBooth
@@ -154,7 +147,7 @@ class Level_1(State.State):
                     # But we have more pressing things to do now.
                     self.START_SCORE += 50
                     self.is_beatable = True
-                    for openable in map.openables:
+                    for openable in self.map.openables:
                         if openable.__str__() == "t":
                             openable.open()
 
@@ -164,13 +157,13 @@ class Level_1(State.State):
 
             #Iterate through items and check if they are colliding
             #With the player
-            for c in items.sprites():
+            for c in self.items.sprites():
                 if c.rect.colliderect(player.rect):
                     player.add_to_inventory(c)
                     c.collect()
 
-            collidables_on_screen = map.get_tiles(player.x, player.y)
-            for enemy in enemies:
+            collidables_on_screen = self.map.get_tiles(player.x, player.y)
+            for enemy in self.enemies:
                 collidables_on_screen.append(enemy)
 
             #Here goes collision
@@ -254,14 +247,14 @@ class Level_1(State.State):
                     #Do the damage as prescribed by the collided box
                     player.damage += damage_to_do
                     #Play that terrible crash sound
-                    player.crash.play()
+                    #player.crash.play()
                     #If we hit an enemy, make the enemy stop
                     if type(r) is Enemy.Enemy:
                         r.stop()
                     #Only do one collision per cycle
                     break
 
-        for label in labels.sprites():
+        for label in self.labels.sprites():
             if label.name == "health":
                 label.update(self.health)
             elif label.name == "score":
@@ -269,17 +262,17 @@ class Level_1(State.State):
                 if self.END_SCORE <= 0:
                     game_over(self, True)
                 label.update(self.END_SCORE)
-        for s in score_label.sprites():
+        for s in self.score_label.sprites():
             delta = self.time - self.SCORE_TIME
             if delta > 1.2:
-                score_label.remove(s)
+                self.score_label.remove(s)
             else:
                 s.set_score_pos((126, 38 - (delta * 4)))
 
-        for enemy in enemies:
+        for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
 
-        hud.update(players.sprites()[0].speed)
+        self.hud.update(self.players.sprites()[0].speed)
 
 
 # Function to determine if the current score was a high score
@@ -308,4 +301,3 @@ def game_over(self, died):
         #Constants.STATE = Level_2.Level_2()
         Constants.Levels[1] = Level_2.Level_2()
         Constants.STATE = Constants.Levels[1]
-        Level_1.map = None
