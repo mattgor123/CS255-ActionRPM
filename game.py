@@ -52,6 +52,8 @@ def main_loop():
             elif eve.type == pygame.KEYDOWN and eve.key == pygame.K_m and \
                     eve.mod & (pygame.KMOD_CTRL or pygame.KMOD_LCTRL):
                 Constants.STATE = Menu.Menu()
+            #elif eve.type == pygame.MOUSEBUTTONDOWN:
+                #print(pygame.mouse.get_pos())
             else:
                 Constants.STATE.keyEvent(eve)
 

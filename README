@@ -9,6 +9,12 @@ To run our game, go into the directory actionrpm/ and run the command "python
 game.py"
 
 Current Assignment Notes
+11/9
+
+-Mad refactoring
+-Implemented a radio. Features of the radio: Left plays previous song, Right plays next song, Numpad 0 plays a random song, Up increases volume, Down decreases volume, O (the letter) turns the music off/on. NOTE: With midis, unfortunately, you can't pause using pygame.mixer, so it stops the playback and then if you hit O again, it will play the next song (can change to current song if you think that's better)
+
+Previous Assignment Notes
 11/2
 
 Problem 1: Level Two (60%)
@@ -34,7 +40,6 @@ speedometer is black. Additionaly, the controls for moving the player have been
 moved to a standard awsd as well as a break implemented with the space bar. 
 
 
-Previous Assignment Notes
 10/26
 
 Problem 1: Level One (70%)

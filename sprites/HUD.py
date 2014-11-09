@@ -11,11 +11,12 @@ class HUD():
         self.rect.bottomleft = (0, Constants.Constants.HEIGHT)
         self.image.fill((0, 0, 0,))
         self.speedometer = Speedometer.Speedometer()
-        self.radio = PG.sprite.Group()
-        self.radio.add(Radio.Radio())
+        self.radio = Radio.Radio()
 
     def draw(self, screen):
         self.image.blit(self.speedometer.image, self.speedometer.rect)
+        self.image.blit(self.radio.image, self.radio.rect)
+        self.image.blit(self.radio.label.image, self.radio.text_rect)
         screen.blit(self.image, self.rect)
 
     def clear(self, screen):

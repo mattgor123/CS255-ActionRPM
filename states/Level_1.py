@@ -40,7 +40,6 @@ class Level_1(State.State):
         Level_1.tiles = pygame.sprite.Group()
 
         #Sprite groups for miscellaneous
-        self.key = pygame.sprite.Group()
         self.score_label = pygame.sprite.Group()
 
         #Background surface
@@ -56,6 +55,7 @@ class Level_1(State.State):
         self.init_items()
 
         #Initialize our HUD
+        #TODO : Move this to the player; should not be on the level
         self.hud = HUD.HUD()
 
         self.time = 0.00
@@ -104,7 +104,6 @@ class Level_1(State.State):
         Level_1.tiles.draw(Constants.SCREEN)
         self.labels.draw(Constants.SCREEN)
         self.score_label.draw(Constants.SCREEN)
-        self.key.draw(Constants.SCREEN)
         self.players.draw(Constants.SCREEN)
         self.enemies.draw(Constants.SCREEN)
         self.items.draw(Constants.SCREEN)
@@ -127,6 +126,16 @@ class Level_1(State.State):
                 game_over(self, False)
             elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
+            #TODO : Move radio logic out of Levels
+            elif event.key == pygame.K_LEFT:
+                self.hud.radio.decrement_current_index_and_play()
+            elif event.key == pygame.K_RIGHT:
+                self.hud.radio.increment_current_index_and_play()
+            elif event.key == pygame.K_KP0:
+                self.hud.radio.play_random_song()
+            elif event.key == pygame.K_o:
+                self.hud.radio.toggle_radio()
+
 
     def player_collision(self):
         for player in self.players:
@@ -276,6 +285,7 @@ class Level_1(State.State):
             enemy.update(Constants.INTERVAL, player_coordinates)
 
     def update_labels(self):
+        #TODO : Move Health Label to the HUD (or make it a bar, either way)
         for label in self.labels.sprites():
             if label.name == "health":
                 label.update(self.health)

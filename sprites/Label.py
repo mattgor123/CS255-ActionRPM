@@ -39,6 +39,9 @@ class Label(game.sprite.Sprite):
                                           color)
         elif self.name == "sl":
             self.image = self.font.render(str(param), 1, (0, 255, 0))
+        elif self.name == "nowplaying":
+            self.text = param
+            self.image = self.font.render(self.text, 1, (0, 0, 0))
         else:
             color = (255, 255, 255)
             self.image = self.font.render(self.text + "%3.0f" % param, 1,

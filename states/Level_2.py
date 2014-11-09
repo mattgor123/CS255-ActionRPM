@@ -138,6 +138,16 @@ class Level_2(State.State):
                 game_over(self, False)
             elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
+            #TODO : Move radio logic out of Levels
+            elif event.key == pygame.K_LEFT:
+                self.hud.radio.decrement_current_index_and_play()
+            elif event.key == pygame.K_RIGHT:
+                self.hud.radio.increment_current_index_and_play()
+            elif event.key == pygame.K_KP0:
+                self.hud.radio.play_random_song()
+            elif event.key == pygame.K_o:
+                self.hud.radio.toggle_radio()
+
 
     #Code to update all of the sprite groups and clear them from the screen
     def update(self, time):
@@ -264,7 +274,7 @@ class Level_2(State.State):
                     #Do the damage as prescribed by the collided box
                     player.damage += damage_to_do
                     #Play that terrible crash sound
-                    player.crash.play()
+                    #player.crash.play()
                     #If we hit an enemy, make the enemy stop
                     if type(r) is Enemy.Enemy:
                         r.stop()

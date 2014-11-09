@@ -15,11 +15,11 @@ class Speedometer(PG.sprite.Sprite):
         PG.sprite.Sprite.__init__(self)
         if Speedometer.IMAGE is None:
             Speedometer.IMAGE = \
-                PI.load("images/sprites/speedometer/speedometer3.png")\
+                PI.load("images/sprites/hud/speedometer.png")\
                        .convert()
             Speedometer.IMAGE.set_colorkey((0, 0, 0))
             Speedometer.NEEDLE = PI.load(
-                "images/sprites/speedometer/needle2.png").convert_alpha()
+                "images/sprites/hud/needle.png").convert_alpha()
 
         self.image = Speedometer.IMAGE
         self.rect = self.image.get_rect()
@@ -27,8 +27,7 @@ class Speedometer(PG.sprite.Sprite):
         PD.filled_circle(Speedometer.IMAGE, self.image.get_width() / 2,
                          self.image.get_height() / 2, 8, Speedometer.RED)
         self.speed = 0
-        self.needle = PI.load(
-            "images/sprites/speedometer/needle2.png").convert_alpha()
+        self.needle = Speedometer.NEEDLE
         self.needle.get_rect(center=self.rect.center)
         Speedometer.NEEDLE.get_rect().center = self.rect.center
 
