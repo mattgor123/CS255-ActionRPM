@@ -1,23 +1,25 @@
 import pygame
 import sprites.Enemy as Enemy
 from states.Constants import Constants
+import map.Map as Map
 
 
 # Must overwrite self.set_tiles()
 # Must overwrite self.game_over()
-class Level():
+class Level(object):
 
     def __init__(self, player):
         self.map = None
         self.enemies = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
         self.player = player
+        self.time = 0.00
+        self.is_beatable = False
 
     def update(self, interval):
         #Check the health to see if we are done
         if self.player.health <= 0:
             #labels.clear(Constants.SCREEN,background)
-            self.labels.draw(Constants.SCREEN)
             pygame.display.update()
             self.game_over(True)
 
@@ -31,27 +33,8 @@ class Level():
         player_coordinates = self.player_collision()
 
         #Update our stuff
-        self.update_labels()
         for enemy in self.enemies:
             enemy.update(interval, player_coordinates)
-
-    def update_labels(self):
-        #TODO : Move Health Label to the HUD (or make it a bar, either way)
-        for label in self.labels.sprites():
-            if label.name == "health":
-                label.update(self.health)
-            elif label.name == "score":
-                self.END_SCORE = self.START_SCORE - (self.time * 10)
-                if self.END_SCORE <= 0:
-                    self.game_over(True)
-                label.update(self.END_SCORE)
-
-        for s in self.score_label.sprites():
-            delta = self.time - self.SCORE_TIME
-            if delta > 1.2:
-                self.score_label.remove(s)
-            else:
-                s.set_score_pos((126, 38 - (delta * 4)))
 
     # draws the enemies and items
     # does not need a display update since Play calls that
@@ -71,7 +54,7 @@ class Level():
                     #  on the player, so when we collect collectables
                     #  or collide, we can easily update the score.
                     # But we have more pressing things to do now.
-                    self.START_SCORE += 50
+                    # self.START_SCORE += 50
                     self.is_beatable = True
                     for openable in self.map.openables:
                         if openable.__str__() == "t":
@@ -183,3 +166,4 @@ class Level():
 
     def game_over(self, died):
         print "Super Level Game Over"
+

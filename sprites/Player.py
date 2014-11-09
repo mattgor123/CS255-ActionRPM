@@ -412,3 +412,7 @@ class Player(game.sprite.Sprite):
 
     def get_coordinates(self):
         return [self.x, self.y]
+
+    def set_coordinates(self, coors):
+        self.x = coors[0]
+        self.y = coors[1]
