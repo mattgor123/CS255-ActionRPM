@@ -34,7 +34,7 @@ class Level_1(State.State):
         self.is_beatable = False
 
         #Create global map for players to use
-        self.map = Map.Map("map.txt", 3)
+        self.map = Map.Map("level1.txt", 3)
 
         #Holds current map tiles to be rendered
         Level_1.tiles = pygame.sprite.Group()

@@ -18,7 +18,7 @@ class Radio(PG.sprite.Sprite):
 
     def __init__(self):
         PG.init()
-        PG.mixer.init(44100, -16, 2, 2048)
+        PG.midi.init()
         PG.sprite.Sprite.__init__(self)
         if Radio.Image is None:
             Radio.Image = PG.image.load(
@@ -155,12 +155,12 @@ class Radio(PG.sprite.Sprite):
             self.display_volume_timer = 0
             Radio.volume = min(1,Radio.volume+.01)
             PG.mixer.music.set_volume(Radio.volume)
-            Radio.label.update("Volume: " + str(Radio.volume * 100))
+            Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
         elif keys_pressed[PG.K_DOWN]:
             self.display_volume_timer = 0
             Radio.volume = max(0,Radio.volume-.01)
             PG.mixer.music.set_volume(Radio.volume)
-            Radio.label.update("Volume: " + str(Radio.volume * 100))
+            Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
         if self.display_volume_timer >= 100:
             Radio.label.update(Radio.song_names[Radio.current_index])
             self.display_volume_timer = 0
