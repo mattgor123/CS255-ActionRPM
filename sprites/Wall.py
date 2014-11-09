@@ -213,7 +213,7 @@ class Wall(Tile.Tile):
         Wall.building_1_10_img = tile_table[6][0]
         Wall.building_1_11_img = tile_table[6][1]
         Wall.building_1_12_img = tile_table[6][2]
-        Wall.building_1_13_img = tile_table[6][3]
+        Wall.building_1_13_img = pygame.image.load("images/sprites/buildings/building_1.png").convert_alpha()
         Wall.building_1_c0_img = tile_table[4][0]
         Wall.building_1_c1_img = tile_table[4][1]
         Wall.building_1_c2_img = tile_table[4][2]

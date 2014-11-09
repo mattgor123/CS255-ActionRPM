@@ -70,7 +70,7 @@ class Level_1(State.State):
     def init_items(self):
         self.items = pygame.sprite.Group()
         #Create miscellaneous shit
-        self.items.add(EZPass.EZPass("ezpass", 38, 19))
+        self.items.add(EZPass.EZPass("ezpass", 40, 19))
 
     def init_labels(self):
         #Make labels
@@ -83,9 +83,9 @@ class Level_1(State.State):
         self.enemies = pygame.sprite.Group()
         #Put in enemies
         #This enemy is by the EZpass exit
-        self.enemies.add(Enemy.Enemy([39, 3.1], [
+        self.enemies.add(Enemy.Enemy([39.2, 3.4], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
-            ["d4", "r2.9", "u4", "l2.9"]))
+            ["d3", "r1.8", "u3", "l1.8"]))
         #This enemy is driving around the bottom of the screen
         self.enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
