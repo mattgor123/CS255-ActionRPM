@@ -12,6 +12,7 @@ Current Assignment Notes
 11/9
 
 -Mad refactoring
+-Moving stuff around; the player now holds the score, health, and HUD so it doesn't need to be reinitialized. On top of that, we're working on a level changer so that we don't need to keep changing stuff.
 -Implemented a radio. Features of the radio: Left plays previous song, Right plays next song, Numpad 0 plays a random song, Up increases volume, Down decreases volume, O (the letter) turns the music off/on. NOTE: With midis, unfortunately, you can't pause using pygame.mixer, so it stops the playback and then if you hit O again, it will play the next song (can change to current song if you think that's better)
 
 Previous Assignment Notes

@@ -1,6 +1,4 @@
 import pygame as PG
-import pygame.image as PI
-import pygame.gfxdraw as PD
 import pygame.midi
 import random
 import Label
@@ -20,6 +18,7 @@ class Radio(PG.sprite.Sprite):
 
     def __init__(self):
         PG.init()
+        PG.mixer.init(44100, -16, 2, 2048)
         PG.sprite.Sprite.__init__(self)
         if Radio.Image is None:
             Radio.Image = PG.image.load(
