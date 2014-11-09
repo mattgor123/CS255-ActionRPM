@@ -23,6 +23,6 @@ class HUD():
         self.image.fill((0, 0, 0))
         screen.blit(self.image, self.rect)
 
-    def update(self, speed):
-        self.speedometer.update(speed)
+    def update(self, player):
+        self.speedometer.update(player.speed)
         self.radio.update()
