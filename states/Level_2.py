@@ -67,9 +67,9 @@ class Level_2(State.State):
         labels.add(Label.Label("boss_health", "Enemy Health: ", (550, 10)))
 
         #Create enemies and add them to our sprite group
-        enemies.add(Enemy.Enemy([39, 3.1], [
+        enemies.add(Enemy.Enemy([39.2, 4.4], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
-            ["d4", "r2.9", "u4", "l2.9"]))
+            ["d3", "r1.8", "u3", "l1.8"]))
         enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
