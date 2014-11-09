@@ -1,6 +1,5 @@
 import pygame
 import pygame.display as display
-import Play
 import State
 import pickle
 import string

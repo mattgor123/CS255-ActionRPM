@@ -1,5 +1,4 @@
 import State
-import Play
 import Menu
 import pygame
 import pygame.display as display
