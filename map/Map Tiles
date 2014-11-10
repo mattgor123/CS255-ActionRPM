@@ -1,0 +1,53 @@
+STREET STUFF
+empty street = s
+horizontal street = h
+vertical street = v
+top left street = o
+top right street = p
+bottom left street = l
+bottom right street = ;
+
+WALL STUFF
+horizontal bottom = a
+horizontal top = q
+vertical left = z
+vertical right = x
+empty = d
+topleft black = e
+topright black = r
+bottomleft black = u
+bottomright black = i
+tl connector = :
+tr connector = "
+bl connector = >
+br connector = ? 
+tollbooth = t
+
+BUILDINGS STUFF
+sm_building_1 = !
+sm_building_2 = @
+sm_building_3 = #
+horiz_building_1l = b
+horiz_building_1r = n
+vert_building_1t = -
+vert_building_1b = +
+lrg_building_1_tl = Q
+lrg_building_1_tr = W
+lrg_building_1_bl = A
+lrg_building_1_br = S
+lrg_building_2_tl = E
+lrg_building_2_tr = R
+lrg_building_2_bl = D
+lrg_building_2_br = F
+lrg_building_3_tl = T
+lrg_building_3_tr = Y
+lrg_building_3_bl = G
+lrg_building_3_br = H
+lrg_building_4_tl = U
+lrg_building_4_tr = I
+lrg_building_4_bl = J
+lrg_building_4_br = K
+lrg_building_5_tl = (
+lrg_building_5_tr = )
+lrg_building_5_bl = O
+lrg_building_5_br = P

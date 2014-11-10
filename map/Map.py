@@ -82,7 +82,7 @@ class Map():
             to_return = sprites.Street.Street(map_x, map_y, "l")
         elif char == ';':
             to_return = sprites.Street.Street(map_x, map_y, ";")
-        #Walls
+        #Sidewalks
         elif char == 'a':
             to_return = sprites.Wall.Wall(map_x, map_y, "a")
         elif char == 'q':
@@ -113,6 +113,61 @@ class Map():
         elif char == 't':
             to_return = sprites.TollBooth.TollBooth(map_x, map_y)
             self.openables.append(to_return)
+        #Buildings
+        elif char == '!':
+            to_return = sprites.Wall.Wall(map_x, map_y, "!")
+        elif char == '@':
+            to_return = sprites.Wall.Wall(map_x, map_y, "@")
+        elif char == '#':
+            to_return = sprites.Wall.Wall(map_x, map_y, "#")
+        elif char == 'b':
+            to_return = sprites.Wall.Wall(map_x, map_y, "b")
+        elif char == 'n':
+            to_return = sprites.Wall.Wall(map_x, map_y, "n")
+        elif char == '-':
+            to_return = sprites.Wall.Wall(map_x, map_y, '-')
+        elif char == '+':
+            to_return = sprites.Wall.Wall(map_x, map_y, '+')
+        elif char == 'Q':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'Q')
+        elif char == 'W':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'W')
+        elif char == 'A':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'A')
+        elif char == 'S':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'S')
+        elif char == 'E':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'E')
+        elif char == 'R':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'R')
+        elif char == 'D':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'D')
+        elif char == 'F':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'F')
+        elif char == 'T':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'T')
+        elif char == 'Y':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'Y')
+        elif char == 'G':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'G')
+        elif char == 'H':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'H')
+        elif char == 'U':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'U')
+        elif char == 'I':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'I')
+        elif char == 'J':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'J')
+        elif char == 'K':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'K')
+        elif char == '(':
+            to_return = sprites.Wall.Wall(map_x, map_y, '(')
+        elif char == ')':
+            to_return = sprites.Wall.Wall(map_x, map_y, ')')
+        elif char == 'O':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'O')
+        elif char == 'P':
+            to_return = sprites.Wall.Wall(map_x, map_y, 'P')
         #Default wall
         else:
             to_return = sprites.Wall.Wall(map_x, map_y, "w")
