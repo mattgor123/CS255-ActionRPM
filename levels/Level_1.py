@@ -34,9 +34,9 @@ class Level_1(Level):
         super(Level_1, self).update(interval)
 
     def draw(self, background):
-        super(Level_1, self).draw(background)
         self.tiles.clear(Constants.SCREEN, background)
         self.tiles.draw(Constants.SCREEN)
+        super(Level_1, self).draw(background)
 
     def set_tiles(self):
         self.tiles = self.map.render(self.player.x, self.player.y)

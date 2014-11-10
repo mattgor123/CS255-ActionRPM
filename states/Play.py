@@ -3,6 +3,7 @@ from sprites import Player
 from sprites import HUD
 from sprites import Label
 from Constants import Constants
+import Menu
 import pygame
 import levels.Level_1 as Level_1
 
@@ -60,3 +61,10 @@ class Play(State.State):
             raise Exception
         self.player.set_coordinates(self.levels[self.current_level].PLAYER_START)
         self.levels[self.current_level].init_map()
+
+    def keyEvent(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                self.game_over(False)
+            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
+                Constants.STATE = Menu.Menu()
