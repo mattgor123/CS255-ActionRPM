@@ -4,6 +4,7 @@ import sprites.EZPass as EZPass
 import sprites.Enemy as Enemy
 from states.Constants import Constants
 import map.Map as Map
+import states.GameEnded as GameEnded
 
 
 class Level_1(Level):
@@ -49,3 +50,10 @@ class Level_1(Level):
 
     def init_map(self):
         self.map = Map.Map("level1.txt", 3)
+        self.set_tiles()
+
+    def game_over(self, died):
+        if died:
+            Constants.STATE = GameEnded.GameEnded("GAME OVER")
+        else:
+            Constants.STATE.set_level(1)

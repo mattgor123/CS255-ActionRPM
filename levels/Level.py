@@ -60,8 +60,6 @@ class Level(object):
                         if openable.__str__() == "t":
                             openable.open()
 
-            if self.player.has_beaten_level(0):
-                    self.game_over(False)
             self.health = self.player.calculate_health()
 
             #Iterate through items and check if they are colliding

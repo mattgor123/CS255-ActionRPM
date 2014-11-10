@@ -6,6 +6,7 @@ from Constants import Constants
 import Menu
 import pygame
 import levels.Level_1 as Level_1
+import levels.Level_2 as Level_2
 
 
 class Play(State.State):
@@ -23,7 +24,7 @@ class Play(State.State):
 
     def init_levels(self):
         self.add_level(Level_1.Level_1(self.player))
-        # self.add_level(Level_2.Level_2())
+        self.add_level(Level_2.Level_2(self.player))
 
     def init_labels(self):
         #Make labels
@@ -68,3 +69,11 @@ class Play(State.State):
                 self.game_over(False)
             elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
+            elif event.key == pygame.K_LEFT:
+                self.hud.radio.decrement_current_index_and_play()
+            elif event.key == pygame.K_RIGHT:
+                self.hud.radio.increment_current_index_and_play()
+            elif event.key == pygame.K_KP0:
+                self.hud.radio.play_random_song()
+            elif event.key == pygame.K_o:
+                self.hud.radio.toggle_radio()
