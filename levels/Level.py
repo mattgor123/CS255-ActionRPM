@@ -49,7 +49,7 @@ class Level(object):
                     #  on the player, so when we collect collectables
                     #  or collide, we can easily update the score.
                     # But we have more pressing things to do now.
-                    # self.START_SCORE += 50
+                    self.player.score += 50
                     self.is_beatable = True
                     for openable in self.map.openables:
                         if openable.__str__() == "t":

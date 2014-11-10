@@ -81,6 +81,8 @@ class Player(game.sprite.Sprite):
         #Create garage variable
         self.garage = None
 
+        self.score = Constants.START_SCORE
+
     #Method to add an item to a player's inventory
     def add_to_inventory(self, item):
         self.inventory.append(item.name)
@@ -222,6 +224,8 @@ class Player(game.sprite.Sprite):
         #Set our car image based on whether it is
         #stopped, accelerating, or decelerating
         self.set_acceleration_image(acceleration)
+
+        self.score -= interval * 10
 
         #Call our move function
         self.move(interval)

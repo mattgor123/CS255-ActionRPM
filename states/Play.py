@@ -22,7 +22,6 @@ class Play(State.State):
         self.current_level = 0
         self.init_levels()
         self.time = 0.00
-        self.score = Constants.START_SCORE
 
     def init_levels(self):
         self.add_level(Level_1.Level_1(self.player))
@@ -31,8 +30,7 @@ class Play(State.State):
     def update(self, interval):
         self.time += interval
         self.players.update(interval)
-        self.score -= interval * 10
-        self.hud.update(self.player, self.time, self.score)
+        self.hud.update(self.player, self.time, self.player.score)
         self.levels[self.current_level].update(interval)
 
     def draw(self):
