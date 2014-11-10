@@ -1,6 +1,7 @@
 from Level import Level
 import sprites.Enemy as Enemy
 from states.Constants import Constants
+from states.GameEnded import GameEnded
 import map.Map as Map
 
 
@@ -28,7 +29,8 @@ class Level_2(Level):
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
         self.enemies.add(Enemy.Boss_1([70, 40],
-                                 [Constants.WIDTH, Constants.HEIGHT]))
+                                 [Constants.WIDTH,
+                                  Constants.HEIGHT]))
 
     def update(self, interval):
         super(Level_2, self).update(interval)
@@ -50,3 +52,9 @@ class Level_2(Level):
     def init_map(self):
         self.map = Map.Map("level2.txt", 5)
         self.set_tiles()
+
+    def game_over(self, died):
+        if died:
+            Constants.STATE = GameEnded("GAME OVER")
+        else:
+            Constants.STATE.set_level(1)
