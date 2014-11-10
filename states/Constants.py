@@ -15,4 +15,4 @@ class Constants(object):
     STATE = None
     PLAYER_STARTING_HEALTH = 100
     HIGH_SCORE_FILE = 'scores.dat'
-    Levels = []
+    START_SCORE = 1000

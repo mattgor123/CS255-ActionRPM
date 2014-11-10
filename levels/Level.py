@@ -13,8 +13,6 @@ class Level(object):
         self.enemies = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
         self.player = player
-        self.time = 0.00
-        self.is_beatable = False
 
     def update(self, interval):
         #Check the health to see if we are done
@@ -22,9 +20,6 @@ class Level(object):
             #labels.clear(Constants.SCREEN,background)
             pygame.display.update()
             self.game_over(True)
-
-        #1 point per 1/Constants.INTERVAL cycles
-        self.time += interval
 
         #Set the tiles for what we need right now
         self.set_tiles()

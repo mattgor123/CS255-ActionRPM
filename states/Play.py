@@ -12,42 +12,37 @@ import levels.Level_2 as Level_2
 class Play(State.State):
 
     def __init__(self):
+        super(Play, self).__init__()
         self.player = Player.Player([8, 6], [Constants.WIDTH, Constants.HEIGHT])
         self.players = pygame.sprite.Group()
         self.players.add(self.player)
         self.hud = HUD.HUD()
-        self.init_labels()
         self.background = pygame.Surface(Constants.SCREEN.get_size())
         self.levels = []
         self.current_level = 0
         self.init_levels()
+        self.time = 0.00
+        self.score = Constants.START_SCORE
 
     def init_levels(self):
         self.add_level(Level_1.Level_1(self.player))
         self.add_level(Level_2.Level_2(self.player))
 
-    def init_labels(self):
-        #Make labels
-        self.labels = pygame.sprite.Group()
-        self.labels.add(Label.Label("health", "Health: 100%", (10, 10)))
-        self.labels.add(Label.Label("score", "Score: ", (10, 34)))
-
     def update(self, interval):
+        self.time += interval
         self.players.update(interval)
-        self.hud.update(self.player)
-        self.labels.update(interval)
+        self.score -= interval * 10
+        self.hud.update(self.player, self.time, self.score)
         self.levels[self.current_level].update(interval)
 
     def draw(self):
         self.players.clear(Constants.SCREEN, self.background)
         self.hud.clear(Constants.SCREEN)
-        self.labels.clear(Constants.SCREEN, self.background)
 
         self.levels[self.current_level].draw(self.background)
 
         self.players.draw(Constants.SCREEN)
         self.hud.draw(Constants.SCREEN)
-        self.labels.draw(Constants.SCREEN)
 
         pygame.display.update()
 
