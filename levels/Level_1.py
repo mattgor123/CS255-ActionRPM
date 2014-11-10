@@ -15,6 +15,7 @@ class Level_1(Level):
         self.init_items()
         self.tiles = None
         self.PLAYER_START = [8, 6]
+        self.is_beatable = False
 
     def init_items(self):
         #Create miscellaneous shit
