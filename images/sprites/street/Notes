@@ -5,28 +5,3 @@ o - top left street
 p - top right street
 l - bottom left street
 ; - bottom right street
-t - tollbooth
-
-// building 0
-ab
-cd
-ef or gi
-
-// building 1
-jkmn
-qruw or xyz1
-
-// building 2
-23
-45 or 67
-
-// sidwalk
-890
-!@#
-$%^
-
-// building 3
-&*(
-)_+
-{}:
-<>? or ,.`

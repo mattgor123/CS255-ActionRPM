@@ -24,7 +24,7 @@ class Map():
     # Range to give for checking collisions
     TILE_RANGE = 5
 
-    # Initializes the map, reads map.txt
+    # Initializes the map, reads level1.txt
     def __init__(self, filename, size):
         self.map = []
         self.openables = []
@@ -37,7 +37,7 @@ class Map():
         self.y_min = 0
         self.y_max = 0
 
-    # Reads up to max letters from map.txt and loads
+    # Reads up to max letters from level1.txt and loads
     # them into RAM
     def init_map(self, filename):
         map_file = open("map/" + filename, "r")
@@ -65,6 +65,7 @@ class Map():
     # Creates an object represented by the given char
     def resolve(self, char, x, y, map_x, map_y):
         to_return = None
+        #Streets
         if char == 's':
             to_return = sprites.Street.Street(map_x, map_y, "empty")
         elif char == 'h':
@@ -79,11 +80,40 @@ class Map():
             to_return = sprites.Street.Street(map_x, map_y, "l")
         elif char == ';':
             to_return = sprites.Street.Street(map_x, map_y, ";")
+        #Walls
+        elif char == 'a':
+            to_return = sprites.Wall.Wall(map_x, map_y, "a")
+        elif char == 'q':
+            to_return = sprites.Wall.Wall(map_x, map_y, "q")
+        elif char == 'z':
+            to_return = sprites.Wall.Wall(map_x, map_y, "z")
+        elif char == 'x':
+            to_return = sprites.Wall.Wall(map_x, map_y, "x")
+        elif char == 'd':
+            to_return = sprites.Wall.Wall(map_x, map_y, "d")
+        elif char == 'e':
+            to_return = sprites.Wall.Wall(map_x, map_y, "e")
+        elif char == 'r':
+            to_return = sprites.Wall.Wall(map_x, map_y, "r")
+        elif char == 'u':
+            to_return = sprites.Wall.Wall(map_x, map_y, "u")
+        elif char == 'i':
+            to_return = sprites.Wall.Wall(map_x, map_y, "i")
+        elif char == ':':
+            to_return = sprites.Wall.Wall(map_x, map_y, ":")
+        elif char == '"':
+            to_return = sprites.Wall.Wall(map_x, map_y, "\"")
+        elif char == '>':
+            to_return = sprites.Wall.Wall(map_x, map_y, ">")
+        elif char == '?':
+            to_return = sprites.Wall.Wall(map_x, map_y, "?")
+        #Tollbooth
         elif char == 't':
             to_return = sprites.TollBooth.TollBooth(map_x, map_y)
             self.openables.append(to_return)
+        #Default wall
         else:
-            to_return = sprites.Wall.Wall(map_x, map_y, char)
+            to_return = sprites.Wall.Wall(map_x, map_y, "w")
         return to_return
 
     # Appends a new chunk starting at x,y to the map.
