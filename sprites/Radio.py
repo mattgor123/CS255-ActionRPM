@@ -6,7 +6,6 @@ from states.Constants import Constants
 
 #All music found in http://musicmoz.org/Sound_Files/MIDI/Originals/
 class Radio(PG.sprite.Sprite):
-    Image = None
     song_locations = None
     song_names = None
     max_index = 0
@@ -20,9 +19,6 @@ class Radio(PG.sprite.Sprite):
         PG.init()
         PG.midi.init()
         PG.sprite.Sprite.__init__(self)
-        if Radio.Image is None:
-            Radio.Image = PG.image.load(
-                "images/sprites/hud/radio.png").convert_alpha()
         #Initialize the array of songs
         if Radio.song_locations is None:
             Radio.song_locations = []
@@ -77,13 +73,10 @@ class Radio(PG.sprite.Sprite):
             Radio.volume = 1
 
         Radio.label = Label.Label("nowplaying", "",(0,0))
-        Radio.text_rect = pygame.Rect(285,40,238,60)
+        Radio.text_rect = pygame.Rect(268,65,170,31)
         Radio.increment_current_index_and_play()
         PG.mixer.music.set_volume(Radio.volume)
         Radio.is_on = True
-        self.image = Radio.Image
-        self.rect = self.image.get_rect()
-        self.rect.topleft = (175,0)
         self.labels = pygame.sprite.Group()
         self.labels.add(Radio.label)
         self.display_volume_timer = 0

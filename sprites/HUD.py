@@ -25,10 +25,6 @@ class HUD(PG.sprite.Sprite):
         self.radio = Radio.Radio()
         self.health = Label.Label("health", "Health: 100%", (650, 10))
         self.score = Label.Label("score", "Score: ", (650, 34))
-        self.all_sprites.add(self.speedometer)
-        self.all_sprites.add(self.radio)
-        self.all_sprites.add(self.health)
-        self.all_sprites.add(self.score)
 
     def draw(self, screen, background):
         self.image.blit(HUD.dashboard, self.back_rect)
