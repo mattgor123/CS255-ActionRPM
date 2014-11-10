@@ -34,7 +34,7 @@ class Level_1(Level):
 
     def update(self, interval):
         player_coordinates = super(Level_1, self).update(interval)
-        if player_coordinates[1] <= 1:
+        if player_coordinates[1] <= .5:
             Constants.STATE.set_level(1)
 
     def draw(self, background):
