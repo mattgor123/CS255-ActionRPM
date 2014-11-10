@@ -1,3 +1,5 @@
+"""Game.py is the main module that runs the actionRPM game"""
+
 # ActionRPM
 # VGD (600.255)
 # Assignment 2
@@ -18,7 +20,7 @@ import states.Menu as Menu
 
 
 def main_loop():
-
+    """Main loop for running the actionRPM game"""
     # Clock code adapted from Peter's leftover-interval.py
     clock = time.Clock()
     current_time = time.get_ticks()
@@ -33,16 +35,11 @@ def main_loop():
         clock.tick()
 
         #Update the Player & Enemy
-        updates = 0
         leftover += frame_time
 
         while leftover > Constants.INTERVAL:
             Constants.STATE.update(Constants.INTERVAL)
             leftover -= Constants.INTERVAL
-            updates += 1
-            #if Constants.STATE == Play.Play:
-            #    params = [clock.get_fps(),frame_time,updates]
-            #    Constants.STATE.update_labels(params)
 
         #Begin key presses
         pygame.event.pump()
@@ -60,16 +57,16 @@ def main_loop():
 
 # Define function to initialize game state so you can restart
 def init():
-    # Initialize Screen
+    """Init all of the variables needed for the main driver of ActionRPM"""
     pygame.init()
     pygame.display.set_caption("ActionRPM")
     # Create the high scores file
     try:
-        f = open(Constants.HIGH_SCORE_FILE, 'rb')
-        f.close()
-    except:
-        f = open(Constants.HIGH_SCORE_FILE, 'wb')
-        f.close()
+        file_high_score = open(Constants.HIGH_SCORE_FILE, 'rb')
+        file_high_score.close()
+    except IOError:
+        file_high_score = open(Constants.HIGH_SCORE_FILE, 'wb')
+        file_high_score.close()
     # Set the constants
     Constants.WIDTH = 800
     Constants.HEIGHT = 600

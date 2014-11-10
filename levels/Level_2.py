@@ -1,6 +1,4 @@
 from Level import Level
-import pygame
-import sprites.EZPass as EZPass
 import sprites.Enemy as Enemy
 from states.Constants import Constants
 import map.Map as Map
