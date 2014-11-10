@@ -4,6 +4,7 @@ import pygame
 import sprites.Enemy as Enemy
 from states.Constants import Constants
 import map.Map as Map
+import states.GameEnded
 
 
 # Must overwrite self.set_tiles()
@@ -222,20 +223,8 @@ class Level(object):
                     self.player.x += .01
 
             if collision_fixed:
-                #This if statement tells us that the player hit the
-                #Boss and it should inflict damage on the boss
-                if(damage_to_do == 0 and type(r) is Enemy.Boss_1):
-                    r.hurt(3)
-
-                #Do the damage as prescribed by the collided box
-                self.player.damage += damage_to_do
-                #Play that terrible crash sound
-                #player.crash.play()
-                #If we hit an enemy, make the enemy stop
-                if type(r) is Enemy.Enemy:
-                    r.stop()
-                #Only do one collision per cycle
-                return player_coordinates
+                self.enemy_collided(r, damage_to_do)
+                break
         return player_coordinates
 
     def game_over(self, died):

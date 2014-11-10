@@ -3,6 +3,8 @@ import sprites.Enemy as Enemy
 from states.Constants import Constants
 from states.GameEnded import GameEnded
 import map.Map as Map
+import pygame
+import sprites.Label as Label
 
 
 class Level_2(Level):
@@ -14,10 +16,39 @@ class Level_2(Level):
         self.tiles = None
         self.PLAYER_START = [72, 56]
         self.is_beatable = False
+        self.init_labels()
 
     def init_items(self):
         #Create miscellaneous shit
         pass
+
+    def init_labels(self):
+        self.objective_text = "Wreck the other car to win back your girl!"
+        self.objectives = pygame.sprite.Group()
+        self.objective = Label.Label("objective",self.objective_text, (125, 175))
+        self.objective.font = pygame.font.Font(None, 45)
+        self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+        self.objectives.add(self.objective)
+        self.label_count = 0
+
+    def check_objective(self):
+        if self.label_count < 375:
+            self.label_count += 1
+            if self.label_count < 75:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 150:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 0))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 225:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 300:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 0))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 375:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.draw(Constants.SCREEN)
 
     def init_enemies(self):
         #Put in enemies
@@ -38,6 +69,7 @@ class Level_2(Level):
     def draw(self, background):
         self.tiles.clear(Constants.SCREEN, background)
         self.tiles.draw(Constants.SCREEN)
+        self.check_objective()
         super(Level_2, self).draw(background)
 
     def set_tiles(self):
@@ -58,3 +90,16 @@ class Level_2(Level):
             Constants.STATE = GameEnded("GAME OVER")
         else:
             Constants.STATE.set_level(1)
+
+    def enemy_collided(self, enemy, damage):
+        self.player.damage += damage
+        #There should be a bigger boss class that all bosses
+        #Are derived from
+        if(damage == 0 and type(enemy) is Enemy.Boss_1):
+            enemy.hurt(3)
+            #Sets the game to game over if we kill the boss
+            if enemy.get_health() == 0:
+                self.game_over()
+        #If we hit an enemy, make the enemy stop
+        elif type(enemy) is Enemy.Enemy:
+            enemy.stop()

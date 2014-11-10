@@ -6,6 +6,8 @@ import sprites.Enemy as Enemy
 from states.Constants import Constants
 import map.Map as Map
 import states.GameEnded as GameEnded
+import sprites.Label as Label
+import pygame
 
 
 class Level_1(Level):
@@ -17,6 +19,35 @@ class Level_1(Level):
         self.tiles = None
         self.PLAYER_START = [8, 6]
         self.is_beatable = False
+        self.init_labels()
+
+    def init_labels(self):
+        self.objective_text = "Find the EZ-Pass to cross the bridge"
+        self.objectives = pygame.sprite.Group()
+        self.objective = Label.Label("objective", self.objective_text, (175, 175))
+        self.objective.font = pygame.font.Font(None, 45)
+        self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+        self.objectives.add(self.objective)
+        self.label_count = 0
+
+    def check_objective(self):
+        if self.label_count < 375:
+            self.label_count += 1
+            if self.label_count < 75:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 150:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 0))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 225:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 300:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 0))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 375:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.draw(Constants.SCREEN)
 
     def init_items(self):
         #Create miscellaneous shit
@@ -41,6 +72,8 @@ class Level_1(Level):
     def draw(self, background):
         self.tiles.clear(Constants.SCREEN, background)
         self.tiles.draw(Constants.SCREEN)
+        self.check_objective()
+
         super(Level_1, self).draw(background)
 
     def set_tiles(self):
@@ -61,3 +94,10 @@ class Level_1(Level):
             Constants.STATE = GameEnded.GameEnded("GAME OVER")
         else:
             Constants.STATE.set_level(1)
+
+    def enemy_collided(self, enemy, damage):
+        #Do the damage as prescribed by the collided box
+        self.player.damage += damage
+        #If we hit an enemy, make the enemy stop
+        if type(enemy) is Enemy.Enemy:
+            enemy.stop()
