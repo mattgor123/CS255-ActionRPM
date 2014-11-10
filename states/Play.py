@@ -35,12 +35,12 @@ class Play(State.State):
 
     def draw(self):
         self.players.clear(Constants.SCREEN, self.background)
-        self.hud.clear(Constants.SCREEN)
+        self.hud.clear(Constants.SCREEN, None)
 
         self.levels[self.current_level].draw(self.background)
 
         self.players.draw(Constants.SCREEN)
-        self.hud.draw(Constants.SCREEN)
+        self.hud.draw(Constants.SCREEN, self.background)
 
         pygame.display.update()
 

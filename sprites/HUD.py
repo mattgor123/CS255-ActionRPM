@@ -5,28 +5,39 @@ import Radio
 import Label
 
 
-class HUD():
-
+class HUD(PG.sprite.Sprite):
+    dashboard = None
     def __init__(self):
+        PG.sprite.Sprite.__init__(self)
         self.image = PG.Surface((Constants.WIDTH, 150))
         self.rect = self.image.get_rect()
         self.rect.bottomleft = (0, Constants.HEIGHT)
-        self.image.fill((0, 0, 0,))
+        if HUD.dashboard is None:
+            HUD.dashboard = PG.image.load(
+            "images/sprites/hud/dashboard.png").convert_alpha()
+        self.image = HUD.dashboard
+        self.all_sprites = PG.sprite.Group()
         self.speedometer = Speedometer.Speedometer()
         self.radio = Radio.Radio()
         self.health = Label.Label("health", "Health: 100%", (650, 10))
         self.score = Label.Label("score", "Score: ", (650, 34))
+        self.all_sprites.add(self.speedometer)
+        self.all_sprites.add(self.radio)
+        self.all_sprites.add(self.health)
+        self.all_sprites.add(self.score)
 
-    def draw(self, screen):
+    def draw(self, screen, background):
+        self.clear(screen,background)
         self.image.blit(self.speedometer.image, self.speedometer.rect)
-        self.image.blit(self.radio.image, self.radio.rect)
+        #self.image.blit(self.radio.image, self.radio.rect)
         self.image.blit(self.radio.label.image, self.radio.text_rect)
         self.image.blit(self.health.image, self.health.rect)
         self.image.blit(self.score.image, self.score.rect)
         screen.blit(self.image, self.rect)
 
-    def clear(self, screen):
-        self.image.fill((0, 0, 0))
+    def clear(self, screen, background):
+        self.all_sprites.clear(Constants.SCREEN, background)
+        #self.image.fill((0,0,0))
         screen.blit(self.image, self.rect)
 
     def update(self, player, time, score):
