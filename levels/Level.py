@@ -31,6 +31,8 @@ class Level(object):
         for enemy in self.enemies:
             enemy.update(interval, player_coordinates)
 
+        return player_coordinates
+
     # draws the enemies and items
     # does not need a display update since Play calls that
     def draw(self, background):
@@ -156,6 +158,7 @@ class Level(object):
                         r.stop()
                     #Only do one collision per cycle
                     return player_coordinates
+            return player_coordinates
 
     def game_over(self, died):
         print "Super Level Game Over"

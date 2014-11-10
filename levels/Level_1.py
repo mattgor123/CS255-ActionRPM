@@ -33,7 +33,9 @@ class Level_1(Level):
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
 
     def update(self, interval):
-        super(Level_1, self).update(interval)
+        player_coordinates = super(Level_1, self).update(interval)
+        if player_coordinates[1] <= 1:
+            Constants.STATE.set_level(1)
 
     def draw(self, background):
         self.tiles.clear(Constants.SCREEN, background)

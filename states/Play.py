@@ -58,9 +58,7 @@ class Play(State.State):
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
-                self.game_over(False)
-            elif event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
+            if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
             elif event.key == pygame.K_LEFT:
                 self.hud.radio.decrement_current_index_and_play()

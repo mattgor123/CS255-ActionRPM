@@ -275,10 +275,13 @@ class Level_1(State.State):
         #This code does the player collision and returns the player coordinates
         player_coordinates = self.player_collision()
 
+        if player_coordinates[1] <= 2:
+            Play.set_level(1)
+
         #Update our stuff
         self.update_labels()
         self.update_enemies(player_coordinates)
-        self.hud.update(self.players.sprites()[0].speed)
+        #self.hud.update(self.players.sprites()[0].speed)
 
     def update_enemies(self, player_coordinates):
         for enemy in self.enemies:
