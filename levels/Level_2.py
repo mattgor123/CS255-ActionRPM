@@ -58,3 +58,16 @@ class Level_2(Level):
             Constants.STATE = GameEnded("GAME OVER")
         else:
             Constants.STATE.set_level(1)
+
+    def enemy_collided(self, enemy, damage):
+        self.player.damage += damage
+        #There should be a bigger boss class that all bosses
+        #Are derived from
+        if(damage == 0 and type(enemy) is Enemy.Boss_1):
+            enemy.hurt(3)
+            #Sets the game to game over if we kill the boss
+            if enemy.get_health() == 0:
+                self.game_over()
+        #If we hit an enemy, make the enemy stop
+        elif type(enemy) is Enemy.Enemy:
+            enemy.stop()

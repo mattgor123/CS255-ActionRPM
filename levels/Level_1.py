@@ -61,3 +61,10 @@ class Level_1(Level):
             Constants.STATE = GameEnded.GameEnded("GAME OVER")
         else:
             Constants.STATE.set_level(1)
+
+    def enemy_collided(self, enemy, damage):
+        #Do the damage as prescribed by the collided box
+        self.player.damage += damage
+        #If we hit an enemy, make the enemy stop
+        if type(enemy) is Enemy.Enemy:
+            enemy.stop()
