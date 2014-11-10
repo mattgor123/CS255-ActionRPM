@@ -35,7 +35,7 @@ class Play(State.State):
 
     def draw(self):
         self.players.clear(Constants.SCREEN, self.background)
-        self.hud.clear(Constants.SCREEN, None)
+        self.hud.clear(Constants.SCREEN)
 
         self.levels[self.current_level].draw(self.background)
 
