@@ -6,7 +6,7 @@ from states.Constants import Constants
 import map.Map as Map
 
 
-class Level_1(Level):
+class Level_2(Level):
 
     def __init__(self, player):
         Level.__init__(self, player)
@@ -17,7 +17,7 @@ class Level_1(Level):
 
     def init_items(self):
         #Create miscellaneous shit
-        self.items.add(EZPass.EZPass("ezpass", 40, 19))
+        pass
 
     def init_enemies(self):
         #Put in enemies
