@@ -139,7 +139,7 @@ class Radio(PG.sprite.Sprite):
             text = Radio.song_names[Radio.current_index][:-i]
             Radio.label.update(text)
         text = text[:-2]
-        text = text + "..."
+        text += "..."
         if i > 0:
             Radio.label.update(text)
             Radio.song_names[Radio.current_index] = text

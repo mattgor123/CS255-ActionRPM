@@ -275,8 +275,7 @@ class Boss_1(game.sprite.Sprite):
             self.set_direction(self.direction)
 
         #This means our boss has waited long enough to move
-        if self.waited_time >= Boss_1.max_wait_time and \
-                self.waited_time < 2*Boss_1.max_wait_time:
+        if Boss_1.max_wait_time <= self.waited_time < 2*Boss_1.max_wait_time:
             #If our guy is gonna move, then he should be hurting the player
             self.strength = 3
             self.waiting = False

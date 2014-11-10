@@ -8,6 +8,6 @@ topright black = r
 bottomleft black = u
 bottomright black = i
 tl connector = :
-tr connector = ]
+tr connector = "
 bl connector = >
 br connector = ? 

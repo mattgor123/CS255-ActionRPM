@@ -36,6 +36,8 @@ class Map():
         self.x_max = 0
         self.y_min = 0
         self.y_max = 0
+        self.filename = filename
+        self.size = size
 
     # Reads up to max letters from level1.txt and loads
     # them into RAM
@@ -202,7 +204,3 @@ class Map():
         if y >= len(self.map[0]) or y < 0:
             return False
         return True
-
-
-if __name__ == "__main__":
-    test = Map()

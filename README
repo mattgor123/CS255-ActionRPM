@@ -11,9 +11,44 @@ game.py"
 Current Assignment Notes
 11/9
 
--Mad refactoring
--Moving stuff around; the player now holds the score, health, and HUD so it doesn't need to be reinitialized. On top of that, we're working on a level changer so that we don't need to keep changing stuff.
--Implemented a radio. Features of the radio: Left plays previous song, Right plays next song, Numpad 0 plays a random song, Up increases volume, Down decreases volume, O (the letter) turns the music off/on. NOTE: With midis, unfortunately, you can't pause using pygame.mixer, so it stops the playback and then if you hit O again, it will play the next song (can change to current song if you think that's better)
+NOTE BEFORE THE LISTS:
+Our Radio may throw a warning on your setup in the console. We posted about this on Piazza and didn't get much of a response, so we're going to assume it's fine, but if this is an issue we can make a demonstration on one of our computers. We think the issue is related to the sound card & installed plugins, but it shouldn't crash and should still work (although the sound may not be as good).
+
+Part 1) List of Things We Need To Do (GAMEPLAY & CODEWISE)
+GAMEPLAY:
+1) GRAPHICS. Our game looks like it's in a bizarre parallel universe. We're working on making it feel "cartoony" but also real.
+2) No music = No bueno. You're a car! How can you not have a radio?? Driving with the music off is miserable. We need to play music.
+3) Not really much "exploring" to do - so far the levels we have are pretty simple, and there isn't much depth to the story. While we aren't supposed to add any features, we are going to work on making our future levels larger & have more features.
+4) No AI for enemies; they're very predictable. We're going to need to implement a better mechanic for their motion than using an array of repeatable behaviors, because otherwise the game won't have any replayability since it happens the same way every time. We need to implement enemy AI & logic (but this is also going to occur next week)
+5) Our crash sound is the worst thing that the world has ever seen. It literally sounds like death. We desperately need to find a good car crash sound and implement it.
+6) For now it's not a big deal, but it could get confusing if we don't have an actual inventory implemented. Since we are gonna have a badass HUD, we should display all items in our inventory in the corner there or something.
+7) We need to implement weapons! This counts as a new feature so it won't be for this week, but it's going to be one of our first priorities next week.
+8) Need to add some depth to our story; maybe even animate a cutscene or something? But none of us are good at art so this might be a challenge, but needs to be done.
+9) Might not be incredibly intuitive how to actually kill the boss; because collisions damaged YOU and not the enemy in the previous level, maybe people will be confused about having to ram the boss in level 2. Maybe brief instruction before the level would go a long way?
+10) Need a better way to get more points. Right now the high score is based only on how quickly you do things, but we should have some hidden bonuses somewhere that you have to discover.
+
+CODE-WISE (not a list, but a general summary of what we thought needed to get done):
+Since this week we weren't supposed to be adding features, many of these are going to be taken care of early next week rather than for this submission. We plan on doing SERIOUS refactoring; we're going to rethink our logical process - stuff like the HUD & Player being reinitialized every level just makes no sense at all. We're going to try to implement a Play state, which will store the Levels (which will all be implementations of a Level "interface") and switch between them appropriately, rather than have a Level1 state that switches to a Level2 state and passes the player, score, and health. Also, it would be much better if the score & health belonged to the player, but even if it belongs to the Play state, that's much better. We are going to make our code a LOT less spaghetti; our previous assignments were pretty much all finalized last-minute and this made our code very difficult to expand upon. We're going to rethink our design and try to avoid breaking everything.
+
+2) Record of what we had to do to make improvements
+GAMEPLAY
+1) We added different types of wall sprites that resemble an actual sidewalk, we added texture to our streets, and we pretty much made it feel like it's no longer in some strange, strange place. Lots of new images this week, and a lot of changes to our map to implement these.
+2) We added a radio module in our hud! We have 19 .midi songs now that play like a CD (or cassette, whatever). This IS a new feature, but it was in the works before this assignment was announced so we wanted to finalize it. Rather than considering it a new feature, you can consider it a part of the HUD (which we already had). Features of the radio: Left plays previous song, Right plays next song, Numpad 0 plays a random song, Up increases volume, Down decreases volume, O (the letter) turns the music off/on. NOTE: With midis, unfortunately, you can't pause using pygame.mixer, so it stops the playback and then if you hit O again, it will play the next song (can change to current song if you think that's better)
+3) We made our map bigger and added ways to get points (this also applies to #10 - the EZ Pass, for example)
+4) We did this for our boss. He now chases the player. We didn't do this for all enemies, but we considered different ways of making it work. One idea was trying to get as close to the Player as possible linearly (so calculate the distance, and move in the direction closest ... but then we run into the issue of obstacles. So then we thought about calculating whether or not there are obstacles in the way every update cycle and then calculating a path). We need to think about this.
+5) Found a good crash sound to replace ours. Thank the lord, now we don't have to mute our game whenever we play.
+6) We haven't done the drawing for it yet, but a Player now has an Inventory which is just an array of Collectables (which we had to implement to make this possible).
+7) We're going to be able to add "spikes" to the front of our car, you get those by killing the boss. They make you immune to damage from the front and increase the amount of damage you do.
+8) Instead of just instructions, we now have a couple of cutscenes before Level 1. But we haven't made the animation for it or anything.
+9) Done.
+10) See #4.
+
+Most of our changes were either related to graphics or our code design. We wanted to put ourselves in the best position to succeed moving forward, so instead of making sure that we do everything in our check list that we talked about, we wanted to make sure our code base is organized, readable, and well-commented so that any of us can make changes to it moving forward. As mentioned in our To Do list, we did a lot of refactoring and restructuring of our logic. It's difficult to describe each of our changes, but the Git commits should be able to tell the story. This was actually one of our busiest, most productive weeks code-wise, despite the fact that we weren't supposed to add any new features.
+
+3) Pep8 is happy. Pylint is happy about just about everything except "spelling". We used conventions (underscores, etc.) so we're not concerned about the quality of our code moving forward. We also ignored "parameter unfilled" warnings because they don't actually mean anything according to the Python documentation.
+
+
+4) Our art isn't all that great, but it gets the job done and fits our style. We will continue to improve as we make progress.
 
 Previous Assignment Notes
 11/2
