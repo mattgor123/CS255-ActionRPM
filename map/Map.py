@@ -120,6 +120,12 @@ class Map():
             to_return = sprites.Wall.Wall(map_x, map_y, "@")
         elif char == '#':
             to_return = sprites.Wall.Wall(map_x, map_y, "#")
+        elif char == '$':
+            to_return = sprites.Wall.Wall(map_x, map_y, "$")
+        elif char == '%':
+            to_return = sprites.Wall.Wall(map_x, map_y, "%")
+        elif char == '^':
+            to_return = sprites.Wall.Wall(map_x, map_y, "^")
         elif char == 'b':
             to_return = sprites.Wall.Wall(map_x, map_y, "b")
         elif char == 'n':

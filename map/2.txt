@@ -1,4 +1,4 @@
-bn!#bn@#!bn!##bn
+bn!#bn@$!bn!^#bn
 qqqqqqqqqqqqqqqq
 aaaaaaaaaaaaaaaa
 ssssssssssssssss
@@ -8,5 +8,5 @@ hshshshshshshshs
 ssssssssssssssss
 qqqqqqqqqqqqqqqq
 aaaaaaaaaaaaaaaa
--QWERUI!!-#bn()#
-+ASDFJKbn+@!#OP!
+-QWERUI!!-$bn()%
++ASDFJKbn+@^#OP!

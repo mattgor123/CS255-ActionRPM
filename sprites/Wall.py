@@ -21,6 +21,9 @@ class Wall(Tile.Tile):
     sm_building_1 = None
     sm_building_2 = None
     sm_building_3 = None
+    sm_building_4 = None
+    sm_building_5 = None
+    sm_building_6 = None
     horiz_building_1l = None
     horiz_building_1r = None
     vert_building_1t = None
@@ -89,6 +92,12 @@ class Wall(Tile.Tile):
             self.image = Wall.sm_building_2
         elif type == "#":
             self.image = Wall.sm_building_3
+        elif type == "$":
+            self.image = Wall.sm_building_4
+        elif type == "%":
+            self.image = Wall.sm_building_5
+        elif type == "^":
+            self.image = Wall.sm_building_6
         elif type == "b":
             self.image = Wall.horiz_building_1l
         elif type == "n":
@@ -183,6 +192,12 @@ class Wall(Tile.Tile):
             "images/sprites/buildings/sm_building_2.png")
         Wall.sm_building_3 = pygame.image.load(
             "images/sprites/buildings/sm_building_3.png")
+        Wall.sm_building_4 = pygame.image.load(
+            "images/sprites/buildings/sm_building_4.png")
+        Wall.sm_building_5 = pygame.image.load(
+            "images/sprites/buildings/sm_building_5.png")
+        Wall.sm_building_6 = pygame.image.load(
+            "images/sprites/buildings/sm_building_6.png")
         Wall.horiz_building_1l = pygame.image.load(
             "images/sprites/buildings/horiz_building_1l.png")
         Wall.horiz_building_1r = pygame.image.load(

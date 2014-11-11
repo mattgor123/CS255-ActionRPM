@@ -27,6 +27,9 @@ BUILDINGS STUFF
 sm_building_1 = !
 sm_building_2 = @
 sm_building_3 = #
+sm_building_4 = $
+sm_building_5 = %
+sm_building_6 = ^
 horiz_building_1l = b
 horiz_building_1r = n
 vert_building_1t = -
