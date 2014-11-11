@@ -13,7 +13,6 @@ class Level_2(Level):
         Level.__init__(self, player)
         self.init_enemies()
         self.init_items()
-        self.tiles = None
         self.PLAYER_START = [72, 56]
         self.is_beatable = False
         self.init_labels()
@@ -67,19 +66,8 @@ class Level_2(Level):
         super(Level_2, self).update(interval)
 
     def draw(self, background):
-        self.tiles.clear(Constants.SCREEN, background)
-        self.tiles.draw(Constants.SCREEN)
         self.check_objective()
         super(Level_2, self).draw(background)
-
-    def set_tiles(self):
-        self.tiles = self.map.render(self.player.x, self.player.y)
-        self.player.rect.topleft = self.map.get_topleft(self.player.x,
-                                                    self.player.y)
-        for enemy in self.enemies.sprites():
-            enemy.rect.topleft = self.map.get_topleft(enemy.x, enemy.y)
-        for item in self.items.sprites():
-            item.rect.topleft = self.map.get_topleft(item.x, item.y)
 
     def init_map(self):
         self.map = Map.Map("level2.txt", 5)

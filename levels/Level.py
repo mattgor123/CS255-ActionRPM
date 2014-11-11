@@ -16,6 +16,7 @@ class Level(object):
         self.enemies = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
         self.player = player
+        self.tiles = pygame.sprite.Group()
 
     def update(self, interval):
         #Check the health to see if we are done
@@ -41,9 +42,20 @@ class Level(object):
     def draw(self, background):
         self.enemies.clear(Constants.SCREEN, background)
         self.items.clear(Constants.SCREEN, background)
+        self.tiles.clear(Constants.SCREEN, background)
 
+        self.tiles.draw(Constants.SCREEN)
         self.enemies.draw(Constants.SCREEN)
         self.items.draw(Constants.SCREEN)
+
+    def set_tiles(self):
+        self.tiles = self.map.render(self.player.x, self.player.y)
+        self.player.rect.topleft = self.map.get_topleft(self.player.x,
+                                                    self.player.y)
+        for enemy in self.enemies.sprites():
+            enemy.rect.topleft = self.map.get_topleft(enemy.x, enemy.y)
+        for item in self.items.sprites():
+            item.rect.topleft = self.map.get_topleft(item.x, item.y)
 
     def enemy_collision(self, player_coordinates):
         for enemy in self.enemies:
