@@ -86,6 +86,8 @@ class Player(game.sprite.Sprite):
     #Method to add an item to a player's inventory
     def add_to_inventory(self, item):
         self.inventory.append(item.name)
+        if item.name == "ezpass":
+            self.score += 50
 
     def _get_stopped(self, which):
         tmp = SS.loadSheet("images/sprites/player_total.png",

@@ -136,17 +136,14 @@ class Level(object):
     def player_collision(self):
         player_coordinates = self.player.get_coordinates()
         #Check if player has EZPass, if so, open the TollBooth
-        if not self.is_beatable:
-            if "ezpass" in self.player.inventory:
+        if "ezpass" in self.player.inventory:
                 #Very hackish way to do this; the score should be
                 #  on the player, so when we collect collectables
                 #  or collide, we can easily update the score.
                 # But we have more pressing things to do now.
-                self.player.score += 50
-                self.is_beatable = True
-                for openable in self.map.openables:
-                    if openable.__str__() == "t":
-                        openable.open()
+            for openable in self.map.openables:
+                if openable.__str__() == "t":
+                    openable.open()
 
         self.health = self.player.calculate_health()
 

@@ -16,7 +16,7 @@ class Level_1(Level):
         Level.__init__(self, player)
         self.init_enemies()
         self.init_items()
-        self.PLAYER_START = [8, 6]
+        self.PLAYER_START = [40, 2]
         self.is_beatable = False
         self.init_labels()
 
@@ -50,7 +50,7 @@ class Level_1(Level):
 
     def init_items(self):
         #Create miscellaneous shit
-        self.items.add(EZPass.EZPass("ezpass", 40, 19))
+        self.items.add(EZPass.EZPass("ezpass", 8, 30))
 
     def init_enemies(self):
         #Put in enemies

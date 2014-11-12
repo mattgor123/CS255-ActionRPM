@@ -7,6 +7,7 @@ import Menu
 import pygame
 import levels.Level_1 as Level_1
 import levels.Level_2 as Level_2
+import levels.Level_3 as Level_3
 
 
 class Play(State.State):
@@ -26,6 +27,7 @@ class Play(State.State):
     def init_levels(self):
         self.add_level(Level_1.Level_1(self.player))
         self.add_level(Level_2.Level_2(self.player))
+        self.add_level(Level_3.Level_3(self.player))
 
     def update(self, interval):
         self.time += interval

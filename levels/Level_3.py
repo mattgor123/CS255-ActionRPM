@@ -7,13 +7,13 @@ import pygame
 import sprites.Label as Label
 
 
-class Level_2(Level):
+class Level_3(Level):
 
     def __init__(self, player):
         Level.__init__(self, player)
-        self.init_enemies()
-        self.init_items()
-        self.PLAYER_START = [72, 57]
+        #self.init_enemies()
+        #self.init_items()
+        self.PLAYER_START = [108, 40]
         self.is_beatable = False
         self.init_labels()
 
@@ -22,7 +22,7 @@ class Level_2(Level):
         pass
 
     def init_labels(self):
-        self.objective_text = "Wreck the other car to win back your girl!"
+        self.objective_text = "Level Three Bitch!"
         self.objectives = pygame.sprite.Group()
         self.objective = Label.Label("objective",self.objective_text, (125, 175))
         self.objective.font = pygame.font.Font(None, 45)
@@ -63,18 +63,19 @@ class Level_2(Level):
                                   Constants.HEIGHT]))
 
     def update(self, interval):
-        super(Level_2, self).update(interval)
-        if self.player.y >= 58:
-            Constants.STATE.set_level(0)
-        if self.player.y <= 0.5:
-            Constants.STATE.set_level(2)
+        super(Level_3, self).update(interval)
+        if self.player.x >= 111:
+            Constants.STATE.set_level(1)
+        #if self.player.y <= 0.5:
+         #   Constants.STATE.set_level(2)
 
     def draw(self, background):
+
+        super(Level_3, self).draw(background)
         self.check_objective()
-        super(Level_2, self).draw(background)
 
     def init_map(self):
-        self.map = Map.Map("level2.txt", 5)
+        self.map = Map.Map("level3.txt", 7)
         self.set_tiles()
 
     def game_over(self, died):
