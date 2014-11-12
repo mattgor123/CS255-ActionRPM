@@ -261,6 +261,19 @@ class Boss_1(game.sprite.Sprite):
             self.health = 0
         else:
             self.health -= damage
+            print self.get_health()
+            #Check if we crossed the threshold for transporting
+            #Use get health method because it gives u scale from 0-100
+            if self.get_health() + damage >= 75 and self.get_health() < 75:
+                self.transport([70, 40])
+
+    def transport(self, location):
+        self.rect.topleft = location
+        self.x = location[0]
+        self.y = location[1]
+        self.current_move = 0
+        self.old_pos_x = location[0]
+        self.old_pos_y = location[1]
 
     def get_strength(self):
         return self.strength
@@ -390,5 +403,6 @@ class Boss_1(game.sprite.Sprite):
             self.frame = 0
 
     def get_health(self):
+        """Returns the health of the enemy from 0-100"""
         #Divide by 5 to get the ratio out of 100
         return self.health/5
