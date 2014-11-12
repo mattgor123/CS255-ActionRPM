@@ -58,7 +58,7 @@ class Level_2(Level):
         self.enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
-        self.enemies.add(Enemy.Boss_1([70, 40],
+        self.enemies.add(Enemy.Boss_1([8, 5],
                                  [Constants.WIDTH,
                                   Constants.HEIGHT]))
 
@@ -70,8 +70,8 @@ class Level_2(Level):
             Constants.STATE.set_level(2)
 
     def draw(self, background):
-        self.check_objective()
         super(Level_2, self).draw(background)
+        self.check_objective()
 
     def init_map(self):
         self.map = Map.Map("level2.txt", 5)
@@ -81,7 +81,7 @@ class Level_2(Level):
         if died:
             Constants.STATE = GameEnded("GAME OVER")
         else:
-            Constants.STATE.set_level(1)
+            Constants.STATE.set_level(2)
 
     def enemy_collided(self, enemy, damage):
         self.player.damage += damage
@@ -91,7 +91,7 @@ class Level_2(Level):
             enemy.hurt(3)
             #Sets the game to game over if we kill the boss
             if enemy.get_health() == 0:
-                self.game_over()
+                self.game_over(False)
         #If we hit an enemy, make the enemy stop
         elif type(enemy) is Enemy.Enemy:
             enemy.stop()

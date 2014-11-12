@@ -249,12 +249,39 @@ class Boss_1(game.sprite.Sprite):
         #Set as 500 to give him a little more strength
         self.health = 500
 
+        #Original transport variables
+        self.is_transporting = False
+        self.transport_time = 0
+        self.transport_location = None
+
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
     def update(self, interval, player_coordinates):
         if self.health == 0:
             print "dead"
-        self.turn(interval, player_coordinates)
+        #This means our guy will stay flashed for a few seconds
+        if(self.is_transporting and self.transport_time < 200):
+            self.strength = 1
+            #self.waiting = True
+            self.frame = 1
+            self.set_image()
+            self.transport_time += 1
+        #This means its time to transpot our dude
+        elif(self.is_transporting and self.transport_time >= 200):
+            #The next few blocks reset the enemy's
+            self.rect.topleft = self.transport_location
+            self.x = self.transport_location[0]
+            self.y = self.transport_location[1]
+            self.current_move = 0
+            self.old_pos_x = self.transport_location[0]
+            self.old_pos_y = self.transport_location[1]
+            #Reset our transport variables
+            self.transport_time = 0
+            self.is_transporting = False
+            self.transport_location = None
+        #This means we are not currently doing the transport
+        else:
+            self.turn(interval, player_coordinates)
 
     def hurt(self, damage):
         if self.health - damage < 0:
@@ -262,18 +289,25 @@ class Boss_1(game.sprite.Sprite):
         else:
             self.health -= damage
             print self.get_health()
-            #Check if we crossed the threshold for transporting
-            #Use get health method because it gives u scale from 0-100
-            if self.get_health() + damage >= 75 and self.get_health() < 75:
+            #Must use the health out of 500
+            #So 375/500 = 75
+            if self.health + damage >= 375 and self.health < 375:
+                #This will put the health done below 75$
+                self.health = 374
                 self.transport([70, 40])
+            elif self.health + damage >= 250 and self.health < 250:
+                #This will put the health done below 75$
+                self.health = 249
+                self.transport([8, 53])
+            elif self.health + damage >= 125 and self.health < 125:
+                #This will put the health done below 75$
+                self.health = 124
+                self.transport([46, 17])
 
     def transport(self, location):
-        self.rect.topleft = location
-        self.x = location[0]
-        self.y = location[1]
-        self.current_move = 0
-        self.old_pos_x = location[0]
-        self.old_pos_y = location[1]
+        self.is_transporting = True
+        self.transport_time = 0
+        self.transport_location = location
 
     def get_strength(self):
         return self.strength
