@@ -249,12 +249,39 @@ class Boss_1(game.sprite.Sprite):
         #Set as 500 to give him a little more strength
         self.health = 500
 
+        #Original transport variables
+        self.is_transporting = False
+        self.transport_time = 0
+        self.transport_location = None
+
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
     def update(self, interval, player_coordinates):
         if self.health == 0:
             print "dead"
-        self.turn(interval, player_coordinates)
+        #This means our guy will stay flashed for a few seconds
+        if(self.is_transporting and self.transport_time < 200):
+            self.strength = 1
+            #self.waiting = True
+            self.frame = 1
+            self.set_image()
+            self.transport_time += 1
+        #This means its time to transpot our dude
+        elif(self.is_transporting and self.transport_time >= 200):
+            #The next few blocks reset the enemy's
+            self.rect.topleft = self.transport_location
+            self.x = self.transport_location[0]
+            self.y = self.transport_location[1]
+            self.current_move = 0
+            self.old_pos_x = self.transport_location[0]
+            self.old_pos_y = self.transport_location[1]
+            #Reset our transport variables
+            self.transport_time = 0
+            self.is_transporting = False
+            self.transport_location = None
+        #This means we are not currently doing the transport
+        else:
+            self.turn(interval, player_coordinates)
 
     def hurt(self, damage):
         if self.health - damage < 0:
@@ -262,18 +289,25 @@ class Boss_1(game.sprite.Sprite):
         else:
             self.health -= damage
             print self.get_health()
-            #Check if we crossed the threshold for transporting
-            #Use get health method because it gives u scale from 0-100
-            if self.get_health() + damage >= 75 and self.get_health() < 75:
+            #Must use the health out of 500
+            #So 375/500 = 75
+            if self.health + damage >= 375 and self.health < 375:
+                #This will put the health done below 75$
+                self.health = 374
                 self.transport([70, 40])
+            elif self.health + damage >= 250 and self.health < 250:
+                #This will put the health done below 75$
+                self.health = 249
+                self.transport([8, 53])
+            elif self.health + damage >= 125 and self.health < 125:
+                #This will put the health done below 75$
+                self.health = 124
+                self.transport([46, 17])
 
     def transport(self, location):
-        self.rect.topleft = location
-        self.x = location[0]
-        self.y = location[1]
-        self.current_move = 0
-        self.old_pos_x = location[0]
-        self.old_pos_y = location[1]
+        self.is_transporting = True
+        self.transport_time = 0
+        self.transport_location = location
 
     def get_strength(self):
         return self.strength
@@ -406,3 +440,188 @@ class Boss_1(game.sprite.Sprite):
         """Returns the health of the enemy from 0-100"""
         #Divide by 5 to get the ratio out of 100
         return self.health/5
+
+class Racer(game.sprite.Sprite):
+    image = None
+    screen_width = 0
+    screen_height = 0
+    FRAME_SLOW = 10
+    #Number of cycles the enemy will stop for after hitting an enemy
+    max_stop_time = 100
+    right = None
+    up = None
+    left = None
+    down = None
+    downleft = None
+    downright = None
+    upleft = None
+    upright = None
+    speed = None
+
+
+    # Enemy constructor takes an initial location, screendims for collisions,
+    # a speed, and a starting direction
+    def __init__(self, location, screensize,
+                 speed, direction, move_array):
+
+        game.sprite.Sprite.__init__(self)
+
+        Enemy.screen_width = screensize[0]
+        Enemy.screen_height = screensize[1]
+        if Racer.image is None:
+            # make all of the appropriate transformations of the image based
+            # on direction of travel
+
+            Racer.image = game.image.load("images/sprites/racer.png")
+            Racer.right = Racer.image
+            Racer.left = game.transform.rotate(Racer.right, 180)
+            Racer.up = game.transform.rotate(Racer.right, 90)
+            Racer.down = game.transform.rotate(Racer.right, -90)
+            Racer.upright = game.transform.rotate(Racer.right, 45)
+            Racer.upleft = game.transform.rotate(Racer.right, 135)
+            Racer.downright = game.transform.rotate(Racer.right, -45)
+            Racer.downleft = game.transform.rotate(Racer.right, -135)
+
+        self.direction = direction
+        self.set_direction(direction)
+        self.image = Racer.image
+        self.time_spent_waiting = 0
+        Racer.speed = speed
+        self.speed = speed
+        self.rect = self.image.get_rect()
+
+        #make sure it is in the appropriate location
+        self.rect.topleft = location
+        #get the width & height of screen
+        self.width = screensize[0]
+        self.height = screensize[1]
+        self.x = location[0]
+        self.y = location[1]
+        self.movements = move_array
+        self.current_move = 0
+        self.old_pos_x = location[0]
+        self.old_pos_y = location[1]
+        #This variable keeps track of the number of cycles
+        #the enemy has waited before restarting
+        #If 0, enemy continues as normal
+        #Enemy will stay stopped until stop_time == max_stop_time
+        self.stop_time = 0
+
+    # this is the update method with a parameter - it ensures the Enemy is
+    # facing opposite dir of the Player then updates
+    def update(self, interval, player_coordinates):
+        self.move(interval)
+
+    def get_strength(self):
+        return 3
+    #this moves the Enemy to where he is supposed to be based on the direction
+    '''
+    Note : We wrote this function interpreting 'look' to mean the direction
+    in which the Enemy is facing.
+    Please have pity on our souls for the duplicated/relatively ugly
+    code...not currently being used.
+    '''
+    def move(self, interval):
+        #If the stop_time is max_stop_time, then the enemy waited long enough
+        #and can restart moving
+        #If the stop_time is 0, it indicates that the car can continue moving
+        if self.stop_time == self.max_stop_time or self.stop_time == 0:
+            #Make sure stop time is back at 0 once we are moving again
+            self.stop_time = 0
+            curr_action = self.movements[self.current_move]
+            distance_moved_x = fabs(self.old_pos_x - self.x)
+            distance_moved_y = fabs(self.old_pos_y - self.y)
+            if(curr_action[0:1] == "p"):
+                self.speed = 0
+                if self.time_spent_waiting > float(curr_action[1:]):
+                    self.speed = Racer.speed
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.time_spent_waiting = 0
+                else:
+                    self.time_spent_waiting += 1
+
+            if(curr_action[0:1] == "d"):
+                self.y += self.speed * interval
+                self.direction = "down"
+                self.set_direction("down")
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
+                if distance_moved_y > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_y = self.y
+
+            elif(curr_action[0:1] == "r"):
+                self.x += self.speed * interval
+                self.direction = "right"
+                self.set_direction("right")
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
+                if distance_moved_x > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_x = self.x
+
+            elif(curr_action[0:1] == "u"):
+                self.y -= self.speed * interval
+                self.direction = "up"
+                self.set_direction("up")
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
+                if distance_moved_y > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_y = self.y
+
+            elif(curr_action[0:1] == "l"):
+                self.direction = "left"
+                self.set_direction("left")
+                self.x -= self.speed * interval
+                #Must reset rect after direction change
+                self.rect = self.image.get_rect(center=self.rect.center)
+                if distance_moved_x > float(curr_action[1:]):
+                    if(self.current_move == len(self.movements) - 1):
+                        self.current_move = 0
+                    else:
+                        self.current_move += 1
+                    self.old_pos_x = self.x
+
+        else:
+            #add one to the number of cycles the enemy has waited
+            self.stop_time += 1
+
+    #method to set the direction
+    def set_direction(self, direction):
+        #set the image based on the direction
+        if direction == "right":
+            self.image = Racer.right
+        elif direction == "downright":
+            self.image = Racer.downright
+        elif direction == "down":
+            self.image = Racer.down
+        elif direction == "downleft":
+            self.image = Racer.downleft
+        elif direction == "left":
+            self.image = Racer.left
+        elif direction == "upleft":
+            self.image = Racer.upleft
+        elif direction == "up":
+            self.image = Racer.up
+        elif direction == "upright":
+            self.image = Racer.upright
+
+    def stop(self):
+        #Once stop_time is > 0, the enemy will stop
+        #Enemy will continue to be stopped until
+        #The cycle count reaches our max_stop_time
+        #Move function takes care of restarting enemy
+        self.stop_time = 1

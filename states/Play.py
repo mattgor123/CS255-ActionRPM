@@ -25,8 +25,8 @@ class Play(State.State):
         self.time = 0.00
 
     def init_levels(self):
-        self.add_level(Level_1.Level_1(self.player))
-        self.add_level(Level_2.Level_2(self.player))
+        #self.add_level(Level_1.Level_1(self.player))
+        #self.add_level(Level_2.Level_2(self.player))
         self.add_level(Level_3.Level_3(self.player))
 
     def update(self, interval):

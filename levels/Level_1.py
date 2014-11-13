@@ -69,9 +69,8 @@ class Level_1(Level):
             Constants.STATE.set_level(1)
 
     def draw(self, background):
-        self.check_objective()
-
         super(Level_1, self).draw(background)
+        self.check_objective()
 
     def init_map(self):
         self.map = Map.Map("level1.txt", 3)
