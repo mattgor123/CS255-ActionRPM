@@ -6,12 +6,11 @@ import map.Map as Map
 import pygame
 import sprites.Label as Label
 
-
 class Level_3(Level):
 
     def __init__(self, player):
         Level.__init__(self, player)
-        #self.init_enemies()
+        self.init_enemies()
         #self.init_items()
         self.PLAYER_START = [108, 40]
         self.is_beatable = False
@@ -52,15 +51,11 @@ class Level_3(Level):
     def init_enemies(self):
         #Put in enemies
         #This enemy is by the EZpass exit
-        self.enemies.add(Enemy.Enemy([39.2, 4.4], [
-            Constants.WIDTH, Constants.HEIGHT], 5, "down",
-            ["d3", "r1.8", "u3", "l1.8"]))
-        self.enemies.add(Enemy.Enemy([40.4, 17.5],
-                                [Constants.WIDTH, Constants.HEIGHT],
-                                5, "down", ["d12.5", "l16", "u12.5", "r16"]))
-        self.enemies.add(Enemy.Boss_1([70, 40],
-                                 [Constants.WIDTH,
-                                  Constants.HEIGHT]))
+        self.enemies.add(Enemy.Racer([104, 41], [
+            Constants.WIDTH, Constants.HEIGHT], 12, "up",
+            ["u24","l16", "d24", "l16", "d12.5", "r32", "d24", "l48",
+             "u12", "l15.5", "d12", "l31.5", "u48", "r32", "u24", "r15.5",
+             "d24", "r16", "u24", "r32", "d35.1" ,"p100"]))
 
     def update(self, interval):
         super(Level_3, self).update(interval)
