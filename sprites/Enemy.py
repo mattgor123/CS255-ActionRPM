@@ -1,7 +1,9 @@
 import pygame as game
 import util.SpriteSheet as SP
 from math import fabs
-
+import pygame
+import sprites.Label as Label
+import states.Constants as Constants
 
 class Enemy(game.sprite.Sprite):
     image = None

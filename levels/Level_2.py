@@ -31,7 +31,7 @@ class Level_2(Level):
         self.label_count = 0
 
     def check_objective(self):
-        if self.label_count < 375:
+        if self.label_count < 525:
             self.label_count += 1
             if self.label_count < 75:
                 self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
@@ -46,6 +46,17 @@ class Level_2(Level):
                 self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 0))
                 self.objectives.draw(Constants.SCREEN)
             elif self.label_count < 375:
+                self.objective_text = "Be careful, he likes to teleport"
+                self.objectives = pygame.sprite.Group()
+                self.objective = Label.Label("objective",self.objective_text, (175, 175))
+                self.objective.font = pygame.font.Font(None, 45)
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
+                self.objectives.add(self.objective)
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 450:
+                self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 0))
+                self.objectives.draw(Constants.SCREEN)
+            elif self.label_count < 525:
                 self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
                 self.objectives.draw(Constants.SCREEN)
 
