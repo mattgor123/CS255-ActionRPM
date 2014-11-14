@@ -7,6 +7,7 @@ import Label
 
 class HUD(PG.sprite.Sprite):
     dashboard = None
+    # TODO : Add an inventory! And if possible a Mini-map
     def __init__(self):
         PG.sprite.Sprite.__init__(self)
         self.image = PG.Surface((Constants.WIDTH, 150))
