@@ -6,6 +6,7 @@ from states.Constants import Constants
 import map.Map as Map
 import states.GameEnded
 import sprites.Fireball as Fireball
+import sprites.Checkpoint as Checkpoint
 
 
 # Must overwrite self.set_tiles()
@@ -61,9 +62,19 @@ class Level(object):
     def enemy_collision(self, player_coordinates):
         for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
+            all_tiles_in_enemy_range = self.map.get_tiles(enemy.x, enemy.y)
+            if type(enemy) == Enemy.Racer and self.map != None:
+                for checkpoint in self.enemies:
+                    if type(checkpoint) == Checkpoint.Checkpoint:
+                        if checkpoint.number == 4:
+                            if checkpoint.rect.colliderect(enemy.rect):
+                                if enemy.timer_on == False:
+                                    print ("Enemy has beaten race!")
+                                    enemy.start_timer()
+            #Fireball collisions
             if type(enemy) == Fireball.Fireball and self.map != None:
-                collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
-                for r in collidables_on_screen:
+                collidables_to_check = all_tiles_in_enemy_range
+                for r in collidables_to_check:
                     if r.get_strength() >= 0:
                         if r.rect.collidepoint(enemy.rect.midbottom):
                             enemy.y -= .1
@@ -77,13 +88,14 @@ class Level(object):
                         elif r.rect.collidepoint(enemy.rect.midright):
                             enemy.x -= .1
                             enemy.bounce(True)
+            #Boss 2 Collisions
             if type(enemy) == Enemy.Boss_1 and self.map != None:
-                collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
-                collidables_on_screen.append(self.player)
+                collidables_to_check = all_tiles_in_enemy_range
+                collidables_to_check.append(self.player)
                 #Here goes collision
                 collision_fixed = False
                 #Go through all of the collidable rects around the player
-                for r in collidables_on_screen:
+                for r in collidables_to_check:
                     #A strength >= 0 indicates a collidable object
                     #  -1 isnt collidable
                     if r.get_strength() >= 0:
@@ -177,10 +189,13 @@ class Level(object):
 
         #Here goes collision
         collision_fixed = False
-        #Go through all of the collidable rects around the player
+        #Go through all of the collidable rects around the playerssssss
         for r in collidables_on_screen:
             #A strength >= 0 indicates a collidable object
             #  -1 isnt collidable
+            if type(r) == Checkpoint.Checkpoint:
+                if r.rect.colliderect(self.player.rect):
+                    self.enemy_collided(r, 0)
             if r.get_strength() >= 0:
                 #This same if statement is repeated for all midpoints
                 #Checking if the midpoint of the car is in the other rect
