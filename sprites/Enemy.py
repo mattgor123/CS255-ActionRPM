@@ -1,7 +1,7 @@
 import pygame as game
-import util.SpriteSheet as SP
 from math import fabs
 import pygame
+import util.SpriteSheet as SP
 import sprites.Label as Label
 import states.Constants as Constants
 
@@ -12,7 +12,7 @@ class Enemy(game.sprite.Sprite):
     screen_height = 0
     should_change_motion_direction = False
     FRAME_SLOW = 10
-    #Number of cycles the enemy will stop for after hitting an enemy
+    # Number of cycles the enemy will stop for after hitting an enemy
     max_stop_time = 100
 
     # Enemy constructor takes an initial location, screendims for collisions,
@@ -73,6 +73,7 @@ class Enemy(game.sprite.Sprite):
 
     def get_strength(self):
         return 3
+
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
     Note : We wrote this function interpreting 'look' to mean the direction
@@ -80,6 +81,7 @@ class Enemy(game.sprite.Sprite):
     Please have pity on our souls for the duplicated/relatively ugly
     code...not currently being used.
     '''
+
     def move(self, interval):
         #If the stop_time is max_stop_time, then the enemy waited long enough
         #and can restart moving
@@ -92,53 +94,53 @@ class Enemy(game.sprite.Sprite):
             distance_moved_x = fabs(self.old_pos_x - self.x)
             distance_moved_y = fabs(self.old_pos_y - self.y)
 
-            if(curr_action[0:1] == "d"):
+            if (curr_action[0:1] == "d"):
                 self.y += self.speed * interval
                 self.direction = "down"
                 self.set_direction("down")
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_y > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_y = self.y
 
-            elif(curr_action[0:1] == "r"):
+            elif (curr_action[0:1] == "r"):
                 self.x += self.speed * interval
                 self.direction = "right"
                 self.set_direction("right")
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_x > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_x = self.x
 
-            elif(curr_action[0:1] == "u"):
+            elif (curr_action[0:1] == "u"):
                 self.y -= self.speed * interval
                 self.direction = "up"
                 self.set_direction("up")
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_y > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_y = self.y
 
-            elif(curr_action[0:1] == "l"):
+            elif (curr_action[0:1] == "l"):
                 self.direction = "left"
                 self.set_direction("left")
                 self.x -= self.speed * interval
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_x > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
@@ -193,7 +195,7 @@ class Boss_1(game.sprite.Sprite):
     screen_height = 0
     should_change_motion_direction = False
     FRAME_SLOW = 10
-    #Number of cycles the enemy will stop for before moving again
+    # Number of cycles the enemy will stop for before moving again
     max_wait_time = 65
 
     # Enemy constructor takes an initial location, screendims for collisions,
@@ -261,14 +263,14 @@ class Boss_1(game.sprite.Sprite):
     # facing the directopm of the Player then moves
     def update(self, interval, player_coordinates):
         #This means our guy will stay flashed for a few seconds
-        if(self.is_transporting and self.transport_time < 200):
+        if (self.is_transporting and self.transport_time < 200):
             self.strength = 1
             #self.waiting = True
             self.frame = 1
             self.set_image()
             self.transport_time += 1
         #This means its time to transpot our dude
-        elif(self.is_transporting and self.transport_time >= 200):
+        elif (self.is_transporting and self.transport_time >= 200):
             #The next few blocks reset the enemy's
             self.rect.topleft = self.transport_location
             self.x = self.transport_location[0]
@@ -315,14 +317,14 @@ class Boss_1(game.sprite.Sprite):
     #this moves the Enemy to where he is supposed to be based on the direction
     def turn(self, interval, player_coordinates):
 
-        if self.waited_time >= 2*Boss_1.max_wait_time:
+        if self.waited_time >= 2 * Boss_1.max_wait_time:
             self.waited_time = 0
             self.speed = 5
             self.waiting = False
             self.set_direction(self.direction)
 
         #This means our boss has waited long enough to move
-        if Boss_1.max_wait_time <= self.waited_time < 2*Boss_1.max_wait_time:
+        if Boss_1.max_wait_time <= self.waited_time < 2 * Boss_1.max_wait_time:
             #If our guy is gonna move, then he should be hurting the player
             self.strength = 3
             self.waiting = False
@@ -331,38 +333,39 @@ class Boss_1(game.sprite.Sprite):
             self.waited_time += 1
         #This if statement checks if the player is within 3 blocks of the boss
         elif abs(self.x - player_coordinates[0]) <= self.active_distance and \
-                abs(self.y - player_coordinates[1]) <= self.active_distance:
+                        abs(self.y - player_coordinates[
+                            1]) <= self.active_distance:
             self.waited_time += 1
             #Negative strength indicates that our enemy can be hurt
             self.strength = 0
             self.waiting = True
             if self.x < player_coordinates[0] and \
-                    abs(self.y - player_coordinates[1]) <= 1:
+                            abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "right"
                 self.set_direction("right")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x > player_coordinates[0] and \
-                    abs(self.y - player_coordinates[1]) <= 1:
+                            abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "left"
                 self.set_direction("left")
                 self.rect = self.image.get_rect(center=self.rect.center)
             if self.y < player_coordinates[1] and \
-                    abs(self.x - player_coordinates[0]) <= 1:
+                            abs(self.x - player_coordinates[0]) <= 1:
                 self.direction = "down"
                 self.set_direction("down")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.y > player_coordinates[1] and \
-                    abs(self.x - player_coordinates[0]) <= 1:
+                            abs(self.x - player_coordinates[0]) <= 1:
                 self.direction = "up"
                 self.set_direction("up")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x < player_coordinates[0] and \
-                    self.y - player_coordinates[1] >= 1:
+                                    self.y - player_coordinates[1] >= 1:
                 self.direction = "upright"
                 self.set_direction("upright")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x < player_coordinates[0] and \
-                    self.y - player_coordinates[1] <= -1:
+                                    self.y - player_coordinates[1] <= -1:
                 self.direction = "downright"
                 self.set_direction("downright")
                 self.rect = self.image.get_rect(center=self.rect.center)
@@ -372,7 +375,7 @@ class Boss_1(game.sprite.Sprite):
                 self.set_direction("upleft")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x > player_coordinates[0] and \
-                    self.y - player_coordinates[1] <= -1:
+                                    self.y - player_coordinates[1] <= -1:
                 self.direction = "downleft"
                 self.set_direction("downleft")
                 self.rect = self.image.get_rect(center=self.rect.center)
@@ -380,23 +383,23 @@ class Boss_1(game.sprite.Sprite):
     def move(self, interval):
 
         if self.direction == "up":
-            self.y -= self.speed*interval
-        elif(self.direction == "down"):
-            self.y += self.speed*interval
-        elif(self.direction == "right"):
-            self.x += self.speed*interval
-        elif(self.direction == "left"):
-            self.x -= self.speed*interval
-        if(self.direction == "upright"):
+            self.y -= self.speed * interval
+        elif (self.direction == "down"):
+            self.y += self.speed * interval
+        elif (self.direction == "right"):
+            self.x += self.speed * interval
+        elif (self.direction == "left"):
+            self.x -= self.speed * interval
+        if (self.direction == "upright"):
             self.x += self.speed * interval * .7071
             self.y -= self.speed * interval * .7071
-        elif(self.direction == "downright"):
+        elif (self.direction == "downright"):
             self.x += self.speed * interval * .7071
             self.y += self.speed * interval * .7071
-        elif(self.direction == "upleft"):
+        elif (self.direction == "upleft"):
             self.x -= self.speed * interval * .7071
             self.y -= self.speed * interval * .7071
-        elif(self.direction == "downleft"):
+        elif (self.direction == "downleft"):
             self.x -= self.speed * interval * .7071
             self.y += self.speed * interval * .7071
 
@@ -439,14 +442,15 @@ class Boss_1(game.sprite.Sprite):
     def get_health(self):
         """Returns the health of the enemy from 0-100"""
         #Divide by 5 to get the ratio out of 100
-        return self.health/5
+        return self.health / 5
+
 
 class Racer(game.sprite.Sprite):
     image = None
     screen_width = 0
     screen_height = 0
     FRAME_SLOW = 10
-    #Number of cycles the enemy will stop for after hitting an enemy
+    # Number of cycles the enemy will stop for after hitting an enemy
     max_stop_time = 100
     right = None
     up = None
@@ -458,14 +462,11 @@ class Racer(game.sprite.Sprite):
     upright = None
     speed = None
 
-
     # Enemy constructor takes an initial location, screendims for collisions,
     # a speed, and a starting direction
     def __init__(self, location, screensize,
                  speed, direction, move_array):
-
         game.sprite.Sprite.__init__(self)
-
         Enemy.screen_width = screensize[0]
         Enemy.screen_height = screensize[1]
         if Racer.image is None:
@@ -518,6 +519,7 @@ class Racer(game.sprite.Sprite):
 
     def get_strength(self):
         return 3
+
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
     Note : We wrote this function interpreting 'look' to mean the direction
@@ -525,6 +527,7 @@ class Racer(game.sprite.Sprite):
     Please have pity on our souls for the duplicated/relatively ugly
     code...not currently being used.
     '''
+
     def move(self, interval):
         #If the stop_time is max_stop_time, then the enemy waited long enough
         #and can restart moving
@@ -535,13 +538,13 @@ class Racer(game.sprite.Sprite):
             curr_action = self.movements[self.current_move]
             distance_moved_x = fabs(self.old_pos_x - self.x)
             distance_moved_y = fabs(self.old_pos_y - self.y)
-            if(curr_action[0:1] == "s"):
+            if (curr_action[0:1] == "s"):
                 self.speed = 0
-            if(curr_action[0:1] == "p"):
+            if (curr_action[0:1] == "p"):
                 self.speed = 0
                 if self.time_spent_waiting > float(curr_action[1:]):
                     self.speed = Racer.speed
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
@@ -549,53 +552,53 @@ class Racer(game.sprite.Sprite):
                 else:
                     self.time_spent_waiting += 1
 
-            if(curr_action[0:1] == "d"):
+            if (curr_action[0:1] == "d"):
                 self.y += self.speed * interval
                 self.direction = "down"
                 self.set_direction("down")
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_y > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_y = self.y
 
-            elif(curr_action[0:1] == "r"):
+            elif (curr_action[0:1] == "r"):
                 self.x += self.speed * interval
                 self.direction = "right"
                 self.set_direction("right")
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_x > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_x = self.x
 
-            elif(curr_action[0:1] == "u"):
+            elif (curr_action[0:1] == "u"):
                 self.y -= self.speed * interval
                 self.direction = "up"
                 self.set_direction("up")
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_y > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1
                     self.old_pos_y = self.y
 
-            elif(curr_action[0:1] == "l"):
+            elif (curr_action[0:1] == "l"):
                 self.direction = "left"
                 self.set_direction("left")
                 self.x -= self.speed * interval
                 #Must reset rect after direction change
                 self.rect = self.image.get_rect(center=self.rect.center)
                 if distance_moved_x > float(curr_action[1:]):
-                    if(self.current_move == len(self.movements) - 1):
+                    if (self.current_move == len(self.movements) - 1):
                         self.current_move = 0
                     else:
                         self.current_move += 1

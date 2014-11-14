@@ -2,7 +2,6 @@ from states import Constants
 
 
 class LevelChanger():
-
     def __init__(self):
         self.current_level = -1
         self.levels = []
@@ -20,4 +19,3 @@ class LevelChanger():
         # Change player pos based on level to switch to
         self.levels[self.current_level].player(self.curplayer)
         Constants.STATE = self.levels[self.current_level]
-

@@ -1,21 +1,21 @@
+import pygame
+
 import State
 from sprites import Player
 from sprites import HUD
-from sprites import Label
 from Constants import Constants
 import Menu
-import pygame
 import levels.Level_1 as Level_1
 import levels.Level_2 as Level_2
 import levels.Level_3 as Level_3
 
 
 class Play(State.State):
-
-    #TODO : Let's start thinking about points mechanisms & also health & NOS??
+    # TODO : Let's start thinking about points mechanisms & also health & NOS??
     def __init__(self):
         super(Play, self).__init__()
-        self.player = Player.Player([8, 6], [Constants.WIDTH, Constants.HEIGHT])
+        self.player = Player.Player([8, 6], [Constants.WIDTH,
+                                             Constants.HEIGHT])
         self.players = pygame.sprite.Group()
         self.players.add(self.player)
         self.hud = HUD.HUD()
@@ -56,7 +56,8 @@ class Play(State.State):
         self.current_level = level_num
         if self.levels[self.current_level] is None:
             raise Exception
-        self.player.set_coordinates(self.levels[self.current_level].PLAYER_START)
+        self.player.set_coordinates(
+            self.levels[self.current_level].PLAYER_START)
         self.levels[self.current_level].init_map()
 
     def keyEvent(self, event):
@@ -64,11 +65,14 @@ class Play(State.State):
             if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                 Constants.STATE = Menu.Menu()
             elif event.key == pygame.K_LEFT:
-                self.hud.radio.decrement_current_index_and_play()
+                if self.hud.radio.is_on:
+                    self.hud.radio.decrement_current_index_and_play()
             elif event.key == pygame.K_RIGHT:
-                self.hud.radio.increment_current_index_and_play()
+                if self.hud.radio.is_on:
+                    self.hud.radio.increment_current_index_and_play()
             elif event.key == pygame.K_KP0:
-                self.hud.radio.play_random_song()
+                if self.hud.radio.is_on:
+                    self.hud.radio.play_random_song()
             elif event.key == pygame.K_o:
                 self.hud.radio.toggle_radio()
         #For debugging purposes ... print where you click on screen

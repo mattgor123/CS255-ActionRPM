@@ -1,9 +1,10 @@
 import pygame
+
 import Tile
 
 
 class Wall(Tile.Tile):
-    #Sidewalks
+    # Sidewalks
     a_wall = None
     q_wall = None
     z_wall = None
@@ -150,7 +151,6 @@ class Wall(Tile.Tile):
         else:
             self.image = Wall.sm_building_1
 
-
         self.rect = self.image.get_rect()
         # self.rect.center = location
         self.x = x
@@ -171,7 +171,7 @@ class Wall(Tile.Tile):
             "images/sprites/wall/vertical_right_sidewalk.png")
         Wall.d_wall = pygame.image.load(
             "images/sprites/wall/empty_sidewalk.png")
-        Wall.e_wall  = pygame.image.load(
+        Wall.e_wall = pygame.image.load(
             "images/sprites/wall/tl_sidewalk.png")
         Wall.r_wall = pygame.image.load(
             "images/sprites/wall/tr_sidewalk.png")
@@ -247,6 +247,3 @@ class Wall(Tile.Tile):
         Wall.lrg_5_br = pygame.image.load(
             "images/sprites/buildings/lrg_building_5_br.png")
         Wall.has_images = True
-
-
-

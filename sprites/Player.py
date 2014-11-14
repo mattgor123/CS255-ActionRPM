@@ -1,10 +1,9 @@
 import pygame as game
 from states.Constants import Constants
 import util.SpriteSheet as SS
-import Tile
-import math
 
 
+# TODO : Player health animation doesnt change until ya let go of arrow key
 class Player(game.sprite.Sprite):
     #Variables for the images
     full_stopped = None
@@ -149,7 +148,7 @@ class Player(game.sprite.Sprite):
         self.dir_changed = False
 
         #Initially assume we are slowing down
-        acceleration = -2*Constants.PLAYER_ACCELERATION
+        acceleration = -2 * Constants.PLAYER_ACCELERATION
         #Get the keys pressed
         keys_pressed = game.key.get_pressed()
         if keys_pressed[game.K_a] and keys_pressed[game.K_w]:
@@ -211,13 +210,13 @@ class Player(game.sprite.Sprite):
 
         if keys_pressed[game.K_SPACE]:
             self.breaking = True
-            acceleration = -4*Constants.PLAYER_ACCELERATION
+            acceleration = -4 * Constants.PLAYER_ACCELERATION
         #Check if the new speed will put us over or under our max/min
         #Before we set the speed
-        if self.speed + acceleration * interval >\
+        if self.speed + acceleration * interval > \
                 Constants.PLAYER_MAX_SPEED:
             self.speed = Constants.PLAYER_MAX_SPEED
-        elif self.speed + acceleration * interval <\
+        elif self.speed + acceleration * interval < \
                 Constants.PLAYER_MIN_SPEED:
             self.speed = Constants.PLAYER_MIN_SPEED
         else:

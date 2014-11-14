@@ -7,7 +7,7 @@ class Label(game.sprite.Sprite):
 
     def __init__(self, name, inittext, location):
         game.sprite.Sprite.__init__(self)
-        #will make font sexier later
+        # will make font sexier later
         self.font = game.font.Font(None, 30)
         self.text = inittext
         self.image = self.font.render(self.text, 1, (0, 255, 0))
@@ -25,7 +25,7 @@ class Label(game.sprite.Sprite):
         else:
             self.image = self.font.render(self.text, 1, (255, 0, 0))
 
-    #one method for all the updates - type will be used kinda like an enum
+    # one method for all the updates - type will be used kinda like an enum
     def update(self, param):
         if self.name == "health":
             #Get appropriate Label color based on health

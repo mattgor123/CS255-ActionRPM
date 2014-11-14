@@ -7,6 +7,7 @@ class Checkpoint(pygame.sprite.Sprite):
     right_img = None
     finish = None
     has_images = False
+
     def __init__(self, number, location):
         pygame.sprite.Sprite.__init__(self)
         if not Checkpoint.has_images:
@@ -25,7 +26,6 @@ class Checkpoint(pygame.sprite.Sprite):
         self.x = location[0]
         self.y = location[1]
 
-
     @staticmethod
     def set_images():
         Checkpoint.up_img = pygame.image.load(
@@ -38,5 +38,6 @@ class Checkpoint(pygame.sprite.Sprite):
             "images/sprites/street/finish.png")
         Checkpoint.has_images = True
 
+    @staticmethod
     def get_strength(self):
         return -1

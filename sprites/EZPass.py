@@ -1,5 +1,6 @@
-import Item
 import pygame
+
+import Item
 
 
 class EZPass(Item.Item):

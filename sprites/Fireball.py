@@ -1,9 +1,10 @@
 import pygame
 
 
-#This is the Racer's weapon
+# This is the Racer's weapon
 class Fireball(pygame.sprite.Sprite):
     image = None
+
     def __init__(self, speed, initial_direction, location, duration, strength):
         pygame.sprite.Sprite.__init__(self)
         if Fireball.image is None:

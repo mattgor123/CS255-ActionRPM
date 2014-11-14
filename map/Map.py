@@ -1,18 +1,17 @@
 import pygame as PG
+import math
+
 from sprites.Tile import Tile
 import sprites.Wall as Wall
 import sprites.Street as Street
 import sprites.TollBooth as EZPass
 import sprites
 from states.Constants import Constants
-import math
-import random
 
 
 class Map():
-
     # Width of map a single letter counts for
-    LETTER_WIDTH = Constants.WIDTH / Tile.WIDTH    # 10
+    LETTER_WIDTH = Constants.WIDTH / Tile.WIDTH  # 10
     # Height of map a single letter counts for
     LETTER_HEIGHT = Constants.HEIGHT / Tile.HEIGHT  # 10
     # Maximum number of letters to read
@@ -67,7 +66,7 @@ class Map():
     # Creates an object represented by the given char
     def resolve(self, char, x, y, map_x, map_y):
         to_return = None
-        #Streets
+        # Streets
         if char == 's':
             to_return = sprites.Street.Street(map_x, map_y, "empty")
         elif char == 'h':
@@ -255,7 +254,7 @@ class Map():
             for j in range(y - Map.TILE_RANGE - 1, y + Map.TILE_RANGE + 1):
                 if self.inbound(i, j):
                     to_return.append(self.map[i][j])
-            #print i, ",", j
+                    # print i, ",", j
         return to_return
 
     # Checks if the given coordinates x,y are in the bounds of the map
