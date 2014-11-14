@@ -5,6 +5,7 @@ import sprites.Enemy as Enemy
 from states.Constants import Constants
 import map.Map as Map
 import states.GameEnded
+import sprites.Fireball as Fireball
 
 
 # Must overwrite self.set_tiles()
@@ -60,7 +61,22 @@ class Level(object):
     def enemy_collision(self, player_coordinates):
         for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
-
+            if type(enemy) == Fireball.Fireball:
+                collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
+                for r in collidables_on_screen:
+                    if r.get_strength() >= 0:
+                        if r.rect.collidepoint(enemy.rect.midbottom):
+                            enemy.y -= .1
+                            enemy.bounce(False)
+                        elif r.rect.collidepoint(enemy.rect.midtop):
+                            enemy.y += .1
+                            enemy.bounce(False)
+                        elif r.rect.collidepoint(enemy.rect.midleft):
+                            enemy.x += .1
+                            enemy.bounce(True)
+                        elif r.rect.collidepoint(enemy.rect.midright):
+                            enemy.x -= .1
+                            enemy.bounce(True)
             if type(enemy) == Enemy.Boss_1:
                 collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
                 collidables_on_screen.append(self.player)

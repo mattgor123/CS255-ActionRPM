@@ -1,6 +1,7 @@
 import pygame as game
 import util.SpriteSheet as SP
 from math import fabs
+import Fireball
 
 
 class Enemy(game.sprite.Sprite):
@@ -625,3 +626,7 @@ class Racer(game.sprite.Sprite):
         #The cycle count reaches our max_stop_time
         #Move function takes care of restarting enemy
         self.stop_time = 1
+
+    def update_speed(self, new_speed):
+        Racer.speed = new_speed
+        self.speed = Racer.speed

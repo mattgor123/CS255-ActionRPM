@@ -70,7 +70,8 @@ class Radio(PG.sprite.Sprite):
             Radio.current_index = random.randrange(0, Radio.max_index)
 
         if Radio.volume is None:
-            Radio.volume = 1
+            Radio.volume = 0
+            #Radio.volume = 1
 
         Radio.label = Label.Label("nowplaying", "",(0,0))
         Radio.text_rect = pygame.Rect(268,65,170,31)
