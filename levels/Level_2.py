@@ -12,8 +12,6 @@ import states.Level_2_Cutscene as Level_2_Cutscene
 class Level_2(Level):
     # TODO : Add health packs, make it so you can't beat with just EZ Pass,
     # possibly add another cooler mechanic than beating da OG bawse
-    # TODO : Add the tollbooth to the bottom so it's obvious why you're going
-    # back to level 1 if you go off the bottom.
     #TODO : Make the exit leading to level 3 on the left side of the map,
     # a T rotated 90 degrees clockwise, for cohesion with level 3.
     def __init__(self, player):

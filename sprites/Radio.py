@@ -96,12 +96,14 @@ class Radio(PG.sprite.Sprite):
     @staticmethod
     def toggle_radio():
         if Radio.is_on:
-            PG.mixer.music.stop()
+            PG.mixer.music.pause()
             Radio.label.update("")
             Radio.is_on = False
         else:
-            Radio.increment_current_index_and_play()
             Radio.is_on = True
+            Radio.label.update(Radio.song_names[Radio.current_index])
+            PG.mixer.music.unpause()
+
 
     @staticmethod
     def increment_current_index_and_play():
@@ -145,21 +147,20 @@ class Radio(PG.sprite.Sprite):
             self.display_volume_timer += 1
             if not PG.mixer.music.get_busy():
                 Radio.increment_current_index_and_play()
-        keys_pressed = PG.key.get_pressed()
-        if keys_pressed[PG.K_UP]:
-            self.display_volume_timer = 0
-            Radio.volume = min(1, Radio.volume + .01)
-            PG.mixer.music.set_volume(Radio.volume)
-            Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
-        elif keys_pressed[PG.K_DOWN]:
-            self.display_volume_timer = 0
-            Radio.volume = max(0, Radio.volume - .01)
-            PG.mixer.music.set_volume(Radio.volume)
-            Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
-        if self.display_volume_timer >= 100:
-            Radio.label.update(Radio.song_names[Radio.current_index])
-            self.display_volume_timer = 0
-
+            keys_pressed = PG.key.get_pressed()
+            if keys_pressed[PG.K_UP]:
+                self.display_volume_timer = 0
+                Radio.volume = min(1, Radio.volume + .01)
+                PG.mixer.music.set_volume(Radio.volume)
+                Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
+            elif keys_pressed[PG.K_DOWN]:
+                self.display_volume_timer = 0
+                Radio.volume = max(0, Radio.volume - .01)
+                PG.mixer.music.set_volume(Radio.volume)
+                Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
+            if self.display_volume_timer >= 100:
+                Radio.label.update(Radio.song_names[Radio.current_index])
+                self.display_volume_timer = 0
 
 '''
    def __del__(self):
