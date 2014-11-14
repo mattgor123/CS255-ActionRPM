@@ -38,7 +38,7 @@ class Level_2_Cutscene(State.State):
                 # Constants.Levels.append(None)
                 # Constants.Levels.append(None)
                 # Constants.Levels[0] = Level_1.Level_1()
-                Constants.STATE = Play.Play()
+                Constants.STATE = Constants.PLAY
                 #Go to 3rd level
                 Constants.STATE.set_level(2)
             else:

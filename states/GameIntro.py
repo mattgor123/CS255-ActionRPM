@@ -1,6 +1,5 @@
 import pygame
 import pygame.display as display
-import Level_1
 import State
 from Play import Play
 from Constants import Constants
@@ -38,7 +37,9 @@ class GameIntro(State.State):
                 # Constants.Levels.append(None)
                 # Constants.Levels.append(None)
                 # Constants.Levels[0] = Level_1.Level_1()
-                Constants.STATE = Play()
+                Constants.PLAY = Play()
+                Constants.STATE = Constants.PLAY
+                #Constants.STATE = Play()
                 Constants.STATE.set_level(0)
             else:
                 self.current_display += 1
