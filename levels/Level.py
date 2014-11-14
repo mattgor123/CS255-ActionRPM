@@ -61,7 +61,7 @@ class Level(object):
     def enemy_collision(self, player_coordinates):
         for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
-            if type(enemy) == Fireball.Fireball:
+            if type(enemy) == Fireball.Fireball and self.map != None:
                 collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
                 for r in collidables_on_screen:
                     if r.get_strength() >= 0:
@@ -77,8 +77,6 @@ class Level(object):
                         elif r.rect.collidepoint(enemy.rect.midright):
                             enemy.x -= .1
                             enemy.bounce(True)
-            if type(enemy) == Enemy.Boss_1:
-
             if type(enemy) == Enemy.Boss_1 and self.map != None:
                 collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
                 collidables_on_screen.append(self.player)
