@@ -31,6 +31,12 @@ class Level_2(Level):
         self.objective.image = self.objective.font.render(self.objective_text, 1, (255, 255, 255))
         self.objectives.add(self.objective)
         self.label_count = 0
+        self.health_text = "Enemy Health: 100%"
+        self.enemy_health = pygame.sprite.Group()
+        self.enemy_health_label = Label.Label("enemy_health", "Enemy Health: ", (250, 20))
+        self.enemy_health_label.font = pygame.font.Font(None, 35)
+        self.enemy_health_label.image = self.enemy_health_label.font.render("Enemy Health: ", 1, (51, 255, 51))
+        self.enemy_health.add(self.enemy_health_label)
 
     def check_objective(self):
         if self.label_count < 525:
@@ -86,6 +92,9 @@ class Level_2(Level):
     def draw(self, background):
         super(Level_2, self).draw(background)
         self.check_objective()
+
+        self.enemy_health.update(self.boss.get_health())
+        self.enemy_health.draw(Constants.SCREEN)
 
     def init_map(self):
         self.map = Map.Map("level2.txt", 5)

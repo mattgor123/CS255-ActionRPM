@@ -260,8 +260,6 @@ class Boss_1(game.sprite.Sprite):
     # this is the update method with a parameter - it ensures the Enemy is
     # facing the directopm of the Player then moves
     def update(self, interval, player_coordinates):
-        if self.health == 0:
-            print "dead"
         #This means our guy will stay flashed for a few seconds
         if(self.is_transporting and self.transport_time < 200):
             self.strength = 1
@@ -291,7 +289,6 @@ class Boss_1(game.sprite.Sprite):
             self.health = 0
         else:
             self.health -= damage
-            print self.get_health()
             #Must use the health out of 500
             #So 375/500 = 75
             if self.health + damage >= 375 and self.health < 375:
