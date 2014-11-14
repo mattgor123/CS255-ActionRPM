@@ -9,6 +9,8 @@ import states.Level_2_Cutscene as Level_2_Cutscene
 
 class Level_2(Level):
 
+    #TODO : Add health packs, make it so you can't beat with just EZ Pass,
+    # possibly add another cooler mechanic than beating da OG bawse
     def __init__(self, player):
         Level.__init__(self, player)
         self.init_enemies()

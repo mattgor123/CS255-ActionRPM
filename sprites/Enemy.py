@@ -492,6 +492,8 @@ class Racer(game.sprite.Sprite):
         Racer.speed = speed
         self.speed = speed
         self.rect = self.image.get_rect()
+        self.timer = 0
+        self.timer_on = False
 
         #make sure it is in the appropriate location
         self.rect.topleft = location
@@ -514,6 +516,8 @@ class Racer(game.sprite.Sprite):
     # facing opposite dir of the Player then updates
     def update(self, interval, player_coordinates):
         self.move(interval)
+        if self.timer_on:
+            self.timer += 1
 
     def get_strength(self):
         return 3
@@ -534,6 +538,8 @@ class Racer(game.sprite.Sprite):
             curr_action = self.movements[self.current_move]
             distance_moved_x = fabs(self.old_pos_x - self.x)
             distance_moved_y = fabs(self.old_pos_y - self.y)
+            if(curr_action[0:1] == "s"):
+                self.speed = 0
             if(curr_action[0:1] == "p"):
                 self.speed = 0
                 if self.time_spent_waiting > float(curr_action[1:]):
@@ -601,6 +607,10 @@ class Racer(game.sprite.Sprite):
         else:
             #add one to the number of cycles the enemy has waited
             self.stop_time += 1
+
+    #Used to calculate how long it's been since enemy crossed finish
+    def start_timer(self):
+        self.timer_on = True
 
     #method to set the direction
     def set_direction(self, direction):

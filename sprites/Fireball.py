@@ -4,7 +4,7 @@ import pygame
 #This is the Racer's weapon
 class Fireball(pygame.sprite.Sprite):
     image = None
-    def __init__(self, speed, initial_direction, location, duration):
+    def __init__(self, speed, initial_direction, location, duration, strength):
         pygame.sprite.Sprite.__init__(self)
         if Fireball.image is None:
             Fireball.image = pygame.image.load("images/sprites/fireball.png")
@@ -16,9 +16,10 @@ class Fireball(pygame.sprite.Sprite):
         self.duration = duration
         self.direction = initial_direction
         self.speed = speed
+        self.strength = strength
 
     def get_strength(self):
-        return 1
+        return self.strength
 
     def update(self, interval, player_coordinates):
         self.duration -= 1

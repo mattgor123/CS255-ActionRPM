@@ -70,5 +70,6 @@ class Play(State.State):
                 self.hud.radio.play_random_song()
             elif event.key == pygame.K_o:
                 self.hud.radio.toggle_radio()
+        #For debugging purposes ... print where you click on screen
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print(pygame.mouse.get_pos())
