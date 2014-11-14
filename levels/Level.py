@@ -192,7 +192,7 @@ class Level(object):
             if type(r) == Checkpoint.Checkpoint:
                 if r.rect.colliderect(self.player.rect):
                     self.enemy_collided(r, 0)
-            if r.get_strength() >= 0:
+            elif r.get_strength() >= 0:
                 #This same if statement is repeated for all midpoints
                 #Checking if the midpoint of the car is in the other rect
                 #This midpoint check tells us how to fix the car's position

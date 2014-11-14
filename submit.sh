@@ -14,6 +14,7 @@ cp -r states cs255-assignment-$1-actionrpm
 cp -r images cs255-assignment-$1-actionrpm
 cp -r sprites cs255-assignment-$1-actionrpm
 cp -r util cs255-assignment-$1-actionrpm
+cp -r levels cs255-assignment-$1-actionrpm
 cp game.py cs255-assignment-$1-actionrpm
 cp README cs255-assignment-$1-actionrpm
 
