@@ -5,7 +5,7 @@ from states.GameEnded import GameEnded
 import map.Map as Map
 import pygame
 import sprites.Label as Label
-
+import states.Level_2_Cutscene as Level_2_Cutscene
 
 class Level_2(Level):
 
@@ -69,9 +69,10 @@ class Level_2(Level):
         self.enemies.add(Enemy.Enemy([40.4, 17.5],
                                 [Constants.WIDTH, Constants.HEIGHT],
                                 5, "down", ["d12.5", "l16", "u12.5", "r16"]))
-        self.enemies.add(Enemy.Boss_1([8, 5],
+        self.boss = Enemy.Boss_1([8, 5],
                                  [Constants.WIDTH,
-                                  Constants.HEIGHT]))
+                                  Constants.HEIGHT])
+        self.enemies.add(self.boss)
 
     def update(self, interval):
         super(Level_2, self).update(interval)
@@ -100,9 +101,9 @@ class Level_2(Level):
         #Are derived from
         if(damage == 0 and type(enemy) is Enemy.Boss_1):
             enemy.hurt(3)
-            #Sets the game to game over if we kill the boss
+            #Sets the game to our cutscene if the boss is dead
             if enemy.get_health() == 0:
-                self.game_over(False)
+                Constants.STATE = Level_2_Cutscene.Level_2_Cutscene()
         #If we hit an enemy, make the enemy stop
         elif type(enemy) is Enemy.Enemy:
             enemy.stop()

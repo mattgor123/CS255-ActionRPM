@@ -61,7 +61,7 @@ class Level(object):
         for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
 
-            if type(enemy) == Enemy.Boss_1:
+            if type(enemy) == Enemy.Boss_1 and self.map != None:
                 collidables_on_screen = self.map.get_tiles(enemy.x, enemy.y)
                 collidables_on_screen.append(self.player)
                 #Here goes collision
