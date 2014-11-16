@@ -85,7 +85,7 @@ class Player(game.sprite.Sprite):
     #Method to add an item to a player's inventory
     def grab(self, item):
         if item.name == "healthpack":
-            self.health += 30
+            self.heal(30)
             return
         self.inventory.append(item.name)
 
@@ -366,8 +366,10 @@ class Player(game.sprite.Sprite):
 
     #Calculates our player's health
     def calculate_health(self):
-        self.health = Constants.PLAYER_STARTING_HEALTH - (
-            self.damage / (10 * (11 - self.difficulty)))
+        self.health -= (self.damage / 10.0)
+        self.damage = 0
+            # Constants.PLAYER_STARTING_HEALTH - (
+            # self.damage / (10 * (11 - self.difficulty)))
         if not self.current_health == "quarter" and self.health < 25:
             self.current_health = "quarter"
         elif not self.current_health == "half" and 25 < self.health < 75:
@@ -376,10 +378,10 @@ class Player(game.sprite.Sprite):
             self.current_health = "full"
         return self.health
 
-    def heal(self):
-        self.damage -= 150
-        if self.damage < 0:
-            self.damage = 0
+    def heal(self, amount):
+        self.health += amount
+        if self.health > Constants.PLAYER_STARTING_HEALTH:
+            self.health = Constants.PLAYER_STARTING_HEALTH
 
     def check_health(self, pack):
         index = 0

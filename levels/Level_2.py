@@ -26,6 +26,10 @@ class Level_2(Level):
     def init_items(self):
         #Create miscellaneous shit
         self.items.add(HealthPack.HealthPack(70, 55))
+        self.items.add(HealthPack.HealthPack(8, 10))
+        self.items.add(HealthPack.HealthPack(30, 29))
+        self.items.add(HealthPack.HealthPack(72, 17))
+        self.items.add(HealthPack.HealthPack(37, 5))
 
     def init_labels(self):
         self.objective_text = "Wreck the boss car to win back your girl!"
