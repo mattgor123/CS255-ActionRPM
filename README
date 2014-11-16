@@ -9,6 +9,19 @@ To run our game, go into the directory actionrpm/ and run the command "python
 game.py"
 
 Current Assignment Notes
+11/16
+Problem 1) Level 3
+We made some pretty serious headway this week. Level 3 is a RACE level where you have to follow around your dad's boss! If you beat him, you get your house back and you're on to the last step of getting your whole entire life back. But if you don't, your girlfriend leaves you (cuz who wants to date a homeless bum?) and you become a depressed mess. So beat your boss! You can do it! The Racer boss lives in the Enemy and shoots FIREBALLS which do damage. He also gets faster & stronger (shooting fireballs more frequently AND they do more damage) as you pass checkpoints.
+
+Ultimately, we're gonna implement a mechanic where if you beat him, you get MAD bonus points and also possibly get to use his gun! (Although we might give you his fireball gun anyways, depending on how hard Level 4 is without it). But for now, if you beat him, you just get a nice little cutscene and a new high score. You also now get a cutscene between level 2 and 3 which is pretty cool.
+
+Problem 2) Technical, Artistic, and Game Play Progress
+
+We made a ton of progress in our visuals. No longer laggy, no longer glitchy when stuff collides. Our radio dashboard looks a lot better now too. We're working on implementing an inventory, although we have a few more urgent priorities before that. We added a bunch of cutscenes between levels 2 and 3. Also, we continued adding music to our game. Our next step is trying to implement a mini-map, although that's proving to be a lot more difficult than we expected. However the module will ultimately be something that the Player can bring up by pressing a key (like the Return/Enter key or something), and it'll show a mini-map over where the Speedometer is for a few seconds, something of that sort. Also we now have a 'shooting' animation (although so far only the enemies can shoot fireballs, because we haven't made level 4 yet, but our cutscenes between level 3 and 4 will describe how you impress the boss, your father lets you back in the house, and you steal the boss's guns). Oh, we also got rid of that heinous screech.wav sound we had before for when you collided with a wall. We're working on finding a good one to replace it.
+
+--NOTE: We need to revamp our scoring system. This will be a simple level where you get points based on how quickly you beat the race (and also how much health you have upon beating it). But for now, our scoring is a little bit whacky. But we will work to fix this in the coming days.
+
+Previous Assignment Notes
 11/9
 
 NOTE BEFORE THE LISTS:
@@ -50,7 +63,6 @@ Most of our changes were either related to graphics or our code design. We wante
 
 4) Our art isn't all that great, but it gets the job done and fits our style. We will continue to improve as we make progress.
 
-Previous Assignment Notes
 11/2
 
 Problem 1: Level Two (60%)

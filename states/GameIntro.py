@@ -1,12 +1,13 @@
 import pygame
+
 import pygame.display as display
-import Level_1
+
 import State
 from Play import Play
 from Constants import Constants
 
 
-# This is the state for playing the game
+# This is the state for before level 1, the game starting
 class GameIntro(State.State):
     images = None
     delay = 500
@@ -29,7 +30,7 @@ class GameIntro(State.State):
         self.timer = 0
         display.update()
 
-    #Function to draw the sprite groups
+    # Function to draw the sprite groups
     def draw(self):
         if self.timer >= GameIntro.delay:
             self.timer = 0
@@ -38,7 +39,9 @@ class GameIntro(State.State):
                 # Constants.Levels.append(None)
                 # Constants.Levels.append(None)
                 # Constants.Levels[0] = Level_1.Level_1()
-                Constants.STATE = Play()
+                Constants.PLAY = Play()
+                Constants.STATE = Constants.PLAY
+                #Constants.STATE = Play()
                 Constants.STATE.set_level(0)
             else:
                 self.current_display += 1

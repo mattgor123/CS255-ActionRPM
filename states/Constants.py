@@ -16,3 +16,4 @@ class Constants(object):
     PLAYER_STARTING_HEALTH = 100
     HIGH_SCORE_FILE = 'scores.dat'
     START_SCORE = 1000
+    PLAY = None

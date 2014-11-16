@@ -1,7 +1,7 @@
-import State
-import Menu
 import pygame
 import pygame.display as display
+import State
+import Menu
 from Constants import Constants
 
 
@@ -28,7 +28,7 @@ class GameEnded(State.State):
             game_ended_rect = game_ended.get_rect()
             game_ended_rect.center = background.get_rect().center
             Constants.SCREEN.blit(game_ended, game_ended_rect)
-            #Center our 'Press any key text'
+            # Center our 'Press any key text'
             font = pygame.font.Font(None, 30)
             presskey = font.render("Press the ESC key to quit, or (m) "
                                    "to go back to the Menu", 1,

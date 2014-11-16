@@ -1,5 +1,6 @@
-import Openable
 import pygame
+
+import Openable
 
 
 class TollBooth(Openable.Openable):

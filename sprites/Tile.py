@@ -2,7 +2,6 @@ import pygame as PG
 
 
 class Tile(PG.sprite.Sprite):
-
     HEIGHT = 50
     WIDTH = 50
 

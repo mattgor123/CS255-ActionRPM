@@ -3,7 +3,6 @@ import pygame.display as display
 import State
 import GameIntro
 import HighScore
-
 from Constants import Constants
 
 
@@ -19,21 +18,21 @@ class Menu(State.State):
         self.text_font = pygame.font.Font(None, Constants.WIDTH / 30)
         self.selected = 0
         self.moved = True
-        #TODO : Make this shit not suck (aka organize our code a bit)
+        # TODO : Make this shit not suck (aka organize our code a bit)
         if pygame.mixer is not None:
             pygame.mixer.music.pause()
         if Menu.image is None:
             Menu.image = pygame.image.load("images/action_rpm_title_car.png")
         self.image = Menu.image
 
-    #Function to draw the sprite groups
+    # Function to draw the sprite groups
     def draw(self):
         if self.moved:
             Constants.SCREEN.fill((0, 0, 0))
             self.play_color, self.adjustv_color, self.adjusta_color, \
-                self.high_color, self.quit_color, self.text_color = ((255, 255,
-                                                                      255),) \
-                * 6
+            self.high_color, self.quit_color, self.text_color = ((255, 255,
+                                                                  255),) \
+                                                                * 6
 
             if (self.selected == 0):
                 self.play_color = (255, 255, 0)

@@ -1,8 +1,8 @@
 import pygame
+import pickle
 import pygame.display as display
 import Menu
 import State
-import pickle
 from Constants import Constants
 
 

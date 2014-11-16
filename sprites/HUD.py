@@ -1,4 +1,5 @@
 import pygame as PG
+
 from states.Constants import Constants
 import Speedometer
 import Radio
@@ -7,6 +8,8 @@ import Label
 
 class HUD(PG.sprite.Sprite):
     dashboard = None
+
+    # TODO : Add an inventory! And if possible a Mini-map
     def __init__(self):
         PG.sprite.Sprite.__init__(self)
         self.image = PG.Surface((Constants.WIDTH, 150))
@@ -18,7 +21,7 @@ class HUD(PG.sprite.Sprite):
         self.rect.bottomleft = (0, Constants.HEIGHT)
         if HUD.dashboard is None:
             HUD.dashboard = PG.image.load(
-            "images/sprites/hud/dashboard.png").convert_alpha()
+                "images/sprites/hud/dashboard.png").convert_alpha()
         # self.image = HUD.dashboard
         self.all_sprites = PG.sprite.Group()
         self.speedometer = Speedometer.Speedometer()

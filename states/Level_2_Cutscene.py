@@ -1,8 +1,10 @@
 import pygame
+
 import pygame.display as display
+
 import State
-import Play as Play
-#from Play import Play
+
+# from Play import Play
 from Constants import Constants
 
 
@@ -38,22 +40,23 @@ class Level_2_Cutscene(State.State):
                 # Constants.Levels.append(None)
                 # Constants.Levels.append(None)
                 # Constants.Levels[0] = Level_1.Level_1()
-                Constants.STATE = Play.Play()
+                Constants.STATE = Constants.PLAY
                 #Go to 3rd level
                 Constants.STATE.set_level(2)
             else:
                 self.current_display += 1
                 Constants.SCREEN.fill(pygame.Color("black"))
-                Constants.SCREEN.blit(Level_2_Cutscene.images[self.current_display],
-                                      self.rect)
+                Constants.SCREEN.blit(
+                    Level_2_Cutscene.images[self.current_display],
+                    self.rect)
                 display.update()
         else:
             pass
 
-    #Function for key updates
-    #def keyEvent(self, event):
-        #if event.type == pygame.KEYDOWN:
-        #    self.timer = Level_2_Cutscene.delay
+            #Function for key updates
+            #def keyEvent(self, event):
+            #if event.type == pygame.KEYDOWN:
+            #    self.timer = Level_2_Cutscene.delay
 
     def update(self, time):
         self.timer += 1

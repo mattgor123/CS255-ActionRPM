@@ -1,8 +1,9 @@
 import pygame as PG
+
 import pygame.image as PI
 import pygame.gfxdraw as PD
+
 from states.Constants import Constants
-import math
 
 
 class Speedometer(PG.sprite.Sprite):
@@ -15,8 +16,8 @@ class Speedometer(PG.sprite.Sprite):
         PG.sprite.Sprite.__init__(self)
         if Speedometer.IMAGE is None:
             Speedometer.IMAGE = \
-                PI.load("images/sprites/hud/speed_dial.png")\
-                       .convert()
+                PI.load("images/sprites/hud/speed_dial.png") \
+                    .convert()
             Speedometer.IMAGE.set_colorkey((0, 0, 0))
             Speedometer.NEEDLE = PI.load(
                 "images/sprites/hud/needle.png").convert_alpha()
@@ -40,7 +41,6 @@ class Speedometer(PG.sprite.Sprite):
         self.needle = PG.transform.rotate(
             Speedometer.NEEDLE, angles)
 
-        new.blit(self.needle, self.needle.get_rect(center=
-                                                   Speedometer.NEEDLE
+        new.blit(self.needle, self.needle.get_rect(center=Speedometer.NEEDLE
                                                    .get_rect().center))
         self.image = new

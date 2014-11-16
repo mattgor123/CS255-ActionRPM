@@ -1,12 +1,13 @@
-import pygame.image as PI
 import pygame as PG
+
+import pygame.image as PI
+
 
 # x,y is size of image
 # dimension is [x,y] for layout of spritesheet
 
 
 def loadSheet(path, x, y, dimensions):
-
     currentX = 0
     currentY = 0
     colorkey = (10, 10, 10)
@@ -23,7 +24,7 @@ def loadSheet(path, x, y, dimensions):
             surface.blit(sheet, (0, 0), (currentX, currentY, currentX + x,
                                          currentY + y))
             surface.set_colorkey(colorkey, PG.RLEACCEL)
-            #surface = PG.transform.scale(surface, (128,64))
+            # surface = PG.transform.scale(surface, (128,64))
             toReturn[j].append(surface)
             currentX += x
 
@@ -38,6 +39,7 @@ def rotateSprites(sprites, degrees):
         toReturn.append(PG.transform.rotate(image, degrees))
 
     return toReturn
+
 
 if __name__ == "__main__":
     PG.init()

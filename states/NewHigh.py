@@ -1,15 +1,17 @@
 import pygame
-import pygame.display as display
-import State
 import pickle
 import string
+
+import pygame.display as display
+
+import State
 import HighScore
 from Constants import Constants
 
 
 # This is the state for adding a new high score
 class NewHigh(State.State):
-    #Code to initialize a new title screen instance
+    # Code to initialize a new title screen instance
     def __init__(self, score):
         super(NewHigh, self).__init__()
         self.score_font = pygame.font.Font(None, Constants.WIDTH / 16)
@@ -47,7 +49,7 @@ class NewHigh(State.State):
         #Print a red rectangle in the middle of the screen
         rect = pygame.draw.rect(Constants.SCREEN, (255, 0, 0),
                                 (0, Constants.HEIGHT / 2,
-                                    Constants.WIDTH, 30))
+                                 Constants.WIDTH, 30))
 
         if len(self.name) != 0:
             name_msg = font.render(string.join(self.name, ""), 1, (0, 0, 0))
