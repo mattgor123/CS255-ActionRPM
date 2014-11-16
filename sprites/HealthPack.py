@@ -1,6 +1,7 @@
 import Item
 import pygame
 
+
 class HealthPack(Item.Item):
 
     IMAGE = None

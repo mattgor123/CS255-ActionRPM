@@ -61,16 +61,16 @@ class Level(object):
         for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
             all_tiles_in_enemy_range = self.map.get_tiles(enemy.x, enemy.y)
-            if type(enemy) == Enemy.Racer and self.map != None:
+            if type(enemy) == Enemy.Racer and self.map is not None:
                 for checkpoint in self.enemies:
                     if type(checkpoint) == Checkpoint.Checkpoint:
                         if checkpoint.number == 4:
                             if checkpoint.rect.colliderect(enemy.rect):
-                                if enemy.timer_on == False:
+                                if enemy.timer_on is False:
                                     print ("Enemy has beaten race!")
                                     enemy.start_timer()
             # Fireball collisions
-            if type(enemy) == Fireball.Fireball and self.map != None:
+            if type(enemy) == Fireball.Fireball and self.map is not None:
                 collidables_to_check = all_tiles_in_enemy_range
                 for r in collidables_to_check:
                     if r.get_strength() >= 0:
@@ -87,7 +87,7 @@ class Level(object):
                             enemy.x -= .1
                             enemy.bounce(True)
             # Boss 2 Collisions
-            if type(enemy) == Enemy.Boss_1 and self.map != None:
+            if type(enemy) == Enemy.Boss_1 and self.map is not None:
                 collidables_to_check = all_tiles_in_enemy_range
                 collidables_to_check.append(self.player)
                 #Here goes collision

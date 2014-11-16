@@ -104,7 +104,6 @@ class Radio(PG.sprite.Sprite):
             Radio.label.update(Radio.song_names[Radio.current_index])
             PG.mixer.music.unpause()
 
-
     @staticmethod
     def increment_current_index_and_play():
         if Radio.current_index < Radio.max_index:

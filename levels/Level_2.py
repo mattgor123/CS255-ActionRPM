@@ -93,7 +93,7 @@ class Level_2(Level):
         #This enemy is by the EZpass exit
         self.enemies.add(Enemy.Enemy([39.2, 4.4], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
-                                     ["d3", "r1.8", "u3", "l1.8"]))
+            ["d3", "r1.8", "u3", "l1.8"]))
         self.enemies.add(Enemy.Enemy([40.4, 17.5],
                                      [Constants.WIDTH, Constants.HEIGHT],
                                      5, "down",

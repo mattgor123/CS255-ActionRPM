@@ -333,39 +333,38 @@ class Boss_1(game.sprite.Sprite):
             self.waited_time += 1
         #This if statement checks if the player is within 3 blocks of the boss
         elif abs(self.x - player_coordinates[0]) <= self.active_distance and \
-                        abs(self.y - player_coordinates[
-                            1]) <= self.active_distance:
+                abs(self.y - player_coordinates[1]) <= self.active_distance:
             self.waited_time += 1
             #Negative strength indicates that our enemy can be hurt
             self.strength = 0
             self.waiting = True
             if self.x < player_coordinates[0] and \
-                            abs(self.y - player_coordinates[1]) <= 1:
+                    abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "right"
                 self.set_direction("right")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x > player_coordinates[0] and \
-                            abs(self.y - player_coordinates[1]) <= 1:
+                    abs(self.y - player_coordinates[1]) <= 1:
                 self.direction = "left"
                 self.set_direction("left")
                 self.rect = self.image.get_rect(center=self.rect.center)
             if self.y < player_coordinates[1] and \
-                            abs(self.x - player_coordinates[0]) <= 1:
+                    abs(self.x - player_coordinates[0]) <= 1:
                 self.direction = "down"
                 self.set_direction("down")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.y > player_coordinates[1] and \
-                            abs(self.x - player_coordinates[0]) <= 1:
+                    abs(self.x - player_coordinates[0]) <= 1:
                 self.direction = "up"
                 self.set_direction("up")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x < player_coordinates[0] and \
-                                    self.y - player_coordinates[1] >= 1:
+                    self.y - player_coordinates[1] >= 1:
                 self.direction = "upright"
                 self.set_direction("upright")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x < player_coordinates[0] and \
-                                    self.y - player_coordinates[1] <= -1:
+                    self.y - player_coordinates[1] <= -1:
                 self.direction = "downright"
                 self.set_direction("downright")
                 self.rect = self.image.get_rect(center=self.rect.center)
@@ -375,7 +374,7 @@ class Boss_1(game.sprite.Sprite):
                 self.set_direction("upleft")
                 self.rect = self.image.get_rect(center=self.rect.center)
             elif self.x > player_coordinates[0] and \
-                                    self.y - player_coordinates[1] <= -1:
+                    self.y - player_coordinates[1] <= -1:
                 self.direction = "downleft"
                 self.set_direction("downleft")
                 self.rect = self.image.get_rect(center=self.rect.center)

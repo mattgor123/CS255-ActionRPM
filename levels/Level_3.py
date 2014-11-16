@@ -79,12 +79,12 @@ class Level_3(Level):
         self.enemies.add(Checkpoint.Checkpoint(4, [102, 44]))
         self.enemies.add(Enemy.Racer([104, 41], [
             Constants.WIDTH, Constants.HEIGHT], 6, "up",
-                                     ["u24", "l16", "d24", "l16", "d12.5",
-                                      "r32", "d24", "l48",
-                                      "u12", "l15.5", "d12", "l31.5", "u48",
-                                      "r32", "u24", "r15.5",
-                                      "d24", "r16", "u24", "r32", "d40.1",
-                                      "s"]))
+            ["u24", "l16", "d24", "l16", "d12.5",
+             "r32", "d24", "l48",
+             "u12", "l15.5", "d12", "l31.5", "u48",
+             "r32", "u24", "r15.5",
+             "d24", "r16", "u24", "r32", "d40.1",
+             "s"]))
 
     def shoot_fireball(self):
         for enemy in self.enemies.sprites():

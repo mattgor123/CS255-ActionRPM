@@ -16,8 +16,7 @@ class Speedometer(PG.sprite.Sprite):
         PG.sprite.Sprite.__init__(self)
         if Speedometer.IMAGE is None:
             Speedometer.IMAGE = \
-                PI.load("images/sprites/hud/speed_dial.png") \
-                    .convert()
+                PI.load("images/sprites/hud/speed_dial.png").convert()
             Speedometer.IMAGE.set_colorkey((0, 0, 0))
             Speedometer.NEEDLE = PI.load(
                 "images/sprites/hud/needle.png").convert_alpha()
