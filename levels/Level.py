@@ -167,8 +167,10 @@ class Level(object):
         #With the player
         for c in self.items.sprites():
             if c.rect.colliderect(self.player.rect):
-                self.player.add_to_inventory(c)
-                c.collect()
+                if c.is_collectable():
+                    self.player.grab(c)
+                    self.player.score += c.points
+                    c.collect()
 
         collidables_on_screen = self.map.get_tiles(self.player.x,
                                                    self.player.y)

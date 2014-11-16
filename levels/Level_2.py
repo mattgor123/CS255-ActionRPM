@@ -1,5 +1,6 @@
 from Level import Level
 import sprites.Enemy as Enemy
+import sprites.HealthPack as HealthPack
 from states.Constants import Constants
 from states.GameEnded import GameEnded
 import map.Map as Map
@@ -19,7 +20,7 @@ class Level_2(Level):
 
     def init_items(self):
         #Create miscellaneous shit
-        pass
+        self.items.add(HealthPack.HealthPack(70, 55))
 
     def init_labels(self):
         self.objective_text = "Wreck the other car to win back your girl!"
