@@ -86,6 +86,7 @@ class Player(game.sprite.Sprite):
     def grab(self, item):
         if item.name == "healthpack":
             self.heal(30)
+            self.score += 100
             return
         self.inventory.append(item.name)
 
