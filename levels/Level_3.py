@@ -11,6 +11,7 @@ import sprites.Label as Label
 import sprites.Checkpoint as Checkpoint
 
 
+
 class Level_3(Level):
     # TODO : Tweak difficulty / keep play testing (since I have the course
     # memorized ... I wanna know how difficult it is). Also maybe implement
@@ -226,10 +227,13 @@ class Level_3(Level):
                 if enemy.timer == 0:
                     # TODO : Handle the logic here
                     print "Super win: " + str(enemy.timer)
+                    Constants.STATE = GameEnded("GAME OVER")
                 elif enemy.timer <= 750:
                     # TODO : Handle the logic here (enough to beat levle,
                     # but not dominate life)
                     print "Kinda win: " + str(enemy.timer)
+                    Constants.STATE = GameEnded("GAME OVER")
                 else:
                     # TODO : Handle the logic here
                     "Congrats you lose, loser: " + str(enemy.timer)
+                    Constants.STATE = GameEnded("GAME OVER")
