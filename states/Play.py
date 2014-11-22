@@ -8,6 +8,7 @@ import Menu
 import levels.Level_1 as Level_1
 import levels.Level_2 as Level_2
 import levels.Level_3 as Level_3
+import levels.Level_4 as Level_4
 
 
 class Play(State.State):
@@ -29,6 +30,7 @@ class Play(State.State):
         self.add_level(Level_1.Level_1(self.player))
         self.add_level(Level_2.Level_2(self.player))
         self.add_level(Level_3.Level_3(self.player))
+        self.add_level(Level_4.Level_4(self.player))
 
     def update(self, interval):
         self.time += interval
