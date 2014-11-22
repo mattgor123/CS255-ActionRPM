@@ -11,7 +11,7 @@ import sprites.Label as Label
 import sprites.Checkpoint as Checkpoint
 
 
-class Level_3(Level):
+class Level_4(Level):
     # TODO : Tweak difficulty / keep play testing (since I have the course
     # memorized ... I wanna know how difficult it is). Also maybe implement
     # NOS or shields or some other badass shit (down the road)
@@ -21,7 +21,7 @@ class Level_3(Level):
         Level.__init__(self, player)
         self.init_enemies()
         # self.init_items()
-        self.PLAYER_START = [108, 40]
+        self.PLAYER_START = [104, 78]
         self.is_beatable = False
         self.init_labels()
         self.time_between_fireballs = 0
@@ -120,24 +120,24 @@ class Level_3(Level):
                                                    self.fireball_strength))
 
     def update(self, interval):
-        super(Level_3, self).update(interval)
+        super(Level_4, self).update(interval)
         if self.player.x >= 111:
             Constants.STATE.set_level(1)
         # Shoot fireballs
 
         self.time_between_fireballs += 1
-        if (self.time_between_fireballs >= Level_3.fireball_frequency):
+        if (self.time_between_fireballs >= Level_4.fireball_frequency):
             self.time_between_fireballs = 0
             self.shoot_fireball()
             #if self.player.y <= 0.5:
             #   Constants.STATE.set_level(2)
 
     def draw(self, background):
-        super(Level_3, self).draw(background)
+        super(Level_4, self).draw(background)
         self.check_objective()
 
     def init_map(self):
-        self.map = Map.Map("level3.txt", 7)
+        self.map = Map.Map("level4.txt", 7)
         self.set_tiles()
 
     def game_over(self, died):
