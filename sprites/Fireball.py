@@ -76,10 +76,14 @@ class Fireball(pygame.sprite.Sprite):
                 self.direction = "upleft"
             elif self.direction == "downright":
                 self.direction = "upright"
-    def collide(self, object):
+    def collide(self, source, object):
         if type(object) == Wall.Wall:
             self.kill()
         elif type(object) == Enemy.Keg:
             object.kill()
             self.kill()
+
+        if type(source) == Player.Player:
+            if type(object) == Enemy.Keg:
+                source.score += 100
 

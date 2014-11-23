@@ -451,3 +451,4 @@ class Player(game.sprite.Sprite):
                 Fireball.Fireball(
                     Constants.PLAYER_MAX_SPEED + 10,
                     self.direction, [self.x,self.y], 300,50))
+            self.score -= 300

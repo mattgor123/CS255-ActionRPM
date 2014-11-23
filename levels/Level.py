@@ -279,7 +279,7 @@ class Level(object):
         for projectile in self.player.projectiles:
             for r in collidables_on_screen:
                 if projectile.rect.colliderect(r.rect):
-                    projectile.collide(r)
+                    projectile.collide(self.player, r)
 
     def game_over(self, died):
         print "Super Level Game Over"
