@@ -8,7 +8,8 @@ class Fireball(pygame.sprite.Sprite):
     def __init__(self, speed, initial_direction, location, duration, strength):
         pygame.sprite.Sprite.__init__(self)
         if Fireball.image is None:
-            Fireball.image = pygame.image.load("images/sprites/fireball.png")
+            Fireball.image = pygame.image.load(
+                "images/sprites/fireball.png").convert_alpha()
         self.image = Fireball.image
         self.x = location[0]
         self.y = location[1]

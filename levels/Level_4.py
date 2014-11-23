@@ -4,6 +4,7 @@ import pygame
 from Level import Level
 import sprites.Enemy as Enemy
 import sprites.Fireball as Fireball
+import sprites.Fireball_item as Fireball_item
 from states.Constants import Constants
 from states.GameEnded import GameEnded
 import map.Map as Map
@@ -20,7 +21,7 @@ class Level_4(Level):
     def __init__(self, player):
         Level.__init__(self, player)
         self.init_enemies()
-        # self.init_items()
+        self.init_items()
         self.PLAYER_START = [104, 78]
         self.is_beatable = False
         self.init_labels()
@@ -34,7 +35,7 @@ class Level_4(Level):
 
     def init_items(self):
         # Create miscellaneous shit
-        pass
+        self.items.add(Fireball_item.Fireball_item(102, 78))
 
     def init_labels(self):
         self.objective_text = "Keep up with your dad's boss if you can!"

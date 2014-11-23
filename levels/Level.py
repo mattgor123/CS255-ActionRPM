@@ -177,7 +177,6 @@ class Level(object):
             if c.rect.colliderect(self.player.rect):
                 if c.is_collectable():
                     self.player.grab(c)
-                    self.player.score += c.points
                     c.collect()
 
         collidables_on_screen = self.map.get_tiles(self.player.x,

@@ -82,11 +82,13 @@ class Player(game.sprite.Sprite):
 
         self.score = Constants.START_SCORE
 
+        self.fire_rate = 10
+
     #Method to add an item to a player's inventory
     def grab(self, item):
+        self.score += item.points
         if item.name == "healthpack":
             self.heal(30)
-            self.score += 100
             return
         self.inventory.append(item.name)
 
@@ -212,9 +214,12 @@ class Player(game.sprite.Sprite):
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        if keys_pressed[game.K_SPACE]:
+        if keys_pressed[game.KMOD_SHIFT]:
             self.breaking = True
             acceleration = -4 * Constants.PLAYER_ACCELERATION
+
+        if keys_pressed[game.K_SPACE]:
+            self.shoot()
         #Check if the new speed will put us over or under our max/min
         #Before we set the speed
         if self.speed + acceleration * interval > \
@@ -427,3 +432,8 @@ class Player(game.sprite.Sprite):
     def set_coordinates(self, coors):
         self.x = coors[0]
         self.y = coors[1]
+
+    def shoot(self):
+        if "fireball" not in self.inventory:
+            return
+        print "shoot!!"
