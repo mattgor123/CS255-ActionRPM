@@ -118,4 +118,6 @@ class Level_4(Level):
         # There should be a bigger boss class that all bosses
         #Are derived from
         if (damage == 0 and type(enemy) is Enemy.Keg):
+            pass
+        elif (damage == 50 and type(enemy) is Enemy.Keg):
             enemy.kill()

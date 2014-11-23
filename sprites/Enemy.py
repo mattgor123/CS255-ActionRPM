@@ -739,7 +739,7 @@ class Keg(game.sprite.Sprite):
         return True
 
     def get_strength(self):
-        return 0
+        return 50
 
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
