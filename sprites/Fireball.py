@@ -80,6 +80,7 @@ class Fireball(pygame.sprite.Sprite):
         if type(object) == Wall.Wall:
             self.kill()
         elif type(object) == Enemy.Keg:
+            object.set_dead()
             object.kill()
             self.kill()
 

@@ -720,6 +720,8 @@ class Keg(game.sprite.Sprite):
 
         self.stop_value = stop_string[3:]
 
+        self.dead = False
+
     # this is the update method with a parameter - it ensures the Enemy is
     # facing opposite dir of the Player then updates
     def update(self, interval, player_coordinates):
@@ -864,12 +866,5 @@ class Keg(game.sprite.Sprite):
         elif direction == "upright":
             self.image = Keg.upright
 
-    def kill(self):
-        #Once stop_time is > 0, the enemy will stop
-        #Enemy will continue to be stopped until
-        #The cycle count reaches our max_stop_time
-        #Move function takes care of restarting enemy
+    def set_dead(self):
         self.dead = True
-        self.movements = []
-        self.current_move = 0
-        self.x = -5

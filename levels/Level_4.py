@@ -197,3 +197,6 @@ class Level_4(Level):
         elif (damage == 50 and type(enemy) is Enemy.Keg):
             enemy.kill()
             self.kegs += 1
+
+    def increment_kegs(self):
+        self.kegs += 1
