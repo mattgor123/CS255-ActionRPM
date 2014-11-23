@@ -87,6 +87,9 @@ class Play(State.State):
                 self.set_level(2)
             elif event.key == pygame.K_4:
                 self.set_level(3)
+            elif event.key == pygame.K_SPACE:
+                self.player.shoot()
+                print "Calling shoot"
         #For debugging purposes ... print where you click on screen
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print(pygame.mouse.get_pos())

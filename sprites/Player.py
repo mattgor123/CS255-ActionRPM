@@ -84,7 +84,6 @@ class Player(game.sprite.Sprite):
         self.score = Constants.START_SCORE
 
         self.fire_rate = 30
-        self.current_shot_frame = 0
         self.projectiles = game.sprite.Group()
 
     #Method to add an item to a player's inventory
@@ -221,8 +220,6 @@ class Player(game.sprite.Sprite):
             self.breaking = True
             acceleration = -4 * Constants.PLAYER_ACCELERATION
 
-        if keys_pressed[game.K_SPACE]:
-            self.shoot()
         #Check if the new speed will put us over or under our max/min
         #Before we set the speed
         if self.speed + acceleration * interval > \
@@ -245,10 +242,6 @@ class Player(game.sprite.Sprite):
 
         for projectile in self.projectiles:
             projectile.update(interval, [0, 0])
-
-        self.current_shot_frame += 1
-        if self.current_shot_frame == self.fire_rate:
-            self.current_shot_frame = 0
 
     #Moves player depending on whether or not he has collided with an object
     def move(self, interval):
@@ -446,9 +439,8 @@ class Player(game.sprite.Sprite):
     def shoot(self):
         if "fireball" not in self.inventory:
             return
-        if self.current_shot_frame == 0:
-            self.projectiles.add(
-                Fireball.Fireball(
-                    Constants.PLAYER_MAX_SPEED + 10,
-                    self.direction, [self.x,self.y], 300,50))
-            self.score -= 300
+        self.projectiles.add(
+            Fireball.Fireball(
+                Constants.PLAYER_MAX_SPEED + 10,
+                self.direction, [self.x,self.y], 300,50))
+        self.score -= 100
