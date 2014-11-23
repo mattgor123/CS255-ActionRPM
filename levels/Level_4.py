@@ -31,6 +31,8 @@ class Level_4(Level):
         self.has_gotten_checkpoint_3 = False
         self.fireball_strength = 2
         self.timer = 0
+        #Counts number of kegs the player has killed
+        self.kegs = 0
 
     def init_items(self):
         # Create miscellaneous shit
@@ -72,6 +74,7 @@ class Level_4(Level):
                 self.objectives.draw(Constants.SCREEN)
 
     def init_enemies(self):
+        #First kegs you see
         self.enemies.add(Enemy.Keg([98, 72], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
             ["d20"],"ygt83"))
@@ -95,6 +98,74 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([86, 83], [
             Constants.WIDTH, Constants.HEIGHT], 6.2, "up",
             ["u20"],"ylt72"))
+
+        self.enemies.add(Enemy.Keg([4, 76], [
+            Constants.WIDTH, Constants.HEIGHT], 6.2, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 76], [
+            Constants.WIDTH, Constants.HEIGHT], 5.5, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 76], [
+            Constants.WIDTH, Constants.HEIGHT], 5, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 76], [
+            Constants.WIDTH, Constants.HEIGHT], 8, "right",
+            ["r100"],"xgt108"))
+
+        self.enemies.add(Enemy.Keg([4, 78], [
+            Constants.WIDTH, Constants.HEIGHT], 4, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 78], [
+            Constants.WIDTH, Constants.HEIGHT], 9, "right",
+            ["r100"],"xgt108"))
+
+        #second layer kegs
+        self.enemies.add(Enemy.Keg([62, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 9, "down",
+            ["d100"],"ygt70"))
+        self.enemies.add(Enemy.Keg([64, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 5, "up",
+            ["u100"],"ylt60"))
+        self.enemies.add(Enemy.Keg([66, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 7, "up",
+            ["u100"],"ylt60"))
+
+        self.enemies.add(Enemy.Keg([72, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 8, "up",
+            ["u100"],"ylt60"))
+        self.enemies.add(Enemy.Keg([74, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 9, "down",
+            ["d100"],"ygt70"))
+        self.enemies.add(Enemy.Keg([76, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 7.5, "down",
+            ["d100"],"ygt70"))
+
+        self.enemies.add(Enemy.Keg([80, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 9, "down",
+            ["d100"],"ygt70"))
+        self.enemies.add(Enemy.Keg([82, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 8, "up",
+            ["u100"],"ylt60"))
+        self.enemies.add(Enemy.Keg([84, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 7.5, "down",
+            ["d100"],"ygt70"))
+        self.enemies.add(Enemy.Keg([87, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 8.5, "up",
+            ["u100"],"ylt60"))
+
+        self.enemies.add(Enemy.Keg([92, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 7, "down",
+            ["d100"],"ygt70"))
+        self.enemies.add(Enemy.Keg([94, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 9, "up",
+            ["u100"],"ylt60"))
+        self.enemies.add(Enemy.Keg([96, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 10, "up",
+            ["u100"],"ylt60"))
+        self.enemies.add(Enemy.Keg([98, 60], [
+            Constants.WIDTH, Constants.HEIGHT], 8.5, "down",
+            ["d100"],"ygt70"))
+
 
     def update(self, interval):
         super(Level_4, self).update(interval)
@@ -121,3 +192,4 @@ class Level_4(Level):
             pass
         elif (damage == 50 and type(enemy) is Enemy.Keg):
             enemy.kill()
+            self.kegs += 1
