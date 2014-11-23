@@ -31,6 +31,7 @@ class Level(object):
         #This code does the player collision and returns the player coordinates
         player_coordinates = self.player_collision()
         self.enemy_collision(player_coordinates)
+        self.projectiles_collision()
         #Update our stuff
         #for enemy in self.enemies:
         #wwwwww    enemy.update(interval, player_coordinates)
@@ -266,6 +267,19 @@ class Level(object):
                 self.enemy_collided(r, damage_to_do)
                 break
         return player_coordinates
+
+
+    def projectiles_collision(self):
+        collidables_on_screen = self.map.get_tiles(self.player.x,
+                                                   self.player.y)
+        for enemy in self.enemies:
+            collidables_on_screen.append(enemy)
+        collidables_on_screen.append(self.player)
+
+        for projectile in self.player.projectiles:
+            for r in collidables_on_screen:
+                if projectile.rect.colliderect(r.rect):
+                    projectile.collide(r)
 
     def game_over(self, died):
         print "Super Level Game Over"

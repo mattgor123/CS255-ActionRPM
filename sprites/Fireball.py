@@ -1,4 +1,7 @@
 import pygame
+import sprites.Wall as Wall
+import sprites.Enemy as Enemy
+import Player
 
 
 # This is the Racer's weapon
@@ -74,4 +77,9 @@ class Fireball(pygame.sprite.Sprite):
             elif self.direction == "downright":
                 self.direction = "upright"
     def collide(self, object):
-        pass
+        if type(object) == Wall.Wall:
+            self.kill()
+        elif type(object) == Enemy.Keg:
+            object.kill()
+            self.kill()
+

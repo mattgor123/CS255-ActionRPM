@@ -449,5 +449,5 @@ class Player(game.sprite.Sprite):
         if self.current_shot_frame == 0:
             self.projectiles.add(
                 Fireball.Fireball(
-                    Constants.PLAYER_MAX_SPEED,
+                    Constants.PLAYER_MAX_SPEED + 10,
                     self.direction, [self.x,self.y], 300,50))
