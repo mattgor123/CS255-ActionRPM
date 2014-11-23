@@ -34,15 +34,23 @@ class Fireball(pygame.sprite.Sprite):
         if self.direction == "upleft":
             self.x -= self.speed * interval * .7071  # 1/Sqrt 2
             self.y -= self.speed * interval * .7071
-        if self.direction == "downleft":
+        elif self.direction == "downleft":
             self.x -= self.speed * interval * .7071
             self.y += self.speed * interval * .7071
-        if self.direction == "upright":
+        elif self.direction == "upright":
             self.x += self.speed * interval * .7071
             self.y -= self.speed * interval * .7071
-        if self.direction == "downright":
+        elif self.direction == "downright":
             self.x += self.speed * interval * .7071
             self.y += self.speed * interval * .7071
+        elif self.direction == "up":
+            self.y -= self.speed * interval
+        elif self.direction == "down":
+            self.y += self.speed * interval
+        elif self.direction == "left":
+            self.x -= self.speed * interval
+        elif self.direction == "right":
+            self.x += self.speed * interval
 
     def bounce(self, is_vertical):
         #If you hit a vertical wall, you want to flip just horizontal direction
@@ -65,3 +73,5 @@ class Fireball(pygame.sprite.Sprite):
                 self.direction = "upleft"
             elif self.direction == "downright":
                 self.direction = "upright"
+    def collide(self, object):
+        pass

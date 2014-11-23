@@ -41,10 +41,12 @@ class Play(State.State):
     def draw(self):
         self.players.clear(Constants.SCREEN, self.background)
         self.hud.clear(Constants.SCREEN)
+        self.players.clear(Constants.SCREEN, self.background)
 
         self.levels[self.current_level].draw(self.background)
 
         self.players.draw(Constants.SCREEN)
+        self.player.projectiles.draw(Constants.SCREEN)
         self.hud.draw(Constants.SCREEN, self.background)
 
         pygame.display.update()

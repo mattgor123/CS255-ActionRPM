@@ -1,6 +1,7 @@
 import pygame as game
 from states.Constants import Constants
 import util.SpriteSheet as SS
+import sprites.Fireball as Fireball
 
 
 # TODO : Player health animation doesnt change until ya let go of arrow key
@@ -82,7 +83,9 @@ class Player(game.sprite.Sprite):
 
         self.score = Constants.START_SCORE
 
-        self.fire_rate = 10
+        self.fire_rate = 30
+        self.current_shot_frame = 0
+        self.projectiles = game.sprite.Group()
 
     #Method to add an item to a player's inventory
     def grab(self, item):
@@ -239,6 +242,13 @@ class Player(game.sprite.Sprite):
 
         #Call our move function
         self.move(interval)
+
+        for projectile in self.projectiles:
+            projectile.update(interval, [0, 0])
+
+        self.current_shot_frame += 1
+        if self.current_shot_frame == self.fire_rate:
+            self.current_shot_frame = 0
 
     #Moves player depending on whether or not he has collided with an object
     def move(self, interval):
@@ -436,4 +446,8 @@ class Player(game.sprite.Sprite):
     def shoot(self):
         if "fireball" not in self.inventory:
             return
-        print "shoot!!"
+        if self.current_shot_frame == 0:
+            self.projectiles.add(
+                Fireball.Fireball(
+                    Constants.PLAYER_MAX_SPEED,
+                    self.direction, [self.x,self.y], 300,50))

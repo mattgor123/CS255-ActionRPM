@@ -52,6 +52,9 @@ class Level(object):
         self.tiles = self.map.render(self.player.x, self.player.y)
         self.player.rect.topleft = self.map.get_topleft(self.player.x,
                                                         self.player.y)
+        for projectile in self.player.projectiles:
+            projectile.rect.topleft = self.map.get_topleft(projectile.x,
+                                                           projectile.y)
         for enemy in self.enemies.sprites():
             enemy.rect.topleft = self.map.get_topleft(enemy.x, enemy.y)
         for item in self.items.sprites():
