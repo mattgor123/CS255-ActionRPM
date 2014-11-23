@@ -667,7 +667,7 @@ class Keg(game.sprite.Sprite):
             # make all of the appropriate transformations of the image based
             # on direction of travel
 
-            Keg.image = game.image.load("images/sprites/racer.png")
+            Keg.image = game.image.load("images/sprites/keg.png")
             Keg.right = Keg.image
             Keg.left = game.transform.rotate(Keg.right, 180)
             Keg.up = game.transform.rotate(Keg.right, 90)
@@ -739,7 +739,7 @@ class Keg(game.sprite.Sprite):
         return True
 
     def get_strength(self):
-        return 0
+        return 50
 
     #this moves the Enemy to where he is supposed to be based on the direction
     '''
