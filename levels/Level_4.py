@@ -166,6 +166,9 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([98, 60], [
             Constants.WIDTH, Constants.HEIGHT], 8.5, "down",
             ["d100"],"ygt70"))
+        self.enemies.add(Enemy.Keg([100, 70], [
+            Constants.WIDTH, Constants.HEIGHT], 9.5, "up",
+            ["u100"],"ylt60"))
 
 
     def update(self, interval):
