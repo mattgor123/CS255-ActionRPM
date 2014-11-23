@@ -40,7 +40,7 @@ class Level_4(Level):
         self.items.add(Fireball_item.Fireball_item(102, 78))
 
     def init_labels(self):
-        self.objective_text = "Keep up with your dad's boss if you can!"
+        self.objective_text = "Rid the school of their drinking problem!"
         self.objectives = pygame.sprite.Group()
         self.objective = Label.Label("objective", self.objective_text,
                                      (125, 175))
@@ -107,9 +107,6 @@ class Level_4(Level):
             Constants.WIDTH, Constants.HEIGHT], 5.5, "right",
             ["r100"],"xgt108"))
         self.enemies.add(Enemy.Keg([4, 76], [
-            Constants.WIDTH, Constants.HEIGHT], 5, "right",
-            ["r100"],"xgt108"))
-        self.enemies.add(Enemy.Keg([4, 76], [
             Constants.WIDTH, Constants.HEIGHT], 8, "right",
             ["r100"],"xgt108"))
 
@@ -121,15 +118,6 @@ class Level_4(Level):
             ["r100"],"xgt108"))
 
         #second layer kegs
-        self.enemies.add(Enemy.Keg([62, 60], [
-            Constants.WIDTH, Constants.HEIGHT], 9, "down",
-            ["d100"],"ygt70"))
-        self.enemies.add(Enemy.Keg([64, 70], [
-            Constants.WIDTH, Constants.HEIGHT], 5, "up",
-            ["u100"],"ylt60"))
-        self.enemies.add(Enemy.Keg([66, 70], [
-            Constants.WIDTH, Constants.HEIGHT], 7, "up",
-            ["u100"],"ylt60"))
 
         self.enemies.add(Enemy.Keg([72, 70], [
             Constants.WIDTH, Constants.HEIGHT], 8, "up",
@@ -169,10 +157,35 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([100, 70], [
             Constants.WIDTH, Constants.HEIGHT], 9.5, "up",
             ["u100"],"ylt60"))
+        ##23 kegs up to this point
 
+        self.enemies.add(Enemy.Keg([4, 51], [
+            Constants.WIDTH, Constants.HEIGHT], 8, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 53], [
+            Constants.WIDTH, Constants.HEIGHT], 8, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 55], [
+            Constants.WIDTH, Constants.HEIGHT], 8, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 52], [
+            Constants.WIDTH, Constants.HEIGHT], 7.5, "right",
+            ["r100"],"xgt108"))
+        self.enemies.add(Enemy.Keg([4, 54], [
+            Constants.WIDTH, Constants.HEIGHT], 7.5, "right",
+            ["r100"],"xgt108"))
+
+        self.enemies.add(Enemy.Keg([108, 40], [
+            Constants.WIDTH, Constants.HEIGHT], 7.5, "left",
+            ["l100"],"xlt4"))
+        self.enemies.add(Enemy.Keg([108, 42], [
+            Constants.WIDTH, Constants.HEIGHT], 7.5, "left",
+            ["l100"],"xlt4"))
 
     def update(self, interval):
         super(Level_4, self).update(interval)
+        if self.kegs > 25:
+            print "You win"
 
     def draw(self, background):
         super(Level_4, self).draw(background)
