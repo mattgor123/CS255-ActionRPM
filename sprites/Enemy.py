@@ -704,9 +704,20 @@ class Keg(game.sprite.Sprite):
         #Enemy will stay stopped until stop_time == max_stop_time
         self.stop_time = 0
 
-        #String for the stop condition
-        self.stop_pos = stop_string[0:1]
-        self.stop_condition = stop_string[1:3]
+        #Set up booleans for stop conditions
+        self.xgt = False
+        self.xlt = False
+        self.ygt = False
+        self.ylt = False
+        if stop_string[0:3] == "xgt":
+            self.xgt = True
+        elif stop_string[0:3] == "xlt":
+            self.xlt = True
+        elif stop_string[0:3] == "ygt":
+            self.ygt = True
+        elif stop_string[0:3] == "ylt":
+            self.ylt = True
+
         self.stop_value = stop_string[3:]
 
     # this is the update method with a parameter - it ensures the Enemy is
@@ -721,20 +732,18 @@ class Keg(game.sprite.Sprite):
             self.y = self.initial_location[1]
 
     def should_move(self):
-        if self.stop_pos == "x":
-            if self.stop_condition == "gt":
-                if self.x > float(self.stop_value):
-                    return False
-            elif self.stop_condition == "lt":
-                if self.x < float(self.stop_value):
-                    return False
-        elif self.stop_pos == "y":
-            if self.stop_condition == "gt":
-                if self.y > float(self.stop_value):
-                    return False
-            elif self.stop_condition == "lt":
-                if self.y < float(self.stop_value):
-                    return False
+        if self.xgt:
+            if self.x > float(self.stop_value):
+                return False
+        elif self.xlt:
+            if self.x < float(self.stop_value):
+                return False
+        elif self.ygt:
+            if self.y > float(self.stop_value):
+                return False
+        elif self.ylt:
+            if self.y < float(self.stop_value):
+                return False
 
         return True
 
