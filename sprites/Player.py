@@ -201,8 +201,8 @@ class Player(game.sprite.Sprite):
             acceleration = Constants.PLAYER_ACCELERATION
 
         elif keys_pressed[game.K_w]:
-            print self.x
-            print self.y
+            #print self.x
+            #print self.y
             if self.direction != "up":
                 self.dir_changed = True
                 self.set_direction("up")

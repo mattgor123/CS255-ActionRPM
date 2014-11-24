@@ -192,6 +192,7 @@ class Level_4(Level):
         self.check_objective()
 
     def init_map(self):
+        print "Initializing map 4"
         self.map = Map.Map("level4.txt", 7)
         self.set_tiles()
 
