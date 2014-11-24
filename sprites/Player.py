@@ -216,8 +216,8 @@ class Player(game.sprite.Sprite):
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        if keys_pressed[game.KMOD_SHIFT]:
-            self.breaking = True
+        if game.key.get_mods() == game.KMOD_LSHIFT:
+            self.braking = True
             acceleration = -4 * Constants.PLAYER_ACCELERATION
 
         #Check if the new speed will put us over or under our max/min
