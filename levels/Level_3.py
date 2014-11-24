@@ -1,6 +1,5 @@
 import random
 import pygame
-
 from Level import Level
 import sprites.Enemy as Enemy
 import sprites.Fireball as Fireball
@@ -9,7 +8,7 @@ from states.GameEnded import GameEnded
 import map.Map as Map
 import sprites.Label as Label
 import sprites.Checkpoint as Checkpoint
-
+import sprites.Marker as Marker
 
 class Level_3(Level):
     # TODO : Tweak difficulty / keep play testing (since I have the course
@@ -20,8 +19,8 @@ class Level_3(Level):
     def __init__(self, player):
         Level.__init__(self, player)
         self.init_enemies()
-        # self.init_items()
-        self.PLAYER_START = [106, 40]
+        self.init_items()
+        self.PLAYER_START = [105.2, 40]
         self.player.set_direction("up")
         self.is_beatable = False
         self.init_labels()
@@ -35,11 +34,57 @@ class Level_3(Level):
         self.beaten = False
 
     def init_items(self):
-        # Create miscellaneous shit
-        pass
+        self.items.add(Marker.Marker("marker", 104, 34, False))
+        self.items.add(Marker.Marker("marker", 104, 24, False))
+        self.items.add(Marker.Marker("marker", 96, 15, True))
+        self.items.add(Marker.Marker("marker", 90, 17, False))
+        self.items.add(Marker.Marker("marker", 88, 20, False))
+        self.items.add(Marker.Marker("marker", 88, 30, False))
+        self.items.add(Marker.Marker("marker", 88, 41, False))
+        self.items.add(Marker.Marker("marker", 78, 41, False))
+        self.items.add(Marker.Marker("marker", 72, 44, False))
+        self.items.add(Marker.Marker("marker", 74, 53, False))
+        self.items.add(Marker.Marker("marker", 84, 53, False))
+        self.items.add(Marker.Marker("marker", 94, 53, False))
+        self.items.add(Marker.Marker("marker", 104, 55, False))
+        self.items.add(Marker.Marker("marker", 104, 66, False))
+        self.items.add(Marker.Marker("marker", 104, 76, False))
+        self.items.add(Marker.Marker("marker", 98, 78, False))
+        self.items.add(Marker.Marker("marker", 86, 78, False))
+        self.items.add(Marker.Marker("marker", 74, 78, False))
+        self.items.add(Marker.Marker("marker", 64, 78, False))
+        self.items.add(Marker.Marker("marker", 56, 76, False))
+        self.items.add(Marker.Marker("marker", 56, 68, False))
+        self.items.add(Marker.Marker("marker", 54, 65, False))
+        self.items.add(Marker.Marker("marker", 44, 65, False))
+        self.items.add(Marker.Marker("marker", 40, 68, False))
+        self.items.add(Marker.Marker("marker", 38, 77, False))
+        self.items.add(Marker.Marker("marker", 28, 77, False))
+        self.items.add(Marker.Marker("marker", 8, 69, False))
+        self.items.add(Marker.Marker("marker", 8, 59, False))
+        self.items.add(Marker.Marker("marker", 8, 49, False))
+        self.items.add(Marker.Marker("marker", 8, 39, False))
+        self.items.add(Marker.Marker("marker", 10, 29, False))
+        self.items.add(Marker.Marker("marker", 20, 29, False))
+        self.items.add(Marker.Marker("marker", 32, 29, False))
+        self.items.add(Marker.Marker("marker", 40, 27, False))
+        self.items.add(Marker.Marker("marker", 40, 19, False))
+        self.items.add(Marker.Marker("marker", 40, 11, False))
+        self.items.add(Marker.Marker("marker", 56, 11, False))
+        self.items.add(Marker.Marker("marker", 56, 23, False))
+        self.items.add(Marker.Marker("marker", 58, 29, False))
+        self.items.add(Marker.Marker("marker", 68, 29, False))
+        self.items.add(Marker.Marker("marker", 72, 27, False))
+        self.items.add(Marker.Marker("marker", 72, 19, False))
+        self.items.add(Marker.Marker("marker", 72, 10, False))
+        self.items.add(Marker.Marker("marker", 78, 5, False))
+        self.items.add(Marker.Marker("marker", 91, 5, False))
+        self.items.add(Marker.Marker("marker", 101, 5, False))
+        self.items.add(Marker.Marker("marker", 104, 17, False))
+
 
     def init_labels(self):
-        self.objective_text = "Keep up with your dad's boss if you can!"
+        self.objective_text = "Follow the stars & beat your dad's boss!"
         self.objectives = pygame.sprite.Group()
         self.objective = Label.Label("objective", self.objective_text,
                                      (125, 175))
@@ -79,9 +124,9 @@ class Level_3(Level):
         self.enemies.add(Checkpoint.Checkpoint(2, [11, 75]))
         self.enemies.add(Checkpoint.Checkpoint(3, [47, 3]))
         self.enemies.add(Checkpoint.Checkpoint(4, [102, 44]))
-        self.enemies.add(Enemy.Racer([104, 41], [
-            Constants.WIDTH, Constants.HEIGHT], 6, "up",
-            ["u24", "l16", "d24", "l16", "d12.5",
+        self.enemies.add(Enemy.Racer([104, 37], [
+            Constants.WIDTH, Constants.HEIGHT], 9.25, "up",
+            ["u20", "l16", "d24", "l16", "d12.5",
              "r32", "d24", "l48",
              "u12", "l15.5", "d12", "l31.5", "u48",
              "r32", "u24", "r15.5",
