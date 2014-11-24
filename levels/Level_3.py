@@ -21,7 +21,8 @@ class Level_3(Level):
         Level.__init__(self, player)
         self.init_enemies()
         # self.init_items()
-        self.PLAYER_START = [108, 40]
+        self.PLAYER_START = [106, 40]
+        self.player.set_direction("up")
         self.is_beatable = False
         self.init_labels()
         self.time_between_fireballs = 0

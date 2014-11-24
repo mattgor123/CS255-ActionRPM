@@ -440,6 +440,6 @@ class Player(game.sprite.Sprite):
         if "fireball" in self.inventory:
             self.projectiles.add(
                 Fireball.Fireball(
-                    Constants.PLAYER_MAX_SPEED,
+                    Constants.PLAYER_MAX_SPEED + 10,
                     self.direction, [self.x, self.y], 100, 50))
             self.score -= 100

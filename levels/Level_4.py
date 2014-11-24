@@ -33,11 +33,12 @@ class Level_4(Level):
         self.timer = 0
         #Counts number of kegs the player has killed
         self.kegs = 0
-        self.player.inventory.append("fireball")
+        self.has_fireball = False
 
     def init_items(self):
         # Create miscellaneous shit
-        return
+        # self.items.add(Fireball_item.Fireball_item(102, 78))
+        pass
 
     def init_labels(self):
         self.objective_text = "Rid the school of their drinking problem!"
@@ -196,6 +197,9 @@ class Level_4(Level):
         super(Level_4, self).update(interval)
         if self.kegs > 25:
             Constants.STATE = GameEnded("GAME OVER")
+        if not self.has_fireball:
+            self.player.inventory.append("fireball")
+            self.has_fireball = True
 
     def draw(self, background):
         super(Level_4, self).draw(background)
@@ -203,7 +207,6 @@ class Level_4(Level):
         self.keg_group.draw(Constants.SCREEN)
 
     def init_map(self):
-        print "Initializing map 4"
         self.map = Map.Map("level4.txt", 7)
         self.set_tiles()
 

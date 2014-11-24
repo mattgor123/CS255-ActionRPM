@@ -661,6 +661,7 @@ class Keg(game.sprite.Sprite):
     def __init__(self, location, screensize,
                  speed, direction, move_array, stop_string):
         game.sprite.Sprite.__init__(self)
+        self.dead = False
         Enemy.screen_width = screensize[0]
         Enemy.screen_height = screensize[1]
         if Keg.image is None:
@@ -717,7 +718,10 @@ class Keg(game.sprite.Sprite):
             self.ygt = True
         elif stop_string[0:3] == "ylt":
             self.ylt = True
+
         self.stop_value = stop_string[3:]
+
+        self.dead = False
 
     # this is the update method with a parameter - it ensures the Enemy is
     # facing opposite dir of the Player then updates
@@ -862,3 +866,6 @@ class Keg(game.sprite.Sprite):
             self.image = Keg.up
         elif direction == "upright":
             self.image = Keg.upright
+
+    def set_dead(self):
+        self.dead = True
