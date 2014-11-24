@@ -55,7 +55,6 @@ class Play(State.State):
         self.levels.append(level)
 
     def set_level(self, level_num):
-        print "Setting level to " + str(level_num)
         self.levels[self.current_level].map = None
         old_level = self.current_level
         self.current_level = level_num

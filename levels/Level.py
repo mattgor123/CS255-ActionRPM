@@ -280,7 +280,7 @@ class Level(object):
             for r in collidables_on_screen:
                 if projectile.rect.colliderect(r.rect):
                     projectile.collide(self.player, r)
-                    if type(r) == Enemy.Keg:
+                    if type(r) == Enemy.Keg and r.dead:
                         self.kegs += 1
 
     def game_over(self, died):
