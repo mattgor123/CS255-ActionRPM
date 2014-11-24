@@ -21,6 +21,7 @@ Problem 2) Technical, Artistic and Gameplay Progress
 -Made it possible to get a reasonable highscore
 -Made adjustments to our maps to make them make more sense (ie can't drive off the map, stuff like that)
 -Cheat code for you! After you start the game, if you press the number 1, 2, 3, or 4, it will transport you to that level. Level 4 is obviously our most recent one.
+- Also added markers in level 3 so that a player can know the race path without having to have played it before.
 
 Previous Assignment Notes
 11/16

@@ -281,7 +281,7 @@ class Level(object):
                 if projectile.rect.colliderect(r.rect):
                     projectile.collide(self.player, r)
                     if type(r) == Enemy.Keg:
-                        self.increment_kegs() 
+                        self.increment_kegs()
 
     def game_over(self, died):
         print "Super Level Game Over"
