@@ -55,6 +55,7 @@ class Play(State.State):
         self.levels.append(level)
 
     def set_level(self, level_num):
+        print "Setting level to " + str(level_num)
         self.levels[self.current_level].map = None
         old_level = self.current_level
         self.current_level = level_num
@@ -89,7 +90,6 @@ class Play(State.State):
                 self.set_level(3)
             elif event.key == pygame.K_SPACE:
                 self.player.shoot()
-                print "Calling shoot"
         #For debugging purposes ... print where you click on screen
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print(pygame.mouse.get_pos())
