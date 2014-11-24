@@ -16,9 +16,11 @@ We have a BIG drinking problem on campus. Kill the kegs by shooting the fireball
 Problem 2) Technical, Artistic and Gameplay Progress
 -Added more music/sound effects
 -Made some graphics fixes (but also noticed a new bug that we have to work on for next week in terms of how sprites are rendered)
--Implemented shooting fireballs after you kill racer & added more enemies to levels
+-Implemented shooting fireballs after you kill racer & added more enemies to levels.
+-Added new keg enemy that hurts the player a lot. After you kill a certain number of kegs you will beat the level/game.
 -Made it possible to get a reasonable highscore
 -Made adjustments to our maps to make them make more sense (ie can't drive off the map, stuff like that)
+-Cheat code for you! After you start the game, if you press the number 1, 2, 3, or 4, it will transport you to that level. Level 4 is obviously our most recent one.
 
 Previous Assignment Notes
 11/16
