@@ -50,6 +50,16 @@ class Level_4(Level):
         self.objectives.add(self.objective)
         self.label_count = 0
 
+        self.keg_text = "Kegs Remaining: "
+        self.keg_group = pygame.sprite.Group()
+        self.keg_label = Label.Label("kegs", self.keg_text,
+                                     (375, 25))
+        self.keg_label.font = pygame.font.Font(None, 25)
+        self.keg_label.image = self.keg_label.font.render(self.keg_text,
+                                                          1, (255, 255, 255))
+        self.keg_group.add(self.keg_label)
+        self.keg_label.update(25)
+
     def check_objective(self):
         if self.label_count < 375:
             self.label_count += 1
@@ -190,6 +200,7 @@ class Level_4(Level):
     def draw(self, background):
         super(Level_4, self).draw(background)
         self.check_objective()
+        self.keg_group.draw(Constants.SCREEN)
 
     def init_map(self):
         print "Initializing map 4"
@@ -210,7 +221,8 @@ class Level_4(Level):
             pass
         elif (damage == 50 and type(enemy) is Enemy.Keg):
             enemy.kill()
-            self.kegs += 1
+            self.increment_kegs()
 
     def increment_kegs(self):
         self.kegs += 1
+        self.keg_label.update(25-self.kegs)
