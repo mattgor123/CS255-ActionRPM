@@ -185,7 +185,7 @@ class Level_4(Level):
     def update(self, interval):
         super(Level_4, self).update(interval)
         if self.kegs > 25:
-            print "You win"
+            Constants.STATE = GameEnded("GAME OVER")
 
     def draw(self, background):
         super(Level_4, self).draw(background)

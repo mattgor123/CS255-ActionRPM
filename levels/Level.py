@@ -270,13 +270,14 @@ class Level(object):
 
 
     def projectiles_collision(self):
-        collidables_on_screen = self.map.get_tiles(self.player.x,
-                                                   self.player.y)
-        for enemy in self.enemies:
-            collidables_on_screen.append(enemy)
-        collidables_on_screen.append(self.player)
-
+        if self.map is None:
+            return;
         for projectile in self.player.projectiles:
+            collidables_on_screen = self.map.get_tiles(projectile.x,
+                                                       projectile.y)
+            for enemy in self.enemies:
+                collidables_on_screen.append(enemy)
+            collidables_on_screen.append(self.player)
             for r in collidables_on_screen:
                 if projectile.rect.colliderect(r.rect):
                     projectile.collide(self.player, r)
