@@ -32,6 +32,7 @@ class Level_3(Level):
         self.has_gotten_checkpoint_3 = False
         self.fireball_strength = 2
         self.timer = 0
+        self.beaten = False
 
     def init_items(self):
         # Create miscellaneous shit
@@ -130,8 +131,8 @@ class Level_3(Level):
         if (self.time_between_fireballs >= Level_3.fireball_frequency):
             self.time_between_fireballs = 0
             self.shoot_fireball()
-            #if self.player.y <= 0.5:
-            #   Constants.STATE.set_level(2)
+        if self.beaten:
+            Constants.STATE.set_level(3)
 
     def draw(self, background):
         super(Level_3, self).draw(background)
@@ -162,8 +163,6 @@ class Level_3(Level):
         elif type(enemy) is Fireball.Fireball:
             enemy.kill()
         elif type(enemy) is Checkpoint.Checkpoint:
-            # TODO : Remove this
-            self.check_finish_time()
             #First, we check the number of the checkpoint
             checkpoint_number = enemy.number
             if checkpoint_number == self.checkpoint + 1:
@@ -230,15 +229,15 @@ class Level_3(Level):
                     # TODO : Handle the logic here
                     print "Super win, gaining lots of points"
                     self.player.score += 2500
-                    Constants.STATE.set_level(3)
+                    self.beaten = True
                 elif enemy.timer <= 750:
                     # TODO : Handle the logic here (enough to beat levle,
                     # but not dominate life)
                     print "Kinda win, gaining some points"
                     self.player.score += 1000
-                    Constants.STATE.set_level(3)
+                    self.beaten = True
                 else:
                     # TODO : Handle the logic here
                     print "Congrats you lose, loser: " + str(enemy.timer)
                     print "But you still go to next level. Just gain no points"
-                    Constants.STATE.set_level(3)
+                    self.beaten = True
