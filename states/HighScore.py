@@ -25,6 +25,8 @@ class HighScore(State.State):
         self.score = score
         self.name = name
         self.from_new = from_new
+        if pygame.mixer is not None:
+            pygame.mixer.music.pause()
 
     def update(self, time):
         pass

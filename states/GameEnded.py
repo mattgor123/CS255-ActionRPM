@@ -15,6 +15,8 @@ class GameEnded(State.State):
         self.drawn = False
         super(GameEnded, self).__init__()
         self.title_font = pygame.font.Font(None, Constants.HEIGHT * 3 / 15)
+        if pygame.mixer is not None:
+            pygame.mixer.music.pause()
 
     def update(self, time):
         pass
