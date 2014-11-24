@@ -9,6 +9,18 @@ To run our game, go into the directory actionrpm/ and run the command "python
 game.py"
 
 Current Assignment Notes
+11/23
+Problem 1) Level 4
+We have a BIG drinking problem on campus. Kill the kegs by shooting the fireball!
+
+Problem 2) Technical, Artistic and Gameplay Progress
+-Added more music/sound effects
+-Made some graphics fixes (but also noticed a new bug that we have to work on for next week in terms of how sprites are rendered)
+-Implemented shooting fireballs after you kill racer & added more enemies to levels
+-Made it possible to get a reasonable highscore
+-Made adjustments to our maps to make them make more sense (ie can't drive off the map, stuff like that)
+
+Previous Assignment Notes
 11/16
 Problem 1) Level 3
 We made some pretty serious headway this week. Level 3 is a RACE level where you have to follow around your dad's boss! If you beat him, you get your house back and you're on to the last step of getting your whole entire life back. But if you don't, your girlfriend leaves you (cuz who wants to date a homeless bum?) and you become a depressed mess. So beat your boss! You can do it! The Racer boss lives in the Enemy and shoots FIREBALLS which do damage. He also gets faster & stronger (shooting fireballs more frequently AND they do more damage) as you pass checkpoints.
@@ -21,7 +33,6 @@ We made a ton of progress in our visuals. No longer laggy, no longer glitchy whe
 
 --NOTE: We need to revamp our scoring system. This will be a simple level where you get points based on how quickly you beat the race (and also how much health you have upon beating it). But for now, our scoring is a little bit whacky. But we will work to fix this in the coming days.
 
-Previous Assignment Notes
 11/9
 
 NOTE BEFORE THE LISTS:
