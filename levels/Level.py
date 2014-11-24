@@ -268,10 +268,9 @@ class Level(object):
                 break
         return player_coordinates
 
-
     def projectiles_collision(self):
         if self.map is None:
-            return;
+            return
         for projectile in self.player.projectiles:
             collidables_on_screen = self.map.get_tiles(projectile.x,
                                                        projectile.y)
@@ -281,7 +280,7 @@ class Level(object):
             for r in collidables_on_screen:
                 if projectile.rect.colliderect(r.rect):
                     projectile.collide(self.player, r)
-                    if type(r) == Enemy.Keg and r.dead:
+                    if type(r) == Enemy.Keg:
                         self.kegs += 1
 
     def game_over(self, died):

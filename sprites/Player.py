@@ -437,10 +437,9 @@ class Player(game.sprite.Sprite):
         self.y = coors[1]
 
     def shoot(self):
-        if "fireball" not in self.inventory:
-            return
-        self.projectiles.add(
-            Fireball.Fireball(
-                Constants.PLAYER_MAX_SPEED + 10,
-                self.direction, [self.x,self.y], 300,50))
-        self.score -= 100
+        if "fireball" in self.inventory:
+            self.projectiles.add(
+                Fireball.Fireball(
+                    Constants.PLAYER_MAX_SPEED,
+                    self.direction, [self.x, self.y], 100, 50))
+            self.score -= 100

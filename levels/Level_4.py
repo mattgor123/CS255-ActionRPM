@@ -4,7 +4,6 @@ import pygame
 from Level import Level
 import sprites.Enemy as Enemy
 import sprites.Fireball as Fireball
-import sprites.Fireball_item as Fireball_item
 from states.Constants import Constants
 from states.GameEnded import GameEnded
 import map.Map as Map
@@ -34,10 +33,11 @@ class Level_4(Level):
         self.timer = 0
         #Counts number of kegs the player has killed
         self.kegs = 0
+        self.player.inventory.append("fireball")
 
     def init_items(self):
         # Create miscellaneous shit
-        self.items.add(Fireball_item.Fireball_item(102, 78))
+        return
 
     def init_labels(self):
         self.objective_text = "Rid the school of their drinking problem!"
@@ -78,109 +78,109 @@ class Level_4(Level):
         #First kegs you see
         self.enemies.add(Enemy.Keg([98, 72], [
             Constants.WIDTH, Constants.HEIGHT], 5, "down",
-            ["d20"],"ygt83"))
+            ["d20"], "ygt83"))
 
         self.enemies.add(Enemy.Keg([96, 83], [
             Constants.WIDTH, Constants.HEIGHT], 5.5, "up",
-            ["u20"],"ylt72"))
+            ["u20"], "ylt72"))
 
         self.enemies.add(Enemy.Keg([94, 72], [
             Constants.WIDTH, Constants.HEIGHT], 4, "down",
-            ["d20"],"ygt83"))
+            ["d20"], "ygt83"))
 
         self.enemies.add(Enemy.Keg([90, 83], [
             Constants.WIDTH, Constants.HEIGHT], 6, "up",
-            ["u20"],"ylt72"))
+            ["u20"], "ylt72"))
 
         self.enemies.add(Enemy.Keg([88, 83], [
             Constants.WIDTH, Constants.HEIGHT], 5.5, "up",
-            ["u20"],"ylt72"))
+            ["u20"], "ylt72"))
 
         self.enemies.add(Enemy.Keg([86, 83], [
             Constants.WIDTH, Constants.HEIGHT], 6.2, "up",
-            ["u20"],"ylt72"))
+            ["u20"], "ylt72"))
 
         self.enemies.add(Enemy.Keg([4, 76], [
             Constants.WIDTH, Constants.HEIGHT], 6.2, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 76], [
             Constants.WIDTH, Constants.HEIGHT], 5.5, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 76], [
             Constants.WIDTH, Constants.HEIGHT], 8, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
 
         self.enemies.add(Enemy.Keg([4, 78], [
             Constants.WIDTH, Constants.HEIGHT], 4, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 78], [
             Constants.WIDTH, Constants.HEIGHT], 9, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
 
         #second layer kegs
 
         self.enemies.add(Enemy.Keg([72, 70], [
             Constants.WIDTH, Constants.HEIGHT], 8, "up",
-            ["u100"],"ylt60"))
+            ["u100"], "ylt60"))
         self.enemies.add(Enemy.Keg([74, 60], [
             Constants.WIDTH, Constants.HEIGHT], 9, "down",
-            ["d100"],"ygt70"))
+            ["d100"], "ygt70"))
         self.enemies.add(Enemy.Keg([76, 60], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "down",
-            ["d100"],"ygt70"))
+            ["d100"], "ygt70"))
 
         self.enemies.add(Enemy.Keg([80, 60], [
             Constants.WIDTH, Constants.HEIGHT], 9, "down",
-            ["d100"],"ygt70"))
+            ["d100"], "ygt70"))
         self.enemies.add(Enemy.Keg([82, 70], [
             Constants.WIDTH, Constants.HEIGHT], 8, "up",
-            ["u100"],"ylt60"))
+            ["u100"], "ylt60"))
         self.enemies.add(Enemy.Keg([84, 60], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "down",
-            ["d100"],"ygt70"))
+            ["d100"], "ygt70"))
         self.enemies.add(Enemy.Keg([87, 70], [
             Constants.WIDTH, Constants.HEIGHT], 8.5, "up",
-            ["u100"],"ylt60"))
+            ["u100"], "ylt60"))
 
         self.enemies.add(Enemy.Keg([92, 60], [
             Constants.WIDTH, Constants.HEIGHT], 7, "down",
-            ["d100"],"ygt70"))
+            ["d100"], "ygt70"))
         self.enemies.add(Enemy.Keg([94, 70], [
             Constants.WIDTH, Constants.HEIGHT], 9, "up",
-            ["u100"],"ylt60"))
+            ["u100"], "ylt60"))
         self.enemies.add(Enemy.Keg([96, 70], [
             Constants.WIDTH, Constants.HEIGHT], 10, "up",
-            ["u100"],"ylt60"))
+            ["u100"], "ylt60"))
         self.enemies.add(Enemy.Keg([98, 60], [
             Constants.WIDTH, Constants.HEIGHT], 8.5, "down",
-            ["d100"],"ygt70"))
+            ["d100"], "ygt70"))
         self.enemies.add(Enemy.Keg([100, 70], [
             Constants.WIDTH, Constants.HEIGHT], 9.5, "up",
-            ["u100"],"ylt60"))
+            ["u100"], "ylt60"))
         ##23 kegs up to this point
 
         self.enemies.add(Enemy.Keg([4, 51], [
             Constants.WIDTH, Constants.HEIGHT], 8, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 53], [
             Constants.WIDTH, Constants.HEIGHT], 8, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 55], [
             Constants.WIDTH, Constants.HEIGHT], 8, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 52], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
         self.enemies.add(Enemy.Keg([4, 54], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "right",
-            ["r100"],"xgt108"))
+            ["r100"], "xgt108"))
 
         self.enemies.add(Enemy.Keg([108, 40], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "left",
-            ["l100"],"xlt4"))
+            ["l100"], "xlt4"))
         self.enemies.add(Enemy.Keg([108, 42], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "left",
-            ["l100"],"xlt4"))
+            ["l100"], "xlt4"))
 
     def update(self, interval):
         super(Level_4, self).update(interval)

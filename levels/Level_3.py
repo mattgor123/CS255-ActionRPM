@@ -11,7 +11,6 @@ import sprites.Label as Label
 import sprites.Checkpoint as Checkpoint
 
 
-
 class Level_3(Level):
     # TODO : Tweak difficulty / keep play testing (since I have the course
     # memorized ... I wanna know how difficult it is). Also maybe implement
@@ -128,7 +127,7 @@ class Level_3(Level):
         # Shoot fireballs
 
         self.time_between_fireballs += 1
-        if (self.time_between_fireballs >= Level_3.fireball_frequency):
+        if self.time_between_fireballs >= Level_3.fireball_frequency:
             self.time_between_fireballs = 0
             self.shoot_fireball()
         if self.beaten:

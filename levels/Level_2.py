@@ -127,7 +127,6 @@ class Level_2(Level):
         else:
             Constants.STATE.set_level(2)
 
-
     def enemy_collided(self, enemy, damage):
         self.player.damage += damage
         #There should be a bigger boss class that all bosses
