@@ -17,3 +17,4 @@ class Constants(object):
     HIGH_SCORE_FILE = 'scores.dat'
     START_SCORE = 5000
     PLAY = None
+    JOYSTICK = None

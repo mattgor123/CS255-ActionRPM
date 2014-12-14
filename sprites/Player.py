@@ -86,6 +86,11 @@ class Player(game.sprite.Sprite):
         self.fire_rate = 30
         self.projectiles = game.sprite.Group()
 
+        if Constants.JOYSTICK != None:
+            self.is_controlled_by_joystick = True
+        else:
+            self.is_controlled_by_joystick = False
+
     #Method to add an item to a player's inventory
     def grab(self, item):
         self.score += item.points
@@ -155,9 +160,35 @@ class Player(game.sprite.Sprite):
 
         #Initially assume we are slowing down
         acceleration = -2 * Constants.PLAYER_ACCELERATION
+
+        move_direction = ""
+        brake_pressed = False
+        if self.is_controlled_by_joystick:
+            #Check joystick
+            if Constants.JOYSTICK.get_axis(0) < -.5:
+                if Constants.JOYSTICK.get_axis(1) < -.5:
+                    move_direction = "upleft"
+                elif Constants.JOYSTICK.get_axis(1) > .5:
+                    move_direction = "downleft"
+                else:
+                    move_direction = "left"
+            elif Constants.JOYSTICK.get_axis(0) > .5:
+                if Constants.JOYSTICK.get_axis(1) < -.5:
+                    move_direction = "upright"
+                elif Constants.JOYSTICK.get_axis(1) > .5:
+                    move_direction = "downright"
+                else:
+                    move_direction = "right"
+            elif Constants.JOYSTICK.get_axis(1) < -.5:
+                    move_direction = "up"
+            elif Constants.JOYSTICK.get_axis(1) > .5:
+                    move_direction = "down"
+            if Constants.JOYSTICK.get_button(1):
+                brake_pressed = True
+
         #Get the keys pressed
         keys_pressed = game.key.get_pressed()
-        if keys_pressed[game.K_a] and keys_pressed[game.K_w]:
+        if (keys_pressed[game.K_a] and keys_pressed[game.K_w]) or move_direction == "upleft":
             # change of direction, stop playing crash sound & set the direction
             if self.direction != "upleft":
                 self.dir_changed = True
@@ -165,42 +196,42 @@ class Player(game.sprite.Sprite):
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_a] and keys_pressed[game.K_s]:
+        elif (keys_pressed[game.K_a] and keys_pressed[game.K_s]) or move_direction == "downleft":
             if self.direction != "downleft":
                 self.dir_changed = True
                 self.set_direction("downleft")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_a]:
+        elif keys_pressed[game.K_a] or move_direction == "left":
             if self.direction != "left":
                 self.dir_changed = True
                 self.set_direction("left")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_d] and keys_pressed[game.K_w]:
+        elif (keys_pressed[game.K_d] and keys_pressed[game.K_w]) or move_direction == "upright":
             if self.direction != "upright":
                 self.dir_changed = True
                 self.set_direction("upright")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_d] and keys_pressed[game.K_s]:
+        elif (keys_pressed[game.K_d] and keys_pressed[game.K_s]) or move_direction == "downright":
             if self.direction != "downright":
                 self.dir_changed = True
                 self.set_direction("downright")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_d]:
+        elif keys_pressed[game.K_d] or move_direction == "right":
             if self.direction != "right":
                 self.dir_changed = True
                 self.set_direction("right")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_w]:
+        elif keys_pressed[game.K_w] or move_direction == "up":
             #print self.x
             #print self.y
             if self.direction != "up":
@@ -209,14 +240,14 @@ class Player(game.sprite.Sprite):
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
 
-        elif keys_pressed[game.K_s]:
+        elif keys_pressed[game.K_s] or move_direction == "down":
             if self.direction != "down":
                 self.dir_changed = True
                 self.set_direction("down")
                 Player.crash.stop()
             acceleration = Constants.PLAYER_ACCELERATION
-
-        if game.key.get_mods() == game.KMOD_LSHIFT:
+        #BRAKE SHIT
+        if game.key.get_mods() == game.KMOD_LSHIFT or brake_pressed:
             self.braking = True
             acceleration = -4 * Constants.PLAYER_ACCELERATION
 

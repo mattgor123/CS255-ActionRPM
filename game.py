@@ -76,6 +76,12 @@ def init():
     # Display the title screen
     Constants.STATE = Title.Title()
     Constants.STATE.__init__()
+    pygame.joystick.init()
+    joystick_count = pygame.joystick.get_count()
+    if joystick_count != 0:
+        Constants.JOYSTICK = pygame.joystick.Joystick(0)
+        Constants.JOYSTICK.init()
+        print "Joystick connected"
 
 
 init()

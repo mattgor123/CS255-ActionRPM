@@ -9,6 +9,23 @@ To run our game, go into the directory actionrpm/ and run the command "python
 game.py"
 
 Current Assignment Notes
+12/16
+To play with a joystick, you must have a joystick connected before running python game.py.
+If you disconnect your joystick while playing, I have no idea what happens. Please don't do that. It will probably crash.
+We could have fixed this by checking if the gamepad is None every time, but that just didn't seem like it was worth the decrease in speed of our game. So just keep your gamepad plugged in.
+
+What can you do with the gamepad?
+Move (Left thumbstick), Control menu (left thumstick), control radio (right thumbstick), shoot (A button on Xbox controller), brake (B button on Xbox controller)
+
+Note: Console output 
+--Also changes made:
+Breaking added (shift key or B)
+Terrible sound effect fixed, collision now sounds good
+Graphics tweaks
+Refactoring code
+
+
+Previous Assignment Notes
 11/23
 Problem 1) Level 4
 We have a BIG drinking problem on campus. Kill the kegs by shooting your fireball (space bar)!

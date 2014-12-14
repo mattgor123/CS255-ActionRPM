@@ -89,6 +89,9 @@ class Play(State.State):
                 self.set_level(3)
             elif event.key == pygame.K_SPACE:
                 self.player.shoot()
+        elif event.type == pygame.JOYBUTTONDOWN:
+            if Constants.JOYSTICK.get_button(2):
+                self.player.shoot()
         #For debugging purposes ... print where you click on screen
         elif event.type == pygame.MOUSEBUTTONDOWN:
             print(pygame.mouse.get_pos())
