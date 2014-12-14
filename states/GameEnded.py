@@ -40,6 +40,12 @@ class GameEnded(State.State):
             presskeyrect.centerx = background.get_rect().centerx
             presskeyrect.y = Constants.HEIGHT - 40
             Constants.SCREEN.blit(presskey, presskeyrect)
+
+            alphaSurface = pygame.Surface((Constants.WIDTH,Constants.HEIGHT)) # The custom-surface of the size of the screen.
+            alphaSurface.fill((0,0,0))
+            alphaSurface.set_alpha(Constants.ALPHA_SURFACE) # Set the incremented alpha-value to the custom surface.
+            Constants.SCREEN.blit(alphaSurface,(0,0))
+
             display.update()
             self.drawn = True
         else:

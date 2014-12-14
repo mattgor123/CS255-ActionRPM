@@ -48,6 +48,12 @@ class Title(State.State):
             label = self.font.render("ActionRPM", 1, (0, 0, 0))
             Constants.SCREEN.blit(label, (Constants.WIDTH / 3.5,
                                           Constants.HEIGHT / 3))
+
+        alphaSurface = pygame.Surface((Constants.WIDTH,Constants.HEIGHT)) # The custom-surface of the size of the screen.
+        alphaSurface.fill((0,0,0))
+        alphaSurface.set_alpha(Constants.ALPHA_SURFACE) # Set the incremented alpha-value to the custom surface.
+        Constants.SCREEN.blit(alphaSurface,(0,0))
+
         display.update()
 
     def keyEvent(self, event):

@@ -49,6 +49,11 @@ class Play(State.State):
         self.player.projectiles.draw(Constants.SCREEN)
         self.hud.draw(Constants.SCREEN, self.background)
 
+        alphaSurface = pygame.Surface((Constants.WIDTH,Constants.HEIGHT)) # The custom-surface of the size of the screen.
+        alphaSurface.fill((0,0,0))
+        alphaSurface.set_alpha(Constants.ALPHA_SURFACE) # Set the incremented alpha-value to the custom surface.
+        Constants.SCREEN.blit(alphaSurface,(0,0))
+
         pygame.display.update()
 
     def add_level(self, level):

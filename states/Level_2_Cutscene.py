@@ -49,6 +49,12 @@ class Level_2_Cutscene(State.State):
                 Constants.SCREEN.blit(
                     Level_2_Cutscene.images[self.current_display],
                     self.rect)
+
+                alphaSurface = pygame.Surface((Constants.WIDTH,Constants.HEIGHT)) # The custom-surface of the size of the screen.
+                alphaSurface.fill((0,0,0))
+                alphaSurface.set_alpha(Constants.ALPHA_SURFACE) # Set the incremented alpha-value to the custom surface.
+                Constants.SCREEN.blit(alphaSurface,(0,0))
+
                 display.update()
         else:
             pass

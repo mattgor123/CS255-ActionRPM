@@ -98,6 +98,12 @@ class Menu(State.State):
                                    Constants.HEIGHT / 2 - quit_height / 2 +
                                    240))
             self.moved = False
+
+            alphaSurface = pygame.Surface((Constants.WIDTH,Constants.HEIGHT)) # The custom-surface of the size of the screen.
+            alphaSurface.fill((0,0,0))
+            alphaSurface.set_alpha(Constants.ALPHA_SURFACE) # Set the incremented alpha-value to the custom surface.
+            Constants.SCREEN.blit(alphaSurface,(0,0))
+
             display.update()
         else:
             pass
@@ -130,6 +136,15 @@ class Menu(State.State):
 def change_event(selected):
     if (selected == 0):
         Constants.STATE = GameIntro.GameIntro()
+    elif (selected == 1):
+        if Constants.ALPHA_SURFACE > 80:
+            Constants.ALPHA_SURFACE = 0
+            Constants.STATE.moved = True
+            Constants.STATE.draw()
+        else:
+            Constants.ALPHA_SURFACE += 30
+            Constants.STATE.moved = True
+            Constants.STATE.draw()
     elif (selected == 3):
         Constants.STATE = HighScore.HighScore("", 0, False)
     elif (selected == 4):

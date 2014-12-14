@@ -18,3 +18,4 @@ class Constants(object):
     START_SCORE = 5000
     PLAY = None
     JOYSTICK = None
+    ALPHA_SURFACE = 0

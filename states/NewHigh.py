@@ -56,6 +56,12 @@ class NewHigh(State.State):
             name_msg_rect = name_msg.get_rect()
             name_msg_rect.center = rect.center
             Constants.SCREEN.blit(name_msg, name_msg_rect)
+
+        alphaSurface = pygame.Surface((Constants.WIDTH,Constants.HEIGHT)) # The custom-surface of the size of the screen.
+        alphaSurface.fill((0,0,0))
+        alphaSurface.set_alpha(Constants.ALPHA_SURFACE) # Set the incremented alpha-value to the custom surface.
+        Constants.SCREEN.blit(alphaSurface,(0,0))
+
         display.flip()
 
     def keyEvent(self, event):
