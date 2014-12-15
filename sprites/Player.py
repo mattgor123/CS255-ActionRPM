@@ -164,24 +164,27 @@ class Player(game.sprite.Sprite):
         move_direction = ""
         brake_pressed = False
         if self.is_controlled_by_joystick:
+            joy_axis0 = Constants.JOYSTICK.get_axis(0)
+            joy_axis1 = Constants.JOYSTICK.get_axis(1)
+
             #Check joystick
-            if Constants.JOYSTICK.get_axis(0) < -.5:
-                if Constants.JOYSTICK.get_axis(1) < -.5:
+            if joy_axis0 < -.5:
+                if joy_axis1 < -.5:
                     move_direction = "upleft"
-                elif Constants.JOYSTICK.get_axis(1) > .5:
+                elif joy_axis1 > .5:
                     move_direction = "downleft"
                 else:
                     move_direction = "left"
-            elif Constants.JOYSTICK.get_axis(0) > .5:
-                if Constants.JOYSTICK.get_axis(1) < -.5:
+            elif joy_axis0 > .5:
+                if joy_axis1 < -.5:
                     move_direction = "upright"
-                elif Constants.JOYSTICK.get_axis(1) > .5:
+                elif joy_axis1 > .5:
                     move_direction = "downright"
                 else:
                     move_direction = "right"
-            elif Constants.JOYSTICK.get_axis(1) < -.5:
+            elif joy_axis1 < -.5:
                     move_direction = "up"
-            elif Constants.JOYSTICK.get_axis(1) > .5:
+            elif joy_axis1 > .5:
                     move_direction = "down"
             if Constants.JOYSTICK.get_button(1):
                 brake_pressed = True
