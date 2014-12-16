@@ -42,7 +42,7 @@ class Level_3(Level):
         self.items.add(Marker.Marker("marker", 88, 30, False))
         self.items.add(Marker.Marker("marker", 88, 41, False))
         self.items.add(Marker.Marker("marker", 78, 41, False))
-        self.items.add(Marker.Marker("marker", 72, 44, False))
+        self.items.add(Marker.Marker("marker", 70, 42, True))
         self.items.add(Marker.Marker("marker", 74, 53, False))
         self.items.add(Marker.Marker("marker", 84, 53, False))
         self.items.add(Marker.Marker("marker", 94, 53, False))

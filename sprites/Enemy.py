@@ -699,11 +699,6 @@ class Keg(game.sprite.Sprite):
         self.current_move = 0
         self.old_pos_x = location[0]
         self.old_pos_y = location[1]
-        #This variable keeps track of the number of cycles
-        #the enemy has waited before restarting
-        #If 0, enemy continues as normal
-        #Enemy will stay stopped until stop_time == max_stop_time
-        self.stop_time = 0
 
         #Set up booleans for stop conditions
         self.xgt = False
@@ -728,8 +723,6 @@ class Keg(game.sprite.Sprite):
     def update(self, interval, player_coordinates):
         if self.should_move():
             self.move(interval)
-            if self.timer_on:
-                self.timer += 1
         else:
             self.x = self.initial_location[0]
             self.y = self.initial_location[1]
@@ -764,88 +757,34 @@ class Keg(game.sprite.Sprite):
     def move(self, interval):
         if len(self.movements) == 0:
             return
-        #If the stop_time is max_stop_time, then the enemy waited long enough
-        #and can restart moving
-        #If the stop_time is 0, it indicates that the car can continue moving
-        if self.stop_time == self.max_stop_time or self.stop_time == 0:
-            #Make sure stop time is back at 0 once we are moving again
-            self.stop_time = 0
-            curr_action = self.movements[self.current_move]
-            distance_moved_x = fabs(self.old_pos_x - self.x)
-            distance_moved_y = fabs(self.old_pos_y - self.y)
-            if (curr_action[0:1] == "s"):
-                self.speed = 0
-            if (curr_action[0:1] == "p"):
-                self.speed = 0
-                if self.time_spent_waiting > float(curr_action[1:]):
-                    self.speed = Keg.speed
-                    if (self.current_move == len(self.movements) - 1):
-                        self.current_move = 0
-                    else:
-                        self.current_move += 1
-                    self.time_spent_waiting = 0
-                else:
-                    self.time_spent_waiting += 1
 
-            if (curr_action[0:1] == "d"):
-                self.y += self.speed * interval
-                self.direction = "down"
-                self.set_direction("down")
-                #Must reset rect after direction change
-                self.rect = self.image.get_rect(center=self.rect.center)
-                if distance_moved_y > float(curr_action[1:]):
-                    if (self.current_move == len(self.movements) - 1):
-                        self.current_move = 0
-                    else:
-                        self.current_move += 1
-                    self.old_pos_y = self.y
+        if (self.direction == "down"):
+            self.y += self.speed * interval
+            self.direction = "down"
+            self.set_direction("down")
+            #Must reset rect after direction change
+            self.rect = self.image.get_rect(center=self.rect.center)
 
-            elif (curr_action[0:1] == "r"):
-                self.x += self.speed * interval
-                self.direction = "right"
-                self.set_direction("right")
-                #Must reset rect after direction change
-                self.rect = self.image.get_rect(center=self.rect.center)
-                if distance_moved_x > float(curr_action[1:]):
-                    if (self.current_move == len(self.movements) - 1):
-                        self.current_move = 0
-                    else:
-                        self.current_move += 1
-                    self.old_pos_x = self.x
+        elif (self.direction == "right"):
+            self.x += self.speed * interval
+            self.direction = "right"
+            self.set_direction("right")
+            #Must reset rect after direction change
+            self.rect = self.image.get_rect(center=self.rect.center)
 
-            elif (curr_action[0:1] == "u"):
-                self.y -= self.speed * interval
-                self.direction = "up"
-                self.set_direction("up")
-                #Must reset rect after direction change
-                self.rect = self.image.get_rect(center=self.rect.center)
-                if distance_moved_y > float(curr_action[1:]):
-                    if (self.current_move == len(self.movements) - 1):
-                        self.current_move = 0
-                    else:
-                        self.current_move += 1
-                    self.old_pos_y = self.y
+        elif (self.direction == "up"):
+            self.y -= self.speed * interval
+            self.direction = "up"
+            self.set_direction("up")
+            #Must reset rect after direction change
+            self.rect = self.image.get_rect(center=self.rect.center)
 
-            elif (curr_action[0:1] == "l"):
-                self.direction = "left"
-                self.set_direction("left")
-                self.x -= self.speed * interval
-                #Must reset rect after direction change
-                self.rect = self.image.get_rect(center=self.rect.center)
-                if distance_moved_x > float(curr_action[1:]):
-                    if (self.current_move == len(self.movements) - 1):
-                        self.current_move = 0
-                    else:
-                        self.current_move += 1
-                    self.old_pos_x = self.x
-
-        else:
-            #add one to the number of cycles the enemy has waited
-            self.stop_time += 1
-
-    #Used to calculate how long it's been since enemy crossed finish
-    def start_timer(self):
-        self.timer_on = True
+        elif (self.direction == "left"):
+            self.direction = "left"
+            self.set_direction("left")
+            self.x -= self.speed * interval
+            #Must reset rect after direction change
+            self.rect = self.image.get_rect(center=self.rect.center)
 
     #method to set the direction
     def set_direction(self, direction):

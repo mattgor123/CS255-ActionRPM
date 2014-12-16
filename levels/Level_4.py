@@ -6,6 +6,7 @@ import sprites.Enemy as Enemy
 import sprites.Fireball as Fireball
 from states.Constants import Constants
 from states.GameEnded import GameEnded
+from states.NewHigh import NewHigh
 import map.Map as Map
 import sprites.Label as Label
 import sprites.Checkpoint as Checkpoint
@@ -33,7 +34,9 @@ class Level_4(Level):
         self.timer = 0
         #Counts number of kegs the player has killed
         self.kegs = 0
-        self.has_fireball = False
+
+        self.player.inventory.append("fireball")
+        self.has_fireball = True
 
     def init_items(self):
         # Create miscellaneous shit
@@ -59,7 +62,7 @@ class Level_4(Level):
         self.keg_label.image = self.keg_label.font.render(self.keg_text,
                                                           1, (255, 255, 255))
         self.keg_group.add(self.keg_label)
-        self.keg_label.update(25)
+        self.keg_label.update(20)
 
     def check_objective(self):
         if self.label_count < 375:
@@ -133,9 +136,6 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([72, 70], [
             Constants.WIDTH, Constants.HEIGHT], 8, "up",
             ["u100"], "ylt60"))
-        self.enemies.add(Enemy.Keg([74, 60], [
-            Constants.WIDTH, Constants.HEIGHT], 9, "down",
-            ["d100"], "ygt70"))
         self.enemies.add(Enemy.Keg([76, 60], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "down",
             ["d100"], "ygt70"))
@@ -143,9 +143,6 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([80, 60], [
             Constants.WIDTH, Constants.HEIGHT], 9, "down",
             ["d100"], "ygt70"))
-        self.enemies.add(Enemy.Keg([82, 70], [
-            Constants.WIDTH, Constants.HEIGHT], 8, "up",
-            ["u100"], "ylt60"))
         self.enemies.add(Enemy.Keg([84, 60], [
             Constants.WIDTH, Constants.HEIGHT], 7.5, "down",
             ["d100"], "ygt70"))
@@ -156,9 +153,6 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([92, 60], [
             Constants.WIDTH, Constants.HEIGHT], 7, "down",
             ["d100"], "ygt70"))
-        self.enemies.add(Enemy.Keg([94, 70], [
-            Constants.WIDTH, Constants.HEIGHT], 9, "up",
-            ["u100"], "ylt60"))
         self.enemies.add(Enemy.Keg([96, 70], [
             Constants.WIDTH, Constants.HEIGHT], 10, "up",
             ["u100"], "ylt60"))
@@ -168,7 +162,6 @@ class Level_4(Level):
         self.enemies.add(Enemy.Keg([100, 70], [
             Constants.WIDTH, Constants.HEIGHT], 9.5, "up",
             ["u100"], "ylt60"))
-        ##23 kegs up to this point
 
         self.enemies.add(Enemy.Keg([4, 51], [
             Constants.WIDTH, Constants.HEIGHT], 8, "right",
@@ -195,11 +188,9 @@ class Level_4(Level):
 
     def update(self, interval):
         super(Level_4, self).update(interval)
-        if self.kegs > 25:
-            Constants.STATE = GameEnded("GAME OVER")
-        if not self.has_fireball:
-            self.player.inventory.append("fireball")
-            self.has_fireball = True
+        if self.kegs >= 20:
+            Constants.STATE = NewHigh(self.player.score)
+
 
     def draw(self, background):
         super(Level_4, self).draw(background)
@@ -213,19 +204,15 @@ class Level_4(Level):
     def game_over(self, died):
         if died:
             Constants.STATE = GameEnded("GAME OVER")
-        else:
-            Constants.STATE.set_level(1)
 
     def enemy_collided(self, enemy, damage):
         self.player.damage += damage
         # There should be a bigger boss class that all bosses
         #Are derived from
-        if (damage == 0 and type(enemy) is Enemy.Keg):
-            pass
-        elif (damage == 50 and type(enemy) is Enemy.Keg):
+        if (type(enemy) is Enemy.Keg):
             enemy.kill()
             self.increment_kegs()
 
     def increment_kegs(self):
         self.kegs += 1
-        self.keg_label.update(25-self.kegs)
+        self.keg_label.update(20-self.kegs)

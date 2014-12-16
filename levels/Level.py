@@ -62,104 +62,107 @@ class Level(object):
             item.rect.topleft = self.map.get_topleft(item.x, item.y)
 
     def enemy_collision(self, player_coordinates):
+
         for enemy in self.enemies:
             enemy.update(Constants.INTERVAL, player_coordinates)
-            all_tiles_in_enemy_range = self.map.get_tiles(enemy.x, enemy.y)
-            if type(enemy) == Enemy.Racer and self.map is not None:
-                for checkpoint in self.enemies:
-                    if type(checkpoint) == Checkpoint.Checkpoint:
-                        if checkpoint.number == 4:
-                            if checkpoint.rect.colliderect(enemy.rect):
-                                if enemy.timer_on is False:
-                                    print ("Enemy has beaten race!")
-                                    enemy.start_timer()
-            # Fireball collisions
-            if type(enemy) == Fireball.Fireball and self.map is not None:
-                collidables_to_check = all_tiles_in_enemy_range
-                for r in collidables_to_check:
-                    if r.get_strength() >= 0:
-                        if r.rect.collidepoint(enemy.rect.midbottom):
-                            enemy.y -= .1
-                            enemy.bounce(False)
-                        elif r.rect.collidepoint(enemy.rect.midtop):
-                            enemy.y += .1
-                            enemy.bounce(False)
-                        elif r.rect.collidepoint(enemy.rect.midleft):
-                            enemy.x += .1
-                            enemy.bounce(True)
-                        elif r.rect.collidepoint(enemy.rect.midright):
-                            enemy.x -= .1
-                            enemy.bounce(True)
-            # Boss 2 Collisions
-            if type(enemy) == Enemy.Boss_1 and self.map is not None:
-                collidables_to_check = all_tiles_in_enemy_range
-                collidables_to_check.append(self.player)
-                #Here goes collision
-                collision_fixed = False
-                #Go through all of the collidable rects around the player
-                for r in collidables_to_check:
-                    #A strength >= 0 indicates a collidable object
-                    #  -1 isnt collidable
-                    if r.get_strength() >= 0:
-                        #This same if statement is repeated for all midpoints
-                        #Checking if the midpoint of the car is in the other
-                        # rect
-                        #This midpoint check tells us how to fix the car's
-                        # position
-                        if (r.rect.collidepoint(enemy.rect.midbottom)):
-                            enemy.rect.bottom = r.rect.top
-                            collision_fixed = True
-                            enemy.speed = 0
-                            enemy.y -= .01
 
-                        if (r.rect.collidepoint(enemy.rect.midleft)):
-                            enemy.rect.left = r.rect.right
-                            collision_fixed = True
-                            enemy.speed = 0
-                            enemy.x += .01
+            if self.map.is_on_screen(enemy.x,enemy.y):
+                all_tiles_in_enemy_range = self.map.get_tiles(enemy.x, enemy.y)
+                if type(enemy) == Enemy.Racer and self.map is not None:
+                    for checkpoint in self.enemies:
+                        if type(checkpoint) == Checkpoint.Checkpoint:
+                            if checkpoint.number == 4:
+                                if checkpoint.rect.colliderect(enemy.rect):
+                                    if enemy.timer_on is False:
+                                        print ("Enemy has beaten race!")
+                                        enemy.start_timer()
+                # Fireball collisions
+                if type(enemy) == Fireball.Fireball and self.map is not None:
+                    collidables_to_check = all_tiles_in_enemy_range
+                    for r in collidables_to_check:
+                        if r.get_strength() >= 0:
+                            if r.rect.collidepoint(enemy.rect.midbottom):
+                                enemy.y -= .1
+                                enemy.bounce(False)
+                            elif r.rect.collidepoint(enemy.rect.midtop):
+                                enemy.y += .1
+                                enemy.bounce(False)
+                            elif r.rect.collidepoint(enemy.rect.midleft):
+                                enemy.x += .1
+                                enemy.bounce(True)
+                            elif r.rect.collidepoint(enemy.rect.midright):
+                                enemy.x -= .1
+                                enemy.bounce(True)
+                # Boss 2 Collisions
+                if type(enemy) == Enemy.Boss_1 and self.map is not None:
+                    collidables_to_check = all_tiles_in_enemy_range
+                    collidables_to_check.append(self.player)
+                    #Here goes collision
+                    collision_fixed = False
+                    #Go through all of the collidable rects around the player
+                    for r in collidables_to_check:
+                        #A strength >= 0 indicates a collidable object
+                        #  -1 isnt collidable
+                        if r.get_strength() >= 0:
+                            #This same if statement is repeated for all midpoints
+                            #Checking if the midpoint of the car is in the other
+                            # rect
+                            #This midpoint check tells us how to fix the car's
+                            # position
+                            if (r.rect.collidepoint(enemy.rect.midbottom)):
+                                enemy.rect.bottom = r.rect.top
+                                collision_fixed = True
+                                enemy.speed = 0
+                                enemy.y -= .01
 
-                        if (r.rect.collidepoint(enemy.rect.midright)):
-                            enemy.rect.right = r.rect.left
-                            collision_fixed = True
-                            enemy.speed = 0
-                            enemy.x -= .01
+                            if (r.rect.collidepoint(enemy.rect.midleft)):
+                                enemy.rect.left = r.rect.right
+                                collision_fixed = True
+                                enemy.speed = 0
+                                enemy.x += .01
 
-                        if (r.rect.collidepoint(enemy.rect.midtop)):
-                            enemy.rect.top = r.rect.bottom
-                            collision_fixed = True
-                            enemy.speed = 0
-                            enemy.y += .01
+                            if (r.rect.collidepoint(enemy.rect.midright)):
+                                enemy.rect.right = r.rect.left
+                                collision_fixed = True
+                                enemy.speed = 0
+                                enemy.x -= .01
 
-                            #These collision if statements are to fix hitting
-                            #  corners
-                            #Only happens if there wasnt a collision with a
-                            #center of the car
-                        if (not collision_fixed and r.rect.collidepoint(
-                                enemy.rect.topright)):
-                            collision_fixed = True
-                            enemy.rect.right = r.rect.left
-                            enemy.speed = 0
-                            enemy.x -= .01
+                            if (r.rect.collidepoint(enemy.rect.midtop)):
+                                enemy.rect.top = r.rect.bottom
+                                collision_fixed = True
+                                enemy.speed = 0
+                                enemy.y += .01
 
-                        if (not collision_fixed and r.rect.collidepoint(
-                                enemy.rect.bottomright)):
-                            collision_fixed = True
-                            enemy.rect.right = r.rect.left
-                            enemy.speed = 0
-                            enemy.x -= .01
+                                #These collision if statements are to fix hitting
+                                #  corners
+                                #Only happens if there wasnt a collision with a
+                                #center of the car
+                            if (not collision_fixed and r.rect.collidepoint(
+                                    enemy.rect.topright)):
+                                collision_fixed = True
+                                enemy.rect.right = r.rect.left
+                                enemy.speed = 0
+                                enemy.x -= .01
 
-                        if (not collision_fixed and r.rect.collidepoint(
-                                enemy.rect.topleft)):
-                            collision_fixed = True
-                            enemy.rect.left = r.rect.right
-                            enemy.speed = 0
-                            enemy.x += .01
-                        if (not collision_fixed and r.rect.collidepoint(
-                                enemy.rect.bottomleft)):
-                            collision_fixed = True
-                            enemy.rect.left = r.rect.right
-                            enemy.speed = 0
-                            enemy.x += .01
+                            if (not collision_fixed and r.rect.collidepoint(
+                                    enemy.rect.bottomright)):
+                                collision_fixed = True
+                                enemy.rect.right = r.rect.left
+                                enemy.speed = 0
+                                enemy.x -= .01
+
+                            if (not collision_fixed and r.rect.collidepoint(
+                                    enemy.rect.topleft)):
+                                collision_fixed = True
+                                enemy.rect.left = r.rect.right
+                                enemy.speed = 0
+                                enemy.x += .01
+                            if (not collision_fixed and r.rect.collidepoint(
+                                    enemy.rect.bottomleft)):
+                                collision_fixed = True
+                                enemy.rect.left = r.rect.right
+                                enemy.speed = 0
+                                enemy.x += .01
 
     def player_collision(self):
         player_coordinates = self.player.get_coordinates()
@@ -275,8 +278,9 @@ class Level(object):
             collidables_on_screen = self.map.get_tiles(projectile.x,
                                                        projectile.y)
             for enemy in self.enemies:
-                collidables_on_screen.append(enemy)
-            collidables_on_screen.append(self.player)
+                if self.map.is_on_screen(enemy.x,enemy.y):
+                    collidables_on_screen.append(enemy)
+
             for r in collidables_on_screen:
                 if projectile.rect.colliderect(r.rect):
                     projectile.collide(self.player, r)
