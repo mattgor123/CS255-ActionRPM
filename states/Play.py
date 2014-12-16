@@ -22,8 +22,8 @@ class Play(State.State):
         self.hud = HUD.HUD()
         self.background = pygame.Surface(Constants.SCREEN.get_size())
         self.levels = []
-        self.current_level = 0
-        self.init_levels()
+        #self.current_level = 0
+        #self.init_levels()
         self.time = 0.00
 
     def init_levels(self):
@@ -36,14 +36,14 @@ class Play(State.State):
         self.time += interval
         self.players.update(interval)
         self.hud.update(self.player, self.time, self.player.score)
-        self.levels[self.current_level].update(interval)
+        self.level.update(interval)
 
     def draw(self):
         self.players.clear(Constants.SCREEN, self.background)
         self.hud.clear(Constants.SCREEN)
         self.players.clear(Constants.SCREEN, self.background)
 
-        self.levels[self.current_level].draw(self.background)
+        self.level.draw(self.background)
 
         self.players.draw(Constants.SCREEN)
         self.player.projectiles.draw(Constants.SCREEN)
@@ -55,14 +55,17 @@ class Play(State.State):
         self.levels.append(level)
 
     def set_level(self, level_num):
-        self.levels[self.current_level].map = None
-        old_level = self.current_level
-        self.current_level = level_num
-        if self.levels[self.current_level] is None:
-            raise Exception
+        if level_num == 0:
+            self.level = Level_1.Level_1(self.player)
+        elif level_num == 1:
+            self.level = Level_2.Level_2(self.player)
+        elif level_num == 2:
+            self.level = Level_3.Level_3(self.player)
+        elif level_num == 3:
+            self.level = Level_4.Level_4(self.player)
         self.player.set_coordinates(
-            self.levels[self.current_level].PLAYER_START)
-        self.levels[self.current_level].init_map()
+            self.level.PLAYER_START)
+        self.level.init_map()
 
     def keyEvent(self, event):
         if event.type == pygame.KEYDOWN:
