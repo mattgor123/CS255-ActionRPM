@@ -3,6 +3,7 @@ import pygame.display as display
 import State
 import GameIntro
 import HighScore
+import Volume
 from Constants import Constants
 
 
@@ -145,6 +146,8 @@ def change_event(selected):
             Constants.ALPHA_SURFACE += 30
             Constants.STATE.moved = True
             Constants.STATE.draw()
+    elif selected == 2:
+        Constants.STATE = Volume.Volume()
     elif (selected == 3):
         Constants.STATE = HighScore.HighScore("", 0, False)
     elif (selected == 4):

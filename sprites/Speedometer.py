@@ -43,3 +43,13 @@ class Speedometer(PG.sprite.Sprite):
         new.blit(self.needle, self.needle.get_rect(center=Speedometer.NEEDLE
                                                    .get_rect().center))
         self.image = new
+
+    def vol_update(self, vol):
+        angle_range = 270.0
+        vol_range = 1
+        ang_per_mil = angle_range / vol_range
+        angles = -(vol * ang_per_mil) + 135
+        new = Speedometer.IMAGE.copy()
+        self.needle = PG.transform.rotate(Speedometer.NEEDLE, angles)
+        new.blit(self.needle, self.needle.get_rect(center=Speedometer.NEEDLE.get_rect().center))
+        self.image = new

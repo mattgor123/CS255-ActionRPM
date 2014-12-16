@@ -1,6 +1,7 @@
 import pygame as PG
 import pygame.midi
 import random
+from states.Constants import Constants
 
 import Label
 
@@ -13,7 +14,6 @@ class Radio(PG.sprite.Sprite):
     current_index = None
     label = None
     text_rect = None
-    volume = None
     is_on = False
 
     def __init__(self):
@@ -72,13 +72,10 @@ class Radio(PG.sprite.Sprite):
         if Radio.current_index is None:
             Radio.current_index = random.randrange(0, Radio.max_index)
 
-        if Radio.volume is None:
-            Radio.volume = 1
-
         Radio.label = Label.Label("nowplaying", "", (0, 0))
         Radio.text_rect = pygame.Rect(268, 65, 170, 31)
         Radio.increment_current_index_and_play()
-        PG.mixer.music.set_volume(Radio.volume)
+        PG.mixer.music.set_volume(Constants.VOLUME)
         Radio.is_on = True
         self.labels = pygame.sprite.Group()
         self.labels.add(Radio.label)
@@ -149,14 +146,14 @@ class Radio(PG.sprite.Sprite):
             keys_pressed = PG.key.get_pressed()
             if keys_pressed[PG.K_UP]:
                 self.display_volume_timer = 0
-                Radio.volume = min(1, Radio.volume + .01)
-                PG.mixer.music.set_volume(Radio.volume)
-                Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
+                Constants.VOLUME = min(1, Constants.VOLUME + .01)
+                PG.mixer.music.set_volume(Constants.VOLUME)
+                Radio.label.update("Volume: " + str(int(Constants.VOLUME * 100)))
             elif keys_pressed[PG.K_DOWN]:
                 self.display_volume_timer = 0
-                Radio.volume = max(0, Radio.volume - .01)
-                PG.mixer.music.set_volume(Radio.volume)
-                Radio.label.update("Volume: " + str(int(Radio.volume * 100)))
+                Constants.VOLUME = max(0, Constants.VOLUME - .01)
+                PG.mixer.music.set_volume(Constants.VOLUME)
+                Radio.label.update("Volume: " + str(int(Constants.VOLUME * 100)))
             if self.display_volume_timer >= 100:
                 Radio.label.update(Radio.song_names[Radio.current_index])
                 self.display_volume_timer = 0

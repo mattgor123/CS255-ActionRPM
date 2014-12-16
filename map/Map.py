@@ -264,3 +264,6 @@ class Map():
         if y >= len(self.map[0]) or y < 0:
             return False
         return True
+
+    def is_on_screen(self, x, y):
+        return x >= self.x_min and x <= self.x_max and y >= self.y_min and y <= self.y_max

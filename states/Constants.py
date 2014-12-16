@@ -19,3 +19,4 @@ class Constants(object):
     PLAY = None
     JOYSTICK = None
     ALPHA_SURFACE = 0
+    VOLUME = 0.5
