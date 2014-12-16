@@ -475,5 +475,5 @@ class Player(game.sprite.Sprite):
             self.projectiles.add(
                 Fireball.Fireball(
                     Constants.PLAYER_MAX_SPEED + 10,
-                    self.direction, [self.x, self.y], 100, 50))
+                    self.direction, (self.x, self.y), 100, 50, self.rect.topleft))
             self.score -= 100

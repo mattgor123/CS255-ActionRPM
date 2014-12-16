@@ -8,7 +8,7 @@ import Player
 class Fireball(pygame.sprite.Sprite):
     image = None
 
-    def __init__(self, speed, initial_direction, location, duration, strength):
+    def __init__(self, speed, initial_direction, location, duration, strength, initial_map):
         pygame.sprite.Sprite.__init__(self)
         if Fireball.image is None:
             Fireball.image = pygame.image.load(
@@ -17,7 +17,7 @@ class Fireball(pygame.sprite.Sprite):
         self.x = location[0]
         self.y = location[1]
         self.rect = self.image.get_rect()
-        self.rect.topleft = location
+        self.rect.topleft = initial_map
         self.duration = duration
         self.direction = initial_direction
         self.speed = speed

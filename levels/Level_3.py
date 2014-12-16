@@ -164,7 +164,7 @@ class Level_3(Level):
                 self.enemies.add(Fireball.Fireball(speed, direction, [enemy.x,
                                                    enemy.y], duration,
                                                    (self.checkpoint + 1) *
-                                                   self.fireball_strength))
+                                                   self.fireball_strength, enemy.rect.topleft))
 
     def update(self, interval):
         super(Level_3, self).update(interval)
