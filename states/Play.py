@@ -41,7 +41,7 @@ class Play(State.State):
     def draw(self):
         self.players.clear(Constants.SCREEN, self.background)
         self.hud.clear(Constants.SCREEN)
-        self.players.clear(Constants.SCREEN, self.background)
+        self.player.projectiles.clear(Constants.SCREEN, self.background)
 
         self.level.draw(self.background)
 
