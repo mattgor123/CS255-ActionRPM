@@ -74,6 +74,7 @@ class Level_1(Level):
     def update(self, interval):
         player_coordinates = super(Level_1, self).update(interval)
         if player_coordinates[1] <= .5:
+            self.player.inventory.remove("ezpass")
             Constants.STATE.set_level(1)
 
     def draw(self, background):
