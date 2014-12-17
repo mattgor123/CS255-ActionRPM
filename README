@@ -26,11 +26,12 @@ Note: Console output is present because of Pygame's built-in methods (get_axis a
 
 ADDITIONAL CHANGES:
 Breaking added ((Left) Shift Key or B button/whatever 1 is mapped to)
-Terrible sound effect fixed, collision now sounds good
-Graphics tweaks
+Terrible sound effect nixed
+Graphics tweaks (fireball animations improved, lag reduced in Level 4)
 Refactoring code
-Adjust Visual Brightness Added
-
+Adjust Visual Brightness Added (3 settings & a default)
+Adjust Volume Added (slider that sets the volume)
+Cutscenes after beating boss & beating the racer
 
 Previous Assignment Notes
 11/23

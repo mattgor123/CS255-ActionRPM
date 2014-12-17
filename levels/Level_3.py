@@ -9,6 +9,7 @@ import map.Map as Map
 import sprites.Label as Label
 import sprites.Checkpoint as Checkpoint
 import sprites.Marker as Marker
+import states.Level_3_Cutscene as Level_3_Cutscene
 
 class Level_3(Level):
     # TODO : Tweak difficulty / keep play testing (since I have the course
@@ -176,8 +177,6 @@ class Level_3(Level):
         if self.time_between_fireballs >= Level_3.fireball_frequency:
             self.time_between_fireballs = 0
             self.shoot_fireball()
-        if self.beaten:
-            Constants.STATE.set_level(3)
 
     def draw(self, background):
         super(Level_3, self).draw(background)
@@ -190,8 +189,6 @@ class Level_3(Level):
     def game_over(self, died):
         if died:
             Constants.STATE = GameEnded("GAME OVER")
-        else:
-            Constants.STATE.set_level(1)
 
     def enemy_collided(self, enemy, damage):
         self.player.damage += damage
@@ -275,14 +272,17 @@ class Level_3(Level):
                     print "Super win, gaining lots of points"
                     self.player.score += 2500
                     self.beaten = True
+                    Constants.STATE = Level_3_Cutscene.Level_3_Cutscene()
                 elif enemy.timer <= 750:
                     # TODO : Handle the logic here (enough to beat levle,
                     # but not dominate life)
                     print "Kinda win, gaining some points"
                     self.player.score += 1000
                     self.beaten = True
+                    Constants.STATE = Level_3_Cutscene.Level_3_Cutscene()
                 else:
                     # TODO : Handle the logic here
                     print "Congrats you lose, loser: " + str(enemy.timer)
                     print "But you still go to next level. Just gain no points"
                     self.beaten = True
+                    Constants.STATE.set_level(2)
